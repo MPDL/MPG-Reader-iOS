@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+    <device id="ipad11_0rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--First View Controller-->
+        <scene sceneID="hNz-n2-bh7">
+            <objects>
+                <viewController id="9pv-A4-QxB" customClass="FirstViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RhU-rg-HCX">
+                                <rect key="frame" x="384" y="574.5" width="66" height="30"/>
+                                <state key="normal" title="打开epub"/>
+                                <connections>
+                                    <action selector="onEpubTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="vsb-kM-76K"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJc-5Z-Xpl">
+                                <rect key="frame" x="390" y="474.5" width="54" height="30"/>
+                                <state key="normal" title="打开pdf"/>
+                                <connections>
+                                    <action selector="onPdfTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="CZY-3H-5Zc"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="RhU-rg-HCX" firstAttribute="centerY" secondItem="PQr-Ze-W5v" secondAttribute="centerY" id="Jav-40-YVw"/>
+                            <constraint firstItem="RhU-rg-HCX" firstAttribute="firstBaseline" secondItem="cJc-5Z-Xpl" secondAttribute="baseline" constant="100" id="NcV-o1-8Lx"/>
+                            <constraint firstItem="RhU-rg-HCX" firstAttribute="centerX" secondItem="PQr-Ze-W5v" secondAttribute="centerX" id="Nhd-lm-HWj"/>
+                            <constraint firstItem="cJc-5Z-Xpl" firstAttribute="centerX" secondItem="PQr-Ze-W5v" secondAttribute="centerX" id="VVE-7l-AIP"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ViE-c4-nu3"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1659.4202898550725" y="-320.08928571428572"/>
+        </scene>
+        <!--Second-->
+        <scene sceneID="wg7-f3-ORb">
+            <objects>
+                <viewController id="8rJ-Kc-sve" customClass="SecondViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Second View" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="zEq-FU-wV5">
+                                <rect key="frame" x="316" y="575.5" width="202" height="43"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded by SecondViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NDk-cv-Gan">
+                                <rect key="frame" x="309.5" y="626.5" width="215" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="NDk-cv-Gan" firstAttribute="top" secondItem="zEq-FU-wV5" secondAttribute="bottom" constant="8" symbolic="YES" id="Day-4N-Vmt"/>
+                            <constraint firstItem="NDk-cv-Gan" firstAttribute="centerX" secondItem="zEq-FU-wV5" secondAttribute="centerX" id="JgO-Fn-dHn"/>
+                            <constraint firstAttribute="centerX" secondItem="zEq-FU-wV5" secondAttribute="centerX" id="qqM-NS-xev"/>
+                            <constraint firstAttribute="centerY" secondItem="zEq-FU-wV5" secondAttribute="centerY" id="qzY-Ky-pLD"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="360"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="yl2-sM-qoP">
+            <objects>
+                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
+                        <rect key="frame" x="0.0" y="975" width="768" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="PqJ-Ja-kHh" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
+                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="0.0" y="0.0"/>
+        </scene>
+        <!--First-->
+        <scene sceneID="es2-TJ-Nyo">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PqJ-Ja-kHh" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kCt-uG-uhQ">
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="rootViewController" id="7jO-NQ-8MK"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="22P-yY-JwS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="749.27536231884062" y="-320.08928571428572"/>
+        </scene>
+        <!--Search Book View Controller-->
+        <scene sceneID="LnH-EK-biX">
+            <objects>
+                <viewController hidesBottomBarWhenPushed="YES" id="oiQ-53-mdw" customClass="SearchBookViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FZj-oY-jnC">
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6pz-kE-d0g">
+                                <rect key="frame" x="386" y="572" width="62" height="30"/>
+                                <state key="normal" title="进入详情"/>
+                                <connections>
+                                    <segue destination="EkI-3E-84v" kind="show" id="9jM-zd-0Go"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="6pz-kE-d0g" firstAttribute="centerX" secondItem="Hjt-1M-E5o" secondAttribute="centerX" id="8QS-La-OkE"/>
+                            <constraint firstItem="6pz-kE-d0g" firstAttribute="centerY" secondItem="Hjt-1M-E5o" secondAttribute="centerY" id="wo0-Z4-UNm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Hjt-1M-E5o"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="MRd-VQ-JLD"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JdF-zM-4DW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2502.8776978417268" y="-320.50359712230215"/>
+        </scene>
+        <!--Download View Controller-->
+        <scene sceneID="3MZ-9L-Z2L">
+            <objects>
+                <viewController hidesBottomBarWhenPushed="YES" id="EkI-3E-84v" customClass="DownloadViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VLj-bV-AlA">
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="1006.9200564096436"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Fb-GV-yXl">
+                                <rect key="frame" x="340.5" y="488.5" width="31" height="30"/>
+                                <state key="normal" title="下载"/>
+                                <connections>
+                                    <action selector="onDownloadTapped:" destination="EkI-3E-84v" eventType="touchUpInside" id="Cdg-lr-Cyq"/>
+                                </connections>
+                            </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Xib-5h-PfC">
+                                <rect key="frame" x="156" y="373" width="400" height="2"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="400" id="43z-se-bcD"/>
+                                    <constraint firstAttribute="height" constant="2" id="YB6-7G-vcf"/>
+                                </constraints>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="5Fb-GV-yXl" firstAttribute="centerX" secondItem="iz4-vq-XAC" secondAttribute="centerX" id="TYp-45-hVw"/>
+                            <constraint firstItem="5Fb-GV-yXl" firstAttribute="top" secondItem="Xib-5h-PfC" secondAttribute="bottom" constant="113.5" id="ZOe-FM-Mtn"/>
+                            <constraint firstItem="5Fb-GV-yXl" firstAttribute="centerY" secondItem="iz4-vq-XAC" secondAttribute="centerY" id="coJ-Kg-fQ0"/>
+                            <constraint firstItem="Xib-5h-PfC" firstAttribute="centerX" secondItem="iz4-vq-XAC" secondAttribute="centerX" id="hOa-Lh-ocz"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="iz4-vq-XAC"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="q6K-pc-zrc"/>
+                    <connections>
+                        <outlet property="progressBar" destination="VLj-bV-AlA" id="ffP-6O-JeA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jnA-7e-D44" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3307" y="-320"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="first" width="30" height="30"/>
+        <image name="second" width="30" height="30"/>
+    </resources>
+</document>
