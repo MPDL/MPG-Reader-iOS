@@ -29,12 +29,14 @@ PODS:
   - Realm/Headers (3.17.3)
   - RealmSwift (3.17.3):
     - Realm (= 3.17.3)
+  - SnapKit (5.0.1)
   - SSZipArchive (2.1.1)
   - ZFDragableModalTransition (0.6)
 
 DEPENDENCIES:
   - AFNetworking
   - FolioReaderKit (from `https://github.com/FolioReader/FolioReaderKit.git`)
+  - SnapKit
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -44,6 +46,7 @@ SPEC REPOS:
     - MenuItemKit
     - Realm
     - RealmSwift
+    - SnapKit
     - SSZipArchive
     - ZFDragableModalTransition
 
@@ -64,9 +67,10 @@ SPEC CHECKSUMS:
   MenuItemKit: 0f850e630b0a3d2bd80fec54db87ce0d2077ada2
   Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
   RealmSwift: b7fdc2d18616621c31df5c7a398a45a2163f8eb0
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SSZipArchive: 14401ade5f8e82aba1ff03e9f88e9de60937ae60
   ZFDragableModalTransition: 0d294eaaba6edfcb9839595de765f9ca06a4b524
 
-PODFILE CHECKSUM: 962a0e770f44963377378f274d1f8e701a79ec3a
+PODFILE CHECKSUM: 373055ac9902517669c01a283d7e0e35ea266351
 
 COCOAPODS: 1.9.1

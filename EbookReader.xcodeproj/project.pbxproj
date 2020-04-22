@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C0352D024471AB600B13D2D /* 2013_Book_YogaTraveling.epub in Resources */ = {isa = PBXBuildFile; fileRef = 0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */; };
 		0C0352D124471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */; };
+		0C60B371244FF43A00383E94 /* PdfSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */; };
 		0C7B4024243EB8AB009D6513 /* SearchBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */; };
 		0C7B4026243EBB4F009D6513 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */; };
 		0C7B4028243ED120009D6513 /* PdfReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */; };
@@ -16,6 +17,7 @@
 		0C7B402C243EE204009D6513 /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B402B243EE204009D6513 /* DispatchQueue.swift */; };
 		0C7B402E243EE6F2009D6513 /* UIApplication+SelfAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B402D243EE6F2009D6513 /* UIApplication+SelfAware.swift */; };
 		0C7B4032243EE9F5009D6513 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C7B4031243EE9F5009D6513 /* Default-568h@2x.png */; };
+		0C9C224F244FE5DD009A403B /* PdfOutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */; };
 		0CC4DDE4243C58A100FB792E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC4DDE3243C58A100FB792E /* AppDelegate.swift */; };
 		0CC4DDE6243C58A100FB792E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC4DDE5243C58A100FB792E /* SceneDelegate.swift */; };
 		0CC4DDE8243C58A100FB792E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC4DDE7243C58A100FB792E /* FirstViewController.swift */; };
@@ -29,6 +31,7 @@
 /* Begin PBXFileReference section */
 		0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2013_Book_YogaTraveling.epub; sourceTree = "<group>"; };
 		0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "2016_Book_YogaUndMeditationFürFührungskr.pdf"; sourceTree = "<group>"; };
+		0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfSearchViewController.swift; sourceTree = "<group>"; };
 		0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBookViewController.swift; sourceTree = "<group>"; };
 		0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
 		0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfReaderViewController.swift; sourceTree = "<group>"; };
@@ -36,6 +39,7 @@
 		0C7B402B243EE204009D6513 /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
 		0C7B402D243EE6F2009D6513 /* UIApplication+SelfAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+SelfAware.swift"; sourceTree = "<group>"; };
 		0C7B4031243EE9F5009D6513 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfOutlineViewController.swift; sourceTree = "<group>"; };
 		0CC4DDE0243C58A100FB792E /* EbookReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EbookReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CC4DDE3243C58A100FB792E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0CC4DDE5243C58A100FB792E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +98,8 @@
 				0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */,
 				0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */,
 				0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */,
+				0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */,
+				0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */,
 			);
 			path = "Entry Point";
 			sourceTree = "<group>";
@@ -258,6 +264,8 @@
 				0C7B4024243EB8AB009D6513 /* SearchBookViewController.swift in Sources */,
 				0CC4DDEA243C58A100FB792E /* SecondViewController.swift in Sources */,
 				0C7B402A243EE061009D6513 /* UIViewController+Present.swift in Sources */,
+				0C60B371244FF43A00383E94 /* PdfSearchViewController.swift in Sources */,
+				0C9C224F244FE5DD009A403B /* PdfOutlineViewController.swift in Sources */,
 				0CC4DDE8243C58A100FB792E /* FirstViewController.swift in Sources */,
 				0C7B4028243ED120009D6513 /* PdfReaderViewController.swift in Sources */,
 				0CC4DDE4243C58A100FB792E /* AppDelegate.swift in Sources */,
