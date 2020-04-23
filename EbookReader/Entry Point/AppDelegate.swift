@@ -32,6 +32,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    class func getTopView() -> UIView {
+        let topView: UIView = AppDelegate.getTopViewController().view
+        return topView
+    }
+
+    class func getTopViewController() -> UIViewController {
+        let topWindow: UIWindow = UIApplication.shared.keyWindow!
+        var rootViewController: UIViewController = topWindow.rootViewController!
+        while ((rootViewController.presentedViewController) != nil) {
+            rootViewController = rootViewController.presentedViewController!
+        }
+        return rootViewController
+    }
+
 
 }
 

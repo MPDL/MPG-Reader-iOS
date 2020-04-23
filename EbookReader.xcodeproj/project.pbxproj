@@ -25,6 +25,9 @@
 		0CC4DDED243C58A100FB792E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CC4DDEB243C58A100FB792E /* Main.storyboard */; };
 		0CC4DDEF243C58A200FB792E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CC4DDEE243C58A200FB792E /* Assets.xcassets */; };
 		0CC4DDF2243C58A200FB792E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CC4DDF0243C58A200FB792E /* LaunchScreen.storyboard */; };
+		0CCCDBFB24514E33004B2C5A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */; };
+		0CCCDBFD24516266004B2C5A /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDBFC24516266004B2C5A /* Book.swift */; };
+		0CCCDC012451974F004B2C5A /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDC002451974F004B2C5A /* PopupView.swift */; };
 		7CE201AF1FEE885DC6B88B08 /* Pods_EbookReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +52,9 @@
 		0CC4DDEE243C58A200FB792E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0CC4DDF1243C58A200FB792E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0CC4DDF3243C58A200FB792E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		0CCCDBFC24516266004B2C5A /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		0CCCDC002451974F004B2C5A /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EbookReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B92D47838628A7C53AE35DA /* Pods-EbookReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbookReader.release.xcconfig"; path = "Target Support Files/Pods-EbookReader/Pods-EbookReader.release.xcconfig"; sourceTree = "<group>"; };
 		C14047676556C2FD068D2F2B /* Pods-EbookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbookReader.debug.xcconfig"; path = "Target Support Files/Pods-EbookReader/Pods-EbookReader.debug.xcconfig"; sourceTree = "<group>"; };
@@ -98,8 +104,11 @@
 				0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */,
 				0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */,
 				0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */,
+				0CCCDC002451974F004B2C5A /* PopupView.swift */,
 				0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */,
 				0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */,
+				0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */,
+				0CCCDBFC24516266004B2C5A /* Book.swift */,
 			);
 			path = "Entry Point";
 			sourceTree = "<group>";
@@ -263,7 +272,10 @@
 			files = (
 				0C7B4024243EB8AB009D6513 /* SearchBookViewController.swift in Sources */,
 				0CC4DDEA243C58A100FB792E /* SecondViewController.swift in Sources */,
+				0CCCDBFD24516266004B2C5A /* Book.swift in Sources */,
+				0CCCDC012451974F004B2C5A /* PopupView.swift in Sources */,
 				0C7B402A243EE061009D6513 /* UIViewController+Present.swift in Sources */,
+				0CCCDBFB24514E33004B2C5A /* NetworkManager.swift in Sources */,
 				0C60B371244FF43A00383E94 /* PdfSearchViewController.swift in Sources */,
 				0C9C224F244FE5DD009A403B /* PdfOutlineViewController.swift in Sources */,
 				0CC4DDE8243C58A100FB792E /* FirstViewController.swift in Sources */,

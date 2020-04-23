@@ -11,12 +11,12 @@ import PDFKit
 import SnapKit
 
 class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegate, PdfSearchViewControllerDelegate {
-    var pdfDocument: PDFDocument!
-    var pdfView: PDFView!
-    var toolView: UIView!
-    var headerView: UIView!
-    var overlayView: UIView!
-    var fontView: UIView!
+    fileprivate var pdfDocument: PDFDocument!
+    fileprivate var pdfView: PDFView!
+    fileprivate var toolView: UIView!
+    fileprivate var headerView: UIView!
+    fileprivate var overlayView: UIView!
+    fileprivate var fontView: UIView!
 
     var isStatusBarHidden: Bool = true
     var isOverlayHidden: Bool = true

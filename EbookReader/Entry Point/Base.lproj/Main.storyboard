@@ -29,13 +29,22 @@
                                     <action selector="onPdfTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="CZY-3H-5Zc"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAn-oa-uFy">
+                                <rect key="frame" x="402" y="391" width="31" height="30"/>
+                                <state key="normal" title="搜索"/>
+                                <connections>
+                                    <action selector="onSearchTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="zA0-oo-y5b"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="RhU-rg-HCX" firstAttribute="centerY" secondItem="PQr-Ze-W5v" secondAttribute="centerY" id="Jav-40-YVw"/>
                             <constraint firstItem="RhU-rg-HCX" firstAttribute="firstBaseline" secondItem="cJc-5Z-Xpl" secondAttribute="baseline" constant="100" id="NcV-o1-8Lx"/>
                             <constraint firstItem="RhU-rg-HCX" firstAttribute="centerX" secondItem="PQr-Ze-W5v" secondAttribute="centerX" id="Nhd-lm-HWj"/>
+                            <constraint firstItem="cJc-5Z-Xpl" firstAttribute="top" secondItem="pAn-oa-uFy" secondAttribute="bottom" constant="53.5" id="RGW-I4-aq8"/>
                             <constraint firstItem="cJc-5Z-Xpl" firstAttribute="centerX" secondItem="PQr-Ze-W5v" secondAttribute="centerX" id="VVE-7l-AIP"/>
+                            <constraint firstItem="pAn-oa-uFy" firstAttribute="centerX" secondItem="PQr-Ze-W5v" secondAttribute="centerX" id="mUe-YA-sEk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
@@ -116,76 +125,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="22P-yY-JwS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="749.27536231884062" y="-320.08928571428572"/>
-        </scene>
-        <!--Search Book View Controller-->
-        <scene sceneID="LnH-EK-biX">
-            <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="oiQ-53-mdw" customClass="SearchBookViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="FZj-oY-jnC">
-                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6pz-kE-d0g">
-                                <rect key="frame" x="386" y="572" width="62" height="30"/>
-                                <state key="normal" title="进入详情"/>
-                                <connections>
-                                    <segue destination="EkI-3E-84v" kind="show" id="9jM-zd-0Go"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="6pz-kE-d0g" firstAttribute="centerX" secondItem="Hjt-1M-E5o" secondAttribute="centerX" id="8QS-La-OkE"/>
-                            <constraint firstItem="6pz-kE-d0g" firstAttribute="centerY" secondItem="Hjt-1M-E5o" secondAttribute="centerY" id="wo0-Z4-UNm"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="Hjt-1M-E5o"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="MRd-VQ-JLD"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JdF-zM-4DW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2502.8776978417268" y="-320.50359712230215"/>
-        </scene>
-        <!--Download View Controller-->
-        <scene sceneID="3MZ-9L-Z2L">
-            <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="EkI-3E-84v" customClass="DownloadViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="VLj-bV-AlA">
-                        <rect key="frame" x="0.0" y="0.0" width="712" height="1006.9200564096436"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Fb-GV-yXl">
-                                <rect key="frame" x="340.5" y="488.5" width="31" height="30"/>
-                                <state key="normal" title="下载"/>
-                                <connections>
-                                    <action selector="onDownloadTapped:" destination="EkI-3E-84v" eventType="touchUpInside" id="Cdg-lr-Cyq"/>
-                                </connections>
-                            </button>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Xib-5h-PfC">
-                                <rect key="frame" x="156" y="373" width="400" height="2"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="400" id="43z-se-bcD"/>
-                                    <constraint firstAttribute="height" constant="2" id="YB6-7G-vcf"/>
-                                </constraints>
-                            </progressView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="5Fb-GV-yXl" firstAttribute="centerX" secondItem="iz4-vq-XAC" secondAttribute="centerX" id="TYp-45-hVw"/>
-                            <constraint firstItem="5Fb-GV-yXl" firstAttribute="top" secondItem="Xib-5h-PfC" secondAttribute="bottom" constant="113.5" id="ZOe-FM-Mtn"/>
-                            <constraint firstItem="5Fb-GV-yXl" firstAttribute="centerY" secondItem="iz4-vq-XAC" secondAttribute="centerY" id="coJ-Kg-fQ0"/>
-                            <constraint firstItem="Xib-5h-PfC" firstAttribute="centerX" secondItem="iz4-vq-XAC" secondAttribute="centerX" id="hOa-Lh-ocz"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="iz4-vq-XAC"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="q6K-pc-zrc"/>
-                    <connections>
-                        <outlet property="progressBar" destination="VLj-bV-AlA" id="ffP-6O-JeA"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jnA-7e-D44" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3307" y="-320"/>
         </scene>
     </scenes>
     <resources>

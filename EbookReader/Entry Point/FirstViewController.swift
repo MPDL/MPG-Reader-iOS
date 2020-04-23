@@ -34,5 +34,10 @@ class FirstViewController: UIViewController {
         pdfReaderViewController.hidesBottomBarWhenPushed = true
         self.present(pdfReaderViewController, animated: true, completion: nil)
     }
+    @IBAction func onSearchTapped(_ sender: Any) {
+        let searchViewController = SearchBookViewController()
+        searchViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(searchViewController, animated: true)
+    }
 }
 

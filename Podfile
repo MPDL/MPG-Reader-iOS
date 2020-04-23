@@ -8,5 +8,7 @@ target 'EbookReader' do
     pod 'FolioReaderKit', git: 'https://github.com/FolioReader/FolioReaderKit.git'
     pod 'AFNetworking'
     pod 'SnapKit'
+    pod 'Mantle'
+    pod 'MBProgressHUD'
 end
 
