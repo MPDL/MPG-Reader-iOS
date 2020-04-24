@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import Mantle
+import RealmSwift
 
 class SearchBookViewController: UIViewController {
     fileprivate var tableView: UITableView!
@@ -53,10 +53,12 @@ class SearchBookViewController: UIViewController {
             parameters: ["lookfor": self.searchText],
             modelClass: Book.self,
             success: { (books) in
-                if let books = books as? [Book] {
-                    self.dataSource = books
-                    self.tableView.reloadData()
+                guard let books = books as? [Book]  else {
+                    return
                 }
+                self.dataSource = books
+                self.tableView.reloadData()
+
                 PopupView.showLoading(false)
             }, failure:  { (error) in
                 PopupView.showLoading(false)
@@ -86,11 +88,10 @@ extension SearchBookViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "book")
         cell.textLabel?.text = dataSource[indexPath.row].title
-        if let authors = dataSource[indexPath.row].authorsPrimary {
-            cell.detailTextLabel?.text = "Author: "
-            for author in authors {
-                cell.detailTextLabel?.text! += author + " "
-            }
+        let authors = dataSource[indexPath.row].authorsPrimary
+        cell.detailTextLabel?.text = "Author: "
+        for author in authors {
+            cell.detailTextLabel?.text! += author + " "
         }
         return cell
     }

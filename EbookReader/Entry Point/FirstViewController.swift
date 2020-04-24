@@ -9,6 +9,7 @@
 import UIKit
 import FolioReaderKit
 import PDFKit
+import RealmSwift
 
 class FirstViewController: UIViewController {
 

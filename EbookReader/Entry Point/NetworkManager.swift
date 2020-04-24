@@ -8,7 +8,6 @@
 
 import Foundation
 import AFNetworking
-import Mantle
 
 class NetworkManager: AFHTTPSessionManager {
     static var networkManager: NetworkManager?
@@ -34,15 +33,13 @@ class NetworkManager: AFHTTPSessionManager {
                     return
                 }
                 do {
-                    let responseJson = try JSONSerialization.jsonObject(with: response, options: [])
-                    guard let responseDictionary = responseJson as? [AnyHashable : Any] else {
-                        return
-                    }
-                    let object = try MTLJSONAdapter.models(of: modelClass, fromJSONArray: responseDictionary["records"] as? [Any])
+                    let decoder = JSONDecoder()
+                    let bookRS = try decoder.decode(BookRS.self, from: response)
                     if let success = success {
-                        success(object)
+                        success(bookRS.records!)
                     }
                 } catch {
+                    print(error)
                     return
                 }
             }, failure: { (task, error) in

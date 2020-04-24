@@ -7,19 +7,65 @@
 //
 
 import Foundation
-import Mantle
+import RealmSwift
+import Realm
 
-class Book: MTLModel, MTLJSONSerializing {
-    @objc var abs: String?
-    @objc var authorsPrimary: [String]?
-    @objc var id: String?
-    @objc var isbns: [String]?
-    @objc var publicationDates: [String]?
-    @objc var publishers: [String]?
-    @objc var title: String?
-    @objc var urlPdf_str: String?
+class BookRS: Decodable {
+    var records: [Book]?
+    var resultCount: Int?
+}
 
-    static func jsonKeyPathsByPropertyKey() -> [AnyHashable : Any]! {
-        return NSDictionary.mtl_identityPropertyMap(withModel: self)
+class Book: Object, Decodable {
+    @objc dynamic var abs = ""
+    @objc dynamic var id = ""
+    @objc dynamic var title = ""
+    @objc dynamic var urlPdf_str = ""
+    @objc dynamic var modifyDate = Date()
+
+    let authorsPrimary = List<String>()
+    let isbns = List<String>()
+    let publicationDates = List<String>()
+    let publishers = List<String>()
+
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case abs, id, title, urlPdf_str, modifyDate, authorsPrimary, isbns, publicationDates, publishers
+    }
+
+    required convenience public init(from decoder: Decoder) throws {
+        self.init()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        if let str = try container.decodeIfPresent(String.self, forKey: .abs) {
+            abs = str
+        }
+        if let str = try container.decodeIfPresent(String.self, forKey: .id) {
+            id = str
+        }
+        if let str = try container.decodeIfPresent(String.self, forKey: .title) {
+            title = str
+        }
+        if let str = try container.decodeIfPresent(String.self, forKey: .urlPdf_str) {
+            urlPdf_str = str
+        }
+        if let date = try container.decodeIfPresent(Date.self, forKey: .modifyDate) {
+            modifyDate = date
+        }
+        if let arr = try container.decodeIfPresent(Array<String>.self, forKey: .authorsPrimary) {
+            authorsPrimary.append(objectsIn: arr)
+        }
+        if let arr = try container.decodeIfPresent(Array<String>.self, forKey: .isbns) {
+            isbns.append(objectsIn: arr)
+        }
+        if let arr = try container.decodeIfPresent(Array<String>.self, forKey: .publicationDates) {
+            publicationDates.append(objectsIn: arr)
+        }
+        if let arr = try container.decodeIfPresent(Array<String>.self, forKey: .publishers) {
+            publishers.append(objectsIn: arr)
+        }
+        
     }
 }

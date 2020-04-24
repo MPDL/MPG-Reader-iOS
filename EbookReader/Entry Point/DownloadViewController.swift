@@ -9,10 +9,12 @@
 import UIKit
 import AFNetworking
 import FolioReaderKit
+import RealmSwift
 
 class DownloadViewController: UIViewController {
 
     fileprivate var book: Book!
+    fileprivate var path: String!
 
     fileprivate var progressBar: UIProgressView!
 
@@ -30,15 +32,8 @@ class DownloadViewController: UIViewController {
 
         self.view.backgroundColor = UIColor.white
 
-//        name = "book.pdf"
-//        fileUrl = "http://qiniu.cdn.yituishui.com/swift.pdf"
-
-//        name = "yoga.epub"
-//        fileUrl = "http://qiniu.cdn.yituishui.com/2013_Book_YogaTraveling.epub"
-
         // Do any additional setup after loading the view.
         progressBar = UIProgressView()
-        progressBar.progress = 0
         self.view.addSubview(progressBar)
         progressBar.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view)
@@ -47,54 +42,59 @@ class DownloadViewController: UIViewController {
             make.height.equalTo(10)
         }
         let downloadButton = UIButton()
-        downloadButton.backgroundColor = UIColor.blue
-        downloadButton.setTitle("下载", for: .normal)
+        downloadButton.setTitle("点击下载", for: .normal)
+        downloadButton.setTitle("已经下载", for: .disabled)
         downloadButton.addTarget(self, action: #selector(onDownloadTapped(_:)), for: .touchUpInside)
         self.view.addSubview(downloadButton)
         downloadButton.snp.makeConstraints { (make) in
-            make.width.equalTo(90)
+            make.width.equalTo(120)
             make.height.equalTo(45)
             make.centerX.equalTo(self.view)
             make.top.equalTo(progressBar.snp.bottom).offset(30)
+        }
+        let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
+        path = paths[0] + "/" + book.title
+        if (checkFileExisted(path)) {
+            progressBar.progress = 100
+            downloadButton.backgroundColor = UIColor.gray
+            downloadButton.isEnabled = false
+        } else {
+            progressBar.progress = 0
+            downloadButton.backgroundColor = UIColor.blue
+            downloadButton.isEnabled = true
         }
 
         searchBook()
     }
 
     fileprivate func searchBook() {
-        NetworkManager.sharedInstance().GET(path: "record?id=" + book.id!,
+        PopupView.showLoading(true)
+        NetworkManager.sharedInstance().GET(path: "record?id=" + book.id,
             parameters: nil,
             modelClass: Book.self,
             success: { (books) in
                 if let books = books as? [Book] {
                     self.book = books[0]
-                    print(self.book)
                 }
+
+                // todo: delete
+                // fileUrl = "http://qiniu.cdn.yituishui.com/swift.pdf"
+                // fileUrl = "http://qiniu.cdn.yituishui.com/2013_Book_YogaTraveling.epub"
+                self.book.urlPdf_str = "http://qiniu.cdn.yituishui.com/swift.pdf"
+
+                PopupView.showLoading(false)
             }, failure:  { (error) in
-                print(error)
+                PopupView.showLoading(false)
             })
     }
     
     @objc func onDownloadTapped(_ sender: Any) {
-        guard var fileUrl = book.urlPdf_str else {
+        guard book.urlPdf_str != "" else {
             PopupView.showWithContent("该书没有下载链接")
             return
         }
+        var fileUrl = book.urlPdf_str
         let manager = AFURLSessionManager(sessionConfiguration: .default)
-        let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
-        let path = paths[0] + "/" + book.title!
-        if (checkFileExisted(path)) {
-            // 直接打开
-            if (fileUrl.contains(".pdf")) {
-                self.openPdf(path)
-            } else if (fileUrl.contains(".epub")) {
-                self.openEpub(path)
-            } else {
-                PopupView.showWithContent("该书没有下载链接")
-            }
-            return
-        }
-
         fileUrl = fileUrl.replacingOccurrences(of: " ", with: "%20")
         let url = URL(string: fileUrl)!
         let request = URLRequest(url: url)
@@ -104,17 +104,34 @@ class DownloadViewController: UIViewController {
                 self.progressBar.setProgress(Float(progress.completedUnitCount) / Float(progress.totalUnitCount), animated: true)
             }
         }, destination: { (url, response) -> URL in
-            return URL(fileURLWithPath: path)
+            return URL(fileURLWithPath: self.path)
         }, completionHandler: { (response, url, error) in
             if (fileUrl.contains(".pdf")) {
-                self.openPdf(path)
+                self.openPdf(self.path)
+                self.saveBook()
             } else if (fileUrl.contains(".epub")) {
-                self.openEpub(path)
+                self.openEpub(self.path)
+                self.saveBook()
             } else {
                 PopupView.showWithContent("该书没有下载链接")
             }
         })
         downloadTask.resume()
+    }
+
+    func saveBook() {
+        let realm = try! Realm()
+
+        let predicate = NSPredicate(format: "id == %@", book.id)
+        if !realm.objects(Book.self).filter(predicate).isEmpty {
+            PopupView.showWithContent("书已经存在")
+            return
+        }
+
+        try! realm.write {
+            realm.add(book)
+        }
+        print(realm.objects(Book.self))
     }
 
     func checkFileExisted(_ path: String) -> Bool {
