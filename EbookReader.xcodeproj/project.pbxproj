@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		0C0352D024471AB600B13D2D /* 2013_Book_YogaTraveling.epub in Resources */ = {isa = PBXBuildFile; fileRef = 0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */; };
 		0C0352D124471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */; };
+		0C4ED06B245953D100226AF5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */; };
+		0C4ED06E2459671E00226AF5 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */; };
+		0C4ED0702459736A00226AF5 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06F2459736A00226AF5 /* Queue.swift */; };
+		0C4ED0722459766B00226AF5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED0712459766B00226AF5 /* Constants.swift */; };
+		0C4ED078245986CB00226AF5 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED077245986CB00226AF5 /* ThirdViewController.swift */; };
 		0C60B371244FF43A00383E94 /* PdfSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */; };
 		0C7B4024243EB8AB009D6513 /* SearchBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */; };
 		0C7B4026243EBB4F009D6513 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */; };
@@ -33,7 +38,12 @@
 
 /* Begin PBXFileReference section */
 		0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2013_Book_YogaTraveling.epub; sourceTree = "<group>"; };
-		0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "2016_Book_YogaUndMeditationFürFührungskr.pdf"; sourceTree = "<group>"; };
+		0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "2016_Book_YogaUndMeditationFürFührungskr.pdf"; path = "../2016_Book_YogaUndMeditationFürFührungskr.pdf"; sourceTree = "<group>"; };
+		0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
+		0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
+		0C4ED06F2459736A00226AF5 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		0C4ED0712459766B00226AF5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		0C4ED077245986CB00226AF5 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfSearchViewController.swift; sourceTree = "<group>"; };
 		0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBookViewController.swift; sourceTree = "<group>"; };
 		0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +90,56 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		0C4ED07324597AE400226AF5 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				0CC4DDE7243C58A100FB792E /* FirstViewController.swift */,
+				0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */,
+				0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */,
+				0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		0C4ED07424597B1900226AF5 /* Bookshelf */ = {
+			isa = PBXGroup;
+			children = (
+				0CC4DDE9243C58A100FB792E /* SecondViewController.swift */,
+				0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */,
+				0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */,
+				0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */,
+				0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */,
+			);
+			path = Bookshelf;
+			sourceTree = "<group>";
+		};
+		0C4ED07524597B7500226AF5 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				0C7B402F243EE9BF009D6513 /* Extension */,
+				0CCCDC002451974F004B2C5A /* PopupView.swift */,
+				0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */,
+				0CCCDBFC24516266004B2C5A /* Book.swift */,
+				0C4ED06F2459736A00226AF5 /* Queue.swift */,
+				0C4ED0712459766B00226AF5 /* Constants.swift */,
+				0CC4DDE3243C58A100FB792E /* AppDelegate.swift */,
+				0CC4DDE5243C58A100FB792E /* SceneDelegate.swift */,
+				0CC4DDEB243C58A100FB792E /* Main.storyboard */,
+				0CC4DDF0243C58A200FB792E /* LaunchScreen.storyboard */,
+				0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */,
+				0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
+		0C4ED076245986B500226AF5 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				0C4ED077245986CB00226AF5 /* ThirdViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		0C7B402F243EE9BF009D6513 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -93,22 +153,10 @@
 		0C7B4030243EE9D4009D6513 /* Entry Point */ = {
 			isa = PBXGroup;
 			children = (
-				0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */,
-				0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */,
-				0CC4DDE3243C58A100FB792E /* AppDelegate.swift */,
-				0CC4DDE5243C58A100FB792E /* SceneDelegate.swift */,
-				0CC4DDE7243C58A100FB792E /* FirstViewController.swift */,
-				0CC4DDE9243C58A100FB792E /* SecondViewController.swift */,
-				0CC4DDEB243C58A100FB792E /* Main.storyboard */,
-				0CC4DDF0243C58A200FB792E /* LaunchScreen.storyboard */,
-				0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */,
-				0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */,
-				0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */,
-				0CCCDC002451974F004B2C5A /* PopupView.swift */,
-				0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */,
-				0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */,
-				0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */,
-				0CCCDBFC24516266004B2C5A /* Book.swift */,
+				0C4ED07524597B7500226AF5 /* Others */,
+				0C4ED07324597AE400226AF5 /* Search */,
+				0C4ED07424597B1900226AF5 /* Bookshelf */,
+				0C4ED076245986B500226AF5 /* Profile */,
 			);
 			path = "Entry Point";
 			sourceTree = "<group>";
@@ -138,7 +186,6 @@
 			isa = PBXGroup;
 			children = (
 				0C7B4030243EE9D4009D6513 /* Entry Point */,
-				0C7B402F243EE9BF009D6513 /* Extension */,
 			);
 			path = EbookReader;
 			sourceTree = "<group>";
@@ -270,11 +317,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C4ED06B245953D100226AF5 /* BookTableViewCell.swift in Sources */,
+				0C4ED0722459766B00226AF5 /* Constants.swift in Sources */,
+				0C4ED078245986CB00226AF5 /* ThirdViewController.swift in Sources */,
 				0C7B4024243EB8AB009D6513 /* SearchBookViewController.swift in Sources */,
 				0CC4DDEA243C58A100FB792E /* SecondViewController.swift in Sources */,
 				0CCCDBFD24516266004B2C5A /* Book.swift in Sources */,
 				0CCCDC012451974F004B2C5A /* PopupView.swift in Sources */,
 				0C7B402A243EE061009D6513 /* UIViewController+Present.swift in Sources */,
+				0C4ED06E2459671E00226AF5 /* BookCollectionViewCell.swift in Sources */,
+				0C4ED0702459736A00226AF5 /* Queue.swift in Sources */,
 				0CCCDBFB24514E33004B2C5A /* NetworkManager.swift in Sources */,
 				0C60B371244FF43A00383E94 /* PdfSearchViewController.swift in Sources */,
 				0C9C224F244FE5DD009A403B /* PdfOutlineViewController.swift in Sources */,

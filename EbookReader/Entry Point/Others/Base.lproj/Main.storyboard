@@ -30,7 +30,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAn-oa-uFy">
-                                <rect key="frame" x="402" y="391" width="31" height="30"/>
+                                <rect key="frame" x="401.5" y="391" width="31" height="30"/>
                                 <state key="normal" title="搜索"/>
                                 <connections>
                                     <action selector="onSearchTapped:" destination="9pv-A4-QxB" eventType="touchUpInside" id="zA0-oo-y5b"/>
@@ -101,6 +101,7 @@
                     <connections>
                         <segue destination="PqJ-Ja-kHh" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                        <segue destination="LSf-eI-hn7" kind="relationship" relationship="viewControllers" id="Qkz-o4-dZq"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -125,6 +126,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="22P-yY-JwS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="749.27536231884062" y="-320.08928571428572"/>
+        </scene>
+        <!--Third-->
+        <scene sceneID="RSL-wk-vvM">
+            <objects>
+                <viewController id="LSf-eI-hn7" customClass="ThirdViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cU5-Gc-E4g">
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="7Dr-wz-n3T"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Third" image="first" id="f4U-zn-gJP"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="93z-w1-VKE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1383" y="314"/>
         </scene>
     </scenes>
     <resources>

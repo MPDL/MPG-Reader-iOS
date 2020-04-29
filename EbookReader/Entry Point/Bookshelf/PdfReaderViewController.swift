@@ -31,10 +31,20 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        if keepScreenOnWhileReading {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+    }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if keepScreenOnWhileReading {
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
 
 //        pdfView = PDFView(frame: CGRect(x: -7.8, y: -16.45, width: self.view.frame.width + 15.6, height: self.view.frame.height + 32.9))
         pdfView = PDFView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))

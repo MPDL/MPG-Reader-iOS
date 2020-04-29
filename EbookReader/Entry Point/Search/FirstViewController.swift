@@ -13,11 +13,31 @@ import RealmSwift
 
 class FirstViewController: UIViewController {
 
-    var pdfView: PDFView!
+    fileprivate var pdfView: PDFView!
+    fileprivate var tableView: UITableView!
+
+    fileprivate var histories: Queue<Book>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+
+        tableView = UITableView()
+        tableView.tableFooterView = UIView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.showsVerticalScrollIndicator = false
+        tableView.register(BookTableViewCell.self, forCellReuseIdentifier: String(describing: BookTableViewCell.self))
+        self.view.addSubview(tableView)
+        tableView.snp.makeConstraints { (make) in
+            make.left.right.equalTo(0)
+            make.top.equalTo(self.view).offset(30)
+            make.bottom.equalTo(-50)
+        }
+
+        if let histories = prefs.value(forKey: bookHistoryKey) as? Queue<Book> {
+            self.histories = histories
+        }
     }
 
     @IBAction func onEpubTapped(_ sender: Any) {
@@ -42,3 +62,22 @@ class FirstViewController: UIViewController {
     }
 }
 
+extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let histories = self.histories {
+            return histories.count
+        } else {
+            return 0
+        }
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: BookTableViewCell.self)) as! BookTableViewCell
+        if var histories = self.histories, let book = histories.get(index: indexPath.row) {
+            cell.setObject(book: book)
+        }
+        return cell
+    }
+
+
+}

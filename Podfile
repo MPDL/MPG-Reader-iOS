@@ -9,5 +9,6 @@ target 'EbookReader' do
     pod 'AFNetworking'
     pod 'SnapKit'
     pod 'MBProgressHUD'
+    pod 'Kingfisher'
 end
 

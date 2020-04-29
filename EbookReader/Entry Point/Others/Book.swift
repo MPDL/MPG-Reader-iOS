@@ -19,8 +19,9 @@ class Book: Object, Decodable {
     @objc dynamic var abs = ""
     @objc dynamic var id = ""
     @objc dynamic var title = ""
-    @objc dynamic var urlPdf_str = ""
+    @objc dynamic var downloadUrl = ""
     @objc dynamic var modifyDate = Date()
+    @objc dynamic var isPdf = true
 
     let authorsPrimary = List<String>()
     let isbns = List<String>()
@@ -32,7 +33,7 @@ class Book: Object, Decodable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case abs, id, title, urlPdf_str, modifyDate, authorsPrimary, isbns, publicationDates, publishers
+        case abs, id, title, downloadUrl, modifyDate, isPdf, authorsPrimary, isbns, publicationDates, publishers
     }
 
     required convenience public init(from decoder: Decoder) throws {
@@ -48,11 +49,14 @@ class Book: Object, Decodable {
         if let str = try container.decodeIfPresent(String.self, forKey: .title) {
             title = str
         }
-        if let str = try container.decodeIfPresent(String.self, forKey: .urlPdf_str) {
-            urlPdf_str = str
+        if let str = try container.decodeIfPresent(String.self, forKey: .downloadUrl) {
+            downloadUrl = str
         }
         if let date = try container.decodeIfPresent(Date.self, forKey: .modifyDate) {
             modifyDate = date
+        }
+        if let bool = try container.decodeIfPresent(Bool.self, forKey: .isPdf) {
+            isPdf = bool
         }
         if let arr = try container.decodeIfPresent(Array<String>.self, forKey: .authorsPrimary) {
             authorsPrimary.append(objectsIn: arr)
