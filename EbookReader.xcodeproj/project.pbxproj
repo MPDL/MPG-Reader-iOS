@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C0352D024471AB600B13D2D /* 2013_Book_YogaTraveling.epub in Resources */ = {isa = PBXBuildFile; fileRef = 0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */; };
-		0C0352D124471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */; };
 		0C4ED06B245953D100226AF5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */; };
 		0C4ED06E2459671E00226AF5 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */; };
 		0C4ED0702459736A00226AF5 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06F2459736A00226AF5 /* Queue.swift */; };
@@ -37,8 +35,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2013_Book_YogaTraveling.epub; sourceTree = "<group>"; };
-		0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "2016_Book_YogaUndMeditationFürFührungskr.pdf"; path = "../2016_Book_YogaUndMeditationFürFührungskr.pdf"; sourceTree = "<group>"; };
 		0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
 		0C4ED06F2459736A00226AF5 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
@@ -126,8 +122,6 @@
 				0CC4DDE5243C58A100FB792E /* SceneDelegate.swift */,
 				0CC4DDEB243C58A100FB792E /* Main.storyboard */,
 				0CC4DDF0243C58A200FB792E /* LaunchScreen.storyboard */,
-				0C0352CE24471AB600B13D2D /* 2013_Book_YogaTraveling.epub */,
-				0C0352CF24471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -260,9 +254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CC4DDF2243C58A200FB792E /* LaunchScreen.storyboard in Resources */,
-				0C0352D024471AB600B13D2D /* 2013_Book_YogaTraveling.epub in Resources */,
 				0C7B4032243EE9F5009D6513 /* Default-568h@2x.png in Resources */,
-				0C0352D124471AB600B13D2D /* 2016_Book_YogaUndMeditationFürFührungskr.pdf in Resources */,
 				0CC4DDEF243C58A200FB792E /* Assets.xcassets in Resources */,
 				0CC4DDED243C58A100FB792E /* Main.storyboard in Resources */,
 			);

@@ -10,5 +10,6 @@ target 'EbookReader' do
     pod 'SnapKit'
     pod 'MBProgressHUD'
     pod 'Kingfisher'
+    pod 'ReactiveCocoa'
 end
 

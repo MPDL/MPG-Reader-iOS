@@ -10,18 +10,19 @@ import Foundation
 import RealmSwift
 import Realm
 
-class BookRS: Decodable {
+class BookRS: Codable {
     var records: [Book]?
     var resultCount: Int?
 }
 
-class Book: Object, Decodable {
+class Book: Object, Codable {
     @objc dynamic var abs = ""
     @objc dynamic var id = ""
     @objc dynamic var title = ""
     @objc dynamic var downloadUrl = ""
     @objc dynamic var modifyDate = Date()
     @objc dynamic var isPdf = true
+    @objc dynamic var thumbnail = ""
 
     let authorsPrimary = List<String>()
     let isbns = List<String>()
@@ -33,7 +34,7 @@ class Book: Object, Decodable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case abs, id, title, downloadUrl, modifyDate, isPdf, authorsPrimary, isbns, publicationDates, publishers
+        case abs, id, title, downloadUrl, modifyDate, isPdf, thumbnail, authorsPrimary, isbns, publicationDates, publishers
     }
 
     required convenience public init(from decoder: Decoder) throws {
@@ -57,6 +58,9 @@ class Book: Object, Decodable {
         }
         if let bool = try container.decodeIfPresent(Bool.self, forKey: .isPdf) {
             isPdf = bool
+        }
+        if let str = try container.decodeIfPresent(String.self, forKey: .thumbnail) {
+            thumbnail = str
         }
         if let arr = try container.decodeIfPresent(Array<String>.self, forKey: .authorsPrimary) {
             authorsPrimary.append(objectsIn: arr)

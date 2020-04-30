@@ -19,19 +19,22 @@ class BookCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
 
         bookImageView = UIImageView()
+        bookImageView.layer.cornerRadius = 8
+        bookImageView.layer.masksToBounds = true
         self.contentView.addSubview(bookImageView)
         bookImageView.snp.makeConstraints { (make) in
-            make.width.equalTo(60)
-            make.height.equalTo(120)
-            make.centerX.equalTo(self.contentView)
-            make.top.equalTo(0)
+            make.width.equalTo(150)
+            make.height.equalTo(200)
+            make.left.right.top.equalTo(0)
         }
 
         bookLabel = UILabel()
+        bookLabel.numberOfLines = 2
         self.contentView.addSubview(bookLabel)
         bookLabel.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.contentView)
-            make.top.equalTo(bookImageView.snp.bottom).offset(20)
+            make.left.right.equalTo(bookImageView)
+            make.bottom.equalTo(0)
+            make.top.equalTo(bookImageView.snp.bottom).offset(17)
         }
 
         selectImageView = UIImageView()
@@ -43,7 +46,8 @@ class BookCollectionViewCell: UICollectionViewCell {
     }
 
     func setObject(book: Book) {
-        
+        bookImageView.kf.setImage(with: URL(string: book.thumbnail))
+        bookLabel.text = book.title
     }
 
     required init?(coder: NSCoder) {

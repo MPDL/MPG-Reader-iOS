@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import RealmSwift
+import ReactiveCocoa
 
 class TitleSearchBar: UISearchBar {
     override public var intrinsicContentSize: CGSize {
@@ -20,6 +21,7 @@ class SearchBookViewController: UIViewController {
     fileprivate var tableView: UITableView!
     fileprivate var searchBar: UISearchBar!
     fileprivate var historyView: UIView!
+    fileprivate var historyContentView: UIView!
     fileprivate var historyTitleLabel: UILabel!
     fileprivate var trashImageView: UIImageView!
 
@@ -43,43 +45,139 @@ class SearchBookViewController: UIViewController {
         historyView = UIView()
         self.view.addSubview(historyView)
         historyView.snp.makeConstraints { (make) in
-            make.top.left.equalTo(30)
-            make.right.equalTo(-30)
+            make.top.equalTo(100)
+            make.left.equalTo(80)
+            make.right.equalTo(-56)
+            make.height.equalTo(110)
         }
         historyTitleLabel = UILabel()
         historyTitleLabel.text = "Recent Search"
         historyView.addSubview(historyTitleLabel)
         historyTitleLabel.snp.makeConstraints { (make) in
-            make.top.left.equalTo(0)
+            make.top.equalTo(0)
+            make.left.equalTo(9)
         }
         trashImageView = UIImageView()
+        trashImageView.image = UIImage(named: "icon-trash")
+        trashImageView.isUserInteractionEnabled = true
+        trashImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTrashTapped)))
         historyView.addSubview(trashImageView)
         trashImageView.snp.makeConstraints { (make) in
-            make.right.top.equalTo(0)
+            make.right.equalTo(0)
+            make.centerY.equalTo(historyTitleLabel)
+        }
+        historyContentView = UIView()
+        historyView.addSubview(historyContentView)
+        historyContentView.snp.makeConstraints { (make) in
+            make.top.equalTo(historyTitleLabel.snp.bottom).offset(3)
+            make.left.right.equalTo(0)
         }
 
+
         tableView = UITableView()
-        tableView.tableFooterView = UIView()
+        tableView.backgroundColor = UIColor.white
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
+        tableView.tableFooterView = UIView()
         tableView.register(BookTableViewCell.self, forCellReuseIdentifier: String(describing: BookTableViewCell.self))
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
-            make.left.right.equalTo(0)
+            make.left.right.bottom.equalTo(0)
             make.top.equalTo(historyView.snp.bottom).offset(30)
-            make.bottom.equalTo(-50)
         }
+        
+        loadHistories()
+    }
+
+    @objc func onTrashTapped() {
+        prefs.set(nil, forKey: inputKey)
+        prefs.synchronize()
 
         loadHistories()
     }
 
+    fileprivate func onRecordTapped(searchString: String) {
+        self.searchBar.text = searchString
+        self.searchText = searchString
+        self.searchBarSearchButtonClicked(self.searchBar)
+    }
+
+    fileprivate func getRecordView(record: String) -> UIView {
+        let view = UIControl()
+        view.reactive.controlEvents(.touchUpInside).observeValues { [weak self] (control) in
+            self?.onRecordTapped(searchString: record)
+        }
+        view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
+        view.layer.cornerRadius = 12
+        view.layer.masksToBounds = true
+        let maxWidth = UIScreen.main.bounds.width - 136
+        view.snp.makeConstraints { (make) in
+            make.width.lessThanOrEqualTo(maxWidth)
+        }
+
+        let recordLabel = UILabel()
+        recordLabel.font = UIFont.systemFont(ofSize: 12)
+        recordLabel.textColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
+        recordLabel.text = record
+        view.addSubview(recordLabel)
+        recordLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(5)
+            make.left.equalTo(12)
+            make.bottom.equalTo(-5)
+            make.right.equalTo(-12)
+        }
+
+        view.layoutIfNeeded()
+
+        return view
+    }
+
     fileprivate func updateHistories() {
-        // todo
+        for subview in historyContentView.subviews {
+            subview.removeFromSuperview()
+        }
+        var last: UIView?
+        var leftOffset: CGFloat = -20.0
+        let maxWidth = UIScreen.main.bounds.width - 136
+        for record in histories {
+            let recordView = getRecordView(record: record)
+            historyContentView.addSubview(recordView)
+            let widthNeeded = recordView.bounds.width + 20
+            if (leftOffset + widthNeeded) <= maxWidth {
+                recordView.snp.makeConstraints({ (make) in
+                    if let last = last {
+                        make.left.equalTo(last.snp.right).offset(20)
+                        make.centerY.equalTo(last)
+                    } else {
+                        make.left.equalTo(0)
+                        make.top.equalTo(18)
+                    }
+                    if record == histories.last {
+                        make.bottom.equalTo(-18)
+                    }
+                })
+                leftOffset = leftOffset + widthNeeded
+                last = recordView
+            } else {
+                guard let lastView = last else {
+                    return
+                }
+                recordView.snp.makeConstraints({ (make) in
+                    make.left.equalTo(0)
+                    make.top.equalTo(lastView.snp.bottom).offset(18)
+                    if record == histories.last {
+                        make.bottom.equalTo(-18)
+                    }
+                })
+                leftOffset = recordView.bounds.width
+                last = recordView
+            }
+        }
     }
 
     fileprivate func loadHistories() {
-        if let histories = prefs.value(forKey: inputKey) as? [String], !histories.isEmpty {
+        if let data = prefs.value(forKey: inputKey) as? Data, let histories = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [String], !histories.isEmpty {
             historyView.isHidden = false
             self.histories = histories
             self.updateHistories()
@@ -98,18 +196,28 @@ class SearchBookViewController: UIViewController {
                     return
                 }
                 // Caching last 3 items
-                var histories = Queue<Book>()
-                if let saved = prefs.value(forKey: bookHistoryKey) as? Queue<Book> {
-                    histories = saved
+                var histories: [Book] = []
+                if let data = prefs.value(forKey: bookHistoryKey) as? Data {
+                    do {
+                        let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
+                        if let saved = try unarchiver.decodeTopLevelDecodable([Book].self, forKey: NSKeyedArchiveRootObjectKey) {
+                            histories = saved
+                        }
+                    } catch {
+                        print("unarchiving failure: \(error)")
+                    }
                 }
                 for i in 0..<min(books.count, 3) {
-                    histories.enqueue(books[i])
+                    histories.append(books[i])
                 }
                 while histories.count > 3 {
-                    _ = histories.dequeue()
+                    _ = histories.remove(at: 0)
                 }
-                let encoded = try! NSKeyedArchiver.archivedData(withRootObject: histories, requiringSecureCoding: true)
-                prefs.setValue(encoded, forKey: bookHistoryKey)
+
+                let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+                try! archiver.encodeEncodable(histories, forKey: NSKeyedArchiveRootObjectKey)
+                archiver.finishEncoding()
+                prefs.set(archiver.encodedData, forKey: bookHistoryKey)
                 prefs.synchronize()
 
 
@@ -129,7 +237,7 @@ extension SearchBookViewController: UISearchBarDelegate {
         searchBook()
 
         var histories: [String] = []
-        if let saved = prefs.value(forKey: inputKey) as? [String] {
+        if let data = prefs.value(forKey: inputKey) as? Data, let saved = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [String], !saved.isEmpty {
             histories = saved
             if let index = histories.firstIndex(of: self.searchText) {
                 histories.remove(at: index)
@@ -140,11 +248,11 @@ extension SearchBookViewController: UISearchBarDelegate {
         } else {
             histories.append(self.searchText)
         }
-        let encoded = try! NSKeyedArchiver.archivedData(withRootObject: histories, requiringSecureCoding: true)
+        let encoded = try! NSKeyedArchiver.archivedData(withRootObject: histories, requiringSecureCoding: false)
         prefs.setValue(encoded, forKey: inputKey)
         prefs.synchronize()
 
-        updateHistories()
+        loadHistories()
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

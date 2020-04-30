@@ -50,102 +50,139 @@ class DownloadViewController: UIViewController {
         bookImageView = UIImageView()
         self.view.addSubview(bookImageView)
         bookImageView.snp.makeConstraints { (make) in
-            make.top.equalTo(30)
-            make.left.equalTo(30)
+            make.top.equalTo(130)
+            make.left.equalTo(44)
+            make.width.equalTo(180)
+            make.height.equalTo(240)
         }
 
         titleLabel = UILabel()
+        titleLabel.numberOfLines = 2
         self.view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
-            make.top.left.equalTo(30)
-            make.right.equalTo(-30)
+            make.top.equalTo(125)
+            make.left.equalTo(bookImageView.snp.right).offset(37)
+            make.right.equalTo(-35)
         }
 
-        authorLabel = UILabel()
-        self.view.addSubview(authorLabel)
-        authorLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(30)
-            make.left.equalTo(30)
+        isbnLabel = UILabel()
+        self.view.addSubview(isbnLabel)
+        isbnLabel.snp.makeConstraints { (make) in
+            make.bottom.equalTo(bookImageView).offset(-5)
+            make.left.equalTo(titleLabel)
         }
 
         publicationDateLabel = UILabel()
         self.view.addSubview(publicationDateLabel)
         publicationDateLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(authorLabel.snp.bottom).offset(15)
-            make.left.equalTo(30)
+            make.bottom.equalTo(isbnLabel.snp.top).offset(-10)
+            make.left.equalTo(titleLabel)
         }
 
         publicationPressLabel = UILabel()
         self.view.addSubview(publicationPressLabel)
         publicationPressLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(publicationDateLabel)
+            make.bottom.equalTo(publicationDateLabel)
             make.left.equalTo(publicationDateLabel.snp.right).offset(10)
         }
 
-        isbnLabel = UILabel()
-        self.view.addSubview(publicationPressLabel)
-        publicationPressLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(publicationDateLabel.snp.bottom).offset(15)
-            make.left.equalTo(30)
+        authorLabel = UILabel()
+        self.view.addSubview(authorLabel)
+        authorLabel.snp.makeConstraints { (make) in
+            make.bottom.equalTo(publicationDateLabel.snp.top).offset(-6)
+            make.left.equalTo(titleLabel)
         }
 
         let introductionTitleLabel = UILabel()
+        introductionTitleLabel.text = "Introduction"
         self.view.addSubview(introductionTitleLabel)
         introductionTitleLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(bookImageView.snp.bottom).offset(30)
-            make.left.equalTo(30)
+            make.top.equalTo(bookImageView.snp.bottom).offset(50)
+            make.left.equalTo(35)
         }
 
         introductionLabel = UILabel()
+        introductionLabel.numberOfLines = 0
         self.view.addSubview(introductionLabel)
         introductionLabel.snp.makeConstraints { (make) in
             make.top.equalTo(introductionTitleLabel.snp.bottom).offset(30)
-            make.left.equalTo(30)
+            make.left.equalTo(introductionTitleLabel)
+            make.right.equalTo(-35)
         }
 
         progressBar = UIProgressView()
+        progressBar.isUserInteractionEnabled = true
+        progressBar.layer.cornerRadius = 8
+        progressBar.layer.masksToBounds = true
+        progressBar.progressTintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
         self.view.addSubview(progressBar)
         progressBar.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(-60)
-            make.width.equalTo(400)
-            make.height.equalTo(10)
+            make.bottom.equalTo(-50)
+            make.width.equalTo(454)
+            make.height.equalTo(66)
         }
         downloadView = UIView()
-        downloadView.isUserInteractionEnabled = true
         progressBar.addSubview(downloadView)
         downloadView.snp.makeConstraints { (make) in
-            make.edges.equalTo(progressBar)
+            make.top.bottom.centerX.equalTo(progressBar)
         }
         downloadImageView = UIImageView()
         downloadView.addSubview(downloadImageView)
         downloadImageView.snp.makeConstraints { (make) in
-            make.centerX.equalTo(downloadView).offset(-20)
-            make.centerY.equalTo(downloadView)
+            make.left.centerY.equalTo(downloadView)
         }
         downloadLabel = UILabel()
+        downloadLabel.textColor = UIColor.white
         downloadView.addSubview(downloadLabel)
         downloadLabel.snp.makeConstraints { (make) in
-            make.centerX.equalTo(downloadView).offset(20)
-            make.centerY.equalTo(downloadView)
+            make.right.centerY.equalTo(downloadView)
+            make.left.equalTo(downloadImageView.snp.right).offset(20)
         }
 
         searchBook()
     }
 
     fileprivate func setObject() {
+        bookImageView.kf.setImage(with: URL(string: book.thumbnail))
+        titleLabel.text = book.title
+        introductionLabel.text = book.abs
+        if (book.authorsPrimary.count > 0) {
+            var text = "Author: "
+            for author in book.authorsPrimary {
+                text = text + author + ", "
+            }
+            text = String(text.dropLast(2))
+            authorLabel.text = text
+        }
+        if (book.isbns.count > 0) {
+            var text = "ISBN: ["
+            for isbn in book.isbns {
+                text = text + isbn + ","
+            }
+            text = String(text.dropLast(1))
+            text += "]"
+            isbnLabel.text = text
+        }
+        if (book.publicationDates.count > 0) {
+            publicationDateLabel.text = book.publicationDates[0]
+        }
+        if (book.publishers.count > 0) {
+            publicationPressLabel.text = book.publishers[0]
+        }
+
         let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
-        path = paths[0] + "/" + book.title
+        path = paths[0] + "/" + book.id
         if (checkFileExisted(path)) {
             progressBar.progress = 100
-            progressBar.backgroundColor = UIColor.gray
             downloadLabel.text = "Start Reading"
-            downloadView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onOpenBookTapped)))
+            downloadImageView.image = UIImage(named: "icon-downloaded")
+            progressBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onOpenBookTapped)))
         } else {
             progressBar.progress = 0
-            progressBar.backgroundColor = UIColor.blue
             downloadLabel.text = "Download"
-            downloadView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDownloadTapped)))
+            downloadImageView.image = UIImage(named: "icon-download")
+            progressBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDownloadTapped)))
         }
     }
 
@@ -158,11 +195,6 @@ class DownloadViewController: UIViewController {
                 if let books = books as? [Book] {
                     self.book = books[0]
                 }
-
-                // todo: delete
-                // fileUrl = "http://qiniu.cdn.yituishui.com/swift.pdf"
-                // fileUrl = "http://qiniu.cdn.yituishui.com/2013_Book_YogaTraveling.epub"
-                self.book.downloadUrl = "http://qiniu.cdn.yituishui.com/swift.pdf"
 
                 self.setObject()
                 PopupView.showLoading(false)
@@ -182,12 +214,12 @@ class DownloadViewController: UIViewController {
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
-            folioReader.presentReader(parentViewController: self, withEpubPath: path, andConfig: config)
+            folioReader.presentReader(parentViewController: self, withEpubPath: path, unzipPath: nil, andConfig: config, shouldRemoveEpub: false, animated: true)
         }
     }
     
     @objc func onDownloadTapped(_ sender: Any) {
-        if downloadWithWifiOnly && AFNetworkReachabilityManager.shared().networkReachabilityStatus != .reachableViaWiFi {
+        if downloadWithWifiOnly && (AFNetworkReachabilityManager.shared().networkReachabilityStatus == .notReachable || AFNetworkReachabilityManager.shared().networkReachabilityStatus == .reachableViaWWAN) {
             PopupView.showWithContent("Download on Wifi Only")
             return
         }
@@ -209,8 +241,12 @@ class DownloadViewController: UIViewController {
         }, destination: { (url, response) -> URL in
             return URL(fileURLWithPath: self.path)
         }, completionHandler: { (response, url, error) in
-            self.setObject()
-            self.saveBook()
+            if self.checkFileExisted(self.path) {
+                self.setObject()
+                self.saveBook()
+            } else {
+                PopupView.showWithContent("下载失败，请重试")
+            }
         })
         downloadTask.resume()
     }
