@@ -52,6 +52,7 @@ class SearchBookViewController: UIViewController {
         }
         historyTitleLabel = UILabel()
         historyTitleLabel.text = "Recent Search"
+        historyTitleLabel.textColor = UIColor(red: 0.81, green: 0.81, blue: 0.81, alpha: 1)
         historyView.addSubview(historyTitleLabel)
         historyTitleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(0)

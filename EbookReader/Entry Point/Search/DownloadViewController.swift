@@ -58,6 +58,8 @@ class DownloadViewController: UIViewController {
 
         titleLabel = UILabel()
         titleLabel.numberOfLines = 2
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 28)
+        titleLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         self.view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(125)
@@ -66,6 +68,8 @@ class DownloadViewController: UIViewController {
         }
 
         isbnLabel = UILabel()
+        isbnLabel.font = UIFont.systemFont(ofSize: 20)
+        isbnLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         self.view.addSubview(isbnLabel)
         isbnLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(bookImageView).offset(-5)
@@ -73,6 +77,8 @@ class DownloadViewController: UIViewController {
         }
 
         publicationDateLabel = UILabel()
+        publicationDateLabel.font = UIFont.systemFont(ofSize: 24)
+        publicationDateLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         self.view.addSubview(publicationDateLabel)
         publicationDateLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(isbnLabel.snp.top).offset(-10)
@@ -80,6 +86,8 @@ class DownloadViewController: UIViewController {
         }
 
         publicationPressLabel = UILabel()
+        publicationPressLabel.font = UIFont.systemFont(ofSize: 24)
+        publicationPressLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         self.view.addSubview(publicationPressLabel)
         publicationPressLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel)
@@ -87,13 +95,19 @@ class DownloadViewController: UIViewController {
         }
 
         authorLabel = UILabel()
+        authorLabel.numberOfLines = 2
+        authorLabel.font = UIFont.boldSystemFont(ofSize: 26)
+        authorLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36,alpha:1)
         self.view.addSubview(authorLabel)
         authorLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel.snp.top).offset(-6)
             make.left.equalTo(titleLabel)
+            make.right.equalTo(-35)
         }
 
         let introductionTitleLabel = UILabel()
+        introductionTitleLabel.font = UIFont.systemFont(ofSize: 24)
+        introductionTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         introductionTitleLabel.text = "Introduction"
         self.view.addSubview(introductionTitleLabel)
         introductionTitleLabel.snp.makeConstraints { (make) in
@@ -102,6 +116,8 @@ class DownloadViewController: UIViewController {
         }
 
         introductionLabel = UILabel()
+        introductionLabel.font = UIFont.systemFont(ofSize: 18)
+        introductionLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         introductionLabel.numberOfLines = 0
         self.view.addSubview(introductionLabel)
         introductionLabel.snp.makeConstraints { (make) in
@@ -210,6 +226,8 @@ class DownloadViewController: UIViewController {
             self.present(pdfReaderViewController, animated: true, completion: nil)
         } else {
             let config = FolioReaderConfig()
+            config.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+            config.menuTextColorSelected = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             let folioReader = FolioReader()
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true

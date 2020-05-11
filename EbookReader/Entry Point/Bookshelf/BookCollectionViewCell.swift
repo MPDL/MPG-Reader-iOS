@@ -12,8 +12,8 @@ import Kingfisher
 class BookCollectionViewCell: UICollectionViewCell {
     fileprivate var bookImageView: UIImageView!
     fileprivate var bookLabel: UILabel!
-    fileprivate var selectImageView: UIImageView!
-    fileprivate var isEditing = false
+
+    var checkButton: UIButton!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,9 +37,13 @@ class BookCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(bookImageView.snp.bottom).offset(17)
         }
 
-        selectImageView = UIImageView()
-        bookImageView.addSubview(selectImageView)
-        selectImageView.snp.makeConstraints { (make) in
+        checkButton = UIButton()
+        checkButton.isHidden = true
+        checkButton.isUserInteractionEnabled = false
+        checkButton.setImage(UIImage(named: "icon-selected"), for: .selected)
+        checkButton.setImage(UIImage(named: "icon-selected-not"), for: .normal)
+        bookImageView.addSubview(checkButton)
+        checkButton.snp.makeConstraints { (make) in
             make.right.equalTo(-10)
             make.bottom.equalTo(-10)
         }

@@ -31,6 +31,9 @@
 		0CCCDBFB24514E33004B2C5A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */; };
 		0CCCDBFD24516266004B2C5A /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDBFC24516266004B2C5A /* Book.swift */; };
 		0CCCDC012451974F004B2C5A /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDC002451974F004B2C5A /* PopupView.swift */; };
+		0CF67A0D24693E1C006A9AFD /* WebviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */; };
+		0CF67A0F24696CAF006A9AFD /* UIImage+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A0E24696CAF006A9AFD /* UIImage+Draw.swift */; };
+		0CF67A1124698A9D006A9AFD /* PdfSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A1024698A9D006A9AFD /* PdfSearchTableViewCell.swift */; };
 		7CE201AF1FEE885DC6B88B08 /* Pods_EbookReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +64,9 @@
 		0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0CCCDBFC24516266004B2C5A /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		0CCCDC002451974F004B2C5A /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
+		0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewViewController.swift; sourceTree = "<group>"; };
+		0CF67A0E24696CAF006A9AFD /* UIImage+Draw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Draw.swift"; sourceTree = "<group>"; };
+		0CF67A1024698A9D006A9AFD /* PdfSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfSearchTableViewCell.swift; sourceTree = "<group>"; };
 		35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EbookReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B92D47838628A7C53AE35DA /* Pods-EbookReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbookReader.release.xcconfig"; path = "Target Support Files/Pods-EbookReader/Pods-EbookReader.release.xcconfig"; sourceTree = "<group>"; };
 		C14047676556C2FD068D2F2B /* Pods-EbookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbookReader.debug.xcconfig"; path = "Target Support Files/Pods-EbookReader/Pods-EbookReader.debug.xcconfig"; sourceTree = "<group>"; };
@@ -105,6 +111,7 @@
 				0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */,
 				0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */,
 				0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */,
+				0CF67A1024698A9D006A9AFD /* PdfSearchTableViewCell.swift */,
 			);
 			path = Bookshelf;
 			sourceTree = "<group>";
@@ -130,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				0C4ED077245986CB00226AF5 /* ThirdViewController.swift */,
+				0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -140,6 +148,7 @@
 				0C7B4029243EE061009D6513 /* UIViewController+Present.swift */,
 				0C7B402B243EE204009D6513 /* DispatchQueue.swift */,
 				0C7B402D243EE6F2009D6513 /* UIApplication+SelfAware.swift */,
+				0CF67A0E24696CAF006A9AFD /* UIImage+Draw.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -312,11 +321,13 @@
 				0C4ED06B245953D100226AF5 /* BookTableViewCell.swift in Sources */,
 				0C4ED0722459766B00226AF5 /* Constants.swift in Sources */,
 				0C4ED078245986CB00226AF5 /* ThirdViewController.swift in Sources */,
+				0CF67A0F24696CAF006A9AFD /* UIImage+Draw.swift in Sources */,
 				0C7B4024243EB8AB009D6513 /* SearchBookViewController.swift in Sources */,
 				0CC4DDEA243C58A100FB792E /* SecondViewController.swift in Sources */,
 				0CCCDBFD24516266004B2C5A /* Book.swift in Sources */,
 				0CCCDC012451974F004B2C5A /* PopupView.swift in Sources */,
 				0C7B402A243EE061009D6513 /* UIViewController+Present.swift in Sources */,
+				0CF67A1124698A9D006A9AFD /* PdfSearchTableViewCell.swift in Sources */,
 				0C4ED06E2459671E00226AF5 /* BookCollectionViewCell.swift in Sources */,
 				0C4ED0702459736A00226AF5 /* Queue.swift in Sources */,
 				0CCCDBFB24514E33004B2C5A /* NetworkManager.swift in Sources */,
@@ -325,6 +336,7 @@
 				0CC4DDE8243C58A100FB792E /* FirstViewController.swift in Sources */,
 				0C7B4028243ED120009D6513 /* PdfReaderViewController.swift in Sources */,
 				0CC4DDE4243C58A100FB792E /* AppDelegate.swift in Sources */,
+				0CF67A0D24693E1C006A9AFD /* WebviewViewController.swift in Sources */,
 				0C7B4026243EBB4F009D6513 /* DownloadViewController.swift in Sources */,
 				0C7B402E243EE6F2009D6513 /* UIApplication+SelfAware.swift in Sources */,
 				0CC4DDE6243C58A100FB792E /* SceneDelegate.swift in Sources */,

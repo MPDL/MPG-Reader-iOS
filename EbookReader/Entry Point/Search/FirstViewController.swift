@@ -139,7 +139,6 @@ class FirstViewController: UIViewController {
 
     @objc func onSearchTapped() {
         let searchViewController = SearchBookViewController()
-        searchViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(searchViewController, animated: true)
     }
 
@@ -187,7 +186,6 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let book = histories![indexPath.row]
         let viewController = DownloadViewController(book: book)
-        viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 

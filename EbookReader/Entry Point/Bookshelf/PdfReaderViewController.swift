@@ -68,7 +68,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         let closeImageView = UIImageView()
         closeImageView.isUserInteractionEnabled = true
         closeImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onCloseTapped)))
-        closeImageView.image = UIImage(named: "icon-navbar-close")
+        closeImageView.image = UIImage(named: "navi-close")
         headerView.addSubview(closeImageView)
         closeImageView.snp.makeConstraints { (make) in
             make.left.equalTo(15)
@@ -78,7 +78,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         let outlineImageView = UIImageView()
         outlineImageView.isUserInteractionEnabled = true
         outlineImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onOutlineTapped)))
-        outlineImageView.image = UIImage(named: "icon-navbar-toc")
+        outlineImageView.image = UIImage(named: "navi-index")
         headerView.addSubview(outlineImageView)
         outlineImageView.snp.makeConstraints { (make) in
             make.left.equalTo(closeImageView.snp.right).offset(15)
@@ -88,7 +88,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         let searchImageView = UIImageView()
         searchImageView.isUserInteractionEnabled = true
         searchImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onSearchTapped)))
-        searchImageView.image = UIImage(named: "icon-navbar-search")
+        searchImageView.image = UIImage(named: "navi-search")
         headerView.addSubview(searchImageView)
         searchImageView.snp.makeConstraints { (make) in
             make.right.equalTo(headerView).offset(-15)
@@ -98,7 +98,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         let fontImageView = UIImageView()
         fontImageView.isUserInteractionEnabled = true
         fontImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onFontTapped)))
-        fontImageView.image = UIImage(named: "icon-navbar-font")
+        fontImageView.image = UIImage(named: "navi-font")
         headerView.addSubview(fontImageView)
         fontImageView.snp.makeConstraints { (make) in
             make.right.equalTo(searchImageView.snp.left).offset(-15)
@@ -123,6 +123,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
             make.height.equalTo(100)
         }
         let fontSlider = UISlider()
+        fontSlider.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
         fontSlider.isContinuous = false
         fontSlider.maximumValue = 10
         fontSlider.value = zoomValue
@@ -133,6 +134,20 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
             make.center.equalTo(fontView)
             make.width.equalTo(400)
             make.height.equalTo(40)
+        }
+        let zoomOutImageView = UIImageView()
+        zoomOutImageView.image = UIImage(named: "icon-zoom-out")
+        fontView.addSubview(zoomOutImageView)
+        zoomOutImageView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(fontSlider)
+            make.right.equalTo(fontSlider.snp.left).offset(-33)
+        }
+        let zoomInImageView = UIImageView()
+        zoomInImageView.image = UIImage(named: "icon-zoom-in")
+        fontView.addSubview(zoomInImageView)
+        zoomInImageView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(fontSlider)
+            make.left.equalTo(fontSlider.snp.right).offset(33)
         }
     }
 

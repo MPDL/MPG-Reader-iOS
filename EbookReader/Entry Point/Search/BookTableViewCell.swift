@@ -55,6 +55,8 @@ class BookTableViewCell: UITableViewCell {
         }
 
         publicationDateLabel = UILabel()
+        publicationDateLabel.font = UIFont.systemFont(ofSize: 14)
+        publicationDateLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         contentWrapper.addSubview(publicationDateLabel)
         publicationDateLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(bookImageView)
@@ -62,6 +64,8 @@ class BookTableViewCell: UITableViewCell {
         }
 
         publicationPressLabel = UILabel()
+        publicationPressLabel.font = UIFont.systemFont(ofSize: 14)
+        publicationPressLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         contentWrapper.addSubview(publicationPressLabel)
         publicationPressLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel)
@@ -69,6 +73,8 @@ class BookTableViewCell: UITableViewCell {
         }
 
         authorLabel = UILabel()
+        authorLabel.font = UIFont.systemFont(ofSize: 16)
+        authorLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         contentWrapper.addSubview(authorLabel)
         authorLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel.snp.top).offset(-10)

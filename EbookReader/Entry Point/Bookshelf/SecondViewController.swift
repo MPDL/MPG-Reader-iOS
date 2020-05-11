@@ -12,37 +12,49 @@ import FolioReaderKit
 
 class SecondViewController: UIViewController {
 
+    fileprivate var searchView: UIView!
     fileprivate var collectionView: UICollectionView!
     fileprivate var countLabel: UILabel!
+    fileprivate var deleteView: UIView!
+    fileprivate var overlayView: UIView!
+    fileprivate var overlayContentView: UIView!
+    fileprivate var emptyImageView: UIImageView!
 
     fileprivate var books: Results<Book>!
-    fileprivate var isEditingBooks = false
     fileprivate var searchText = ""
+    fileprivate var selected: [Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.view.isUserInteractionEnabled = true
 
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
 
         self.navigationItem.title = "My Bookshelf"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(onEditTapped))
+        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
 
-        if isEditingBooks {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Select all", style: .plain, target: self, action: #selector(onSelectAllTapped))
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onDeSelectAllTapped))
-        } else {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(onEditTapped))
-        }
-
-        let searchView = UIView()
+        searchView = UIView()
         self.view.addSubview(searchView)
         searchView.snp.makeConstraints { (make) in
             make.left.right.equalTo(0)
             make.top.equalTo(104)
         }
         let searchBar = UISearchBar()
+        searchBar.backgroundColor = UIColor.white
+        searchBar.placeholder = "SEARCH"
+        searchBar.layer.cornerRadius = 12
+        searchBar.layer.masksToBounds = true
+        searchBar.layer.borderWidth = 1
+        searchBar.layer.borderColor = UIColor(red: 0.79, green: 0.79, blue: 0.79, alpha: 1).cgColor
+        searchBar.backgroundImage = UIImage()
+        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+            textField.backgroundColor = UIColor.white
+        }
         searchBar.delegate = self
         searchView.addSubview(searchBar)
         searchBar.snp.makeConstraints { (make) in
@@ -58,12 +70,21 @@ class SecondViewController: UIViewController {
             make.top.equalTo(searchBar.snp.bottom).offset(60)
         }
 
+        emptyImageView = UIImageView()
+        emptyImageView.isHidden = true
+        emptyImageView.image = UIImage(named: "icon-empty-shelf")
+        self.view.addSubview(emptyImageView)
+        emptyImageView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.view)
+            make.top.equalTo(searchView.snp.bottom).offset(60)
+        }
+
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = CGFloat(50)
         layout.sectionInset = UIEdgeInsets(top: 40, left: CGFloat(50), bottom: 0, right: CGFloat(50))
         layout.itemSize = CGSize(width: 150, height: 265)
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = UIColor.white
+        collectionView.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(BookCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: BookCollectionViewCell.self))
@@ -71,6 +92,118 @@ class SecondViewController: UIViewController {
         collectionView.snp.makeConstraints { (make) in
             make.top.equalTo(searchView.snp.bottom)
             make.left.right.bottom.equalTo(self.view)
+        }
+
+        deleteView = UIView()
+        deleteView.isHidden = true
+        deleteView.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        self.view.addSubview(deleteView)
+        deleteView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalTo(0)
+            make.height.equalTo(160)
+        }
+        let deleteButton = UIView()
+        deleteButton.backgroundColor = UIColor.white
+        deleteButton.isUserInteractionEnabled = true
+        deleteButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDeleteTapped)))
+        deleteButton.backgroundColor = UIColor.white
+        deleteButton.layer.shadowColor = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 0.5).cgColor
+        deleteButton.layer.shadowOffset = CGSize(width: 0, height: 0)
+        deleteButton.layer.shadowOpacity = 1
+        deleteButton.layer.cornerRadius = 6
+        deleteView.addSubview(deleteButton)
+        deleteButton.snp.makeConstraints { (make) in
+            make.top.equalTo(30)
+            make.width.equalTo(550)
+            make.height.equalTo(80)
+            make.centerX.equalTo(deleteView)
+        }
+        let deleteImageView = UIImageView()
+        deleteImageView.image = UIImage(named: "icon-trash-green")
+        deleteButton.addSubview(deleteImageView)
+        deleteImageView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(deleteButton)
+            make.centerX.equalTo(deleteButton).offset(-30)
+        }
+        let deleteLabel = UILabel()
+        deleteLabel.text = "Delete"
+        deleteButton.addSubview(deleteLabel)
+        deleteLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(deleteButton)
+            make.centerX.equalTo(deleteButton).offset(30)
+        }
+
+        overlayView = UIView()
+        overlayView.isHidden = true
+        overlayView.isUserInteractionEnabled = true
+        overlayView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onOverlayTapped)))
+        overlayView.backgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.58)
+        AppDelegate.getTopView().addSubview(overlayView)
+        overlayView.snp.makeConstraints { (make) in
+            make.width.equalTo(UIScreen.main.bounds.width)
+            make.left.bottom.top.equalTo(0)
+        }
+        overlayContentView = UIView()
+        overlayContentView.isHidden = true
+        overlayContentView.layer.cornerRadius = 20
+        overlayContentView.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+        AppDelegate.getTopView().addSubview(overlayContentView)
+        overlayContentView.snp.makeConstraints { (make) in
+            make.width.equalTo(overlayView)
+            make.left.right.equalTo(0)
+            make.bottom.equalTo(20)
+        }
+        let deleteTitleLabel = UILabel()
+        deleteTitleLabel.text = "Are you sure to delete it?"
+        deleteTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        deleteTitleLabel.font = UIFont.systemFont(ofSize: 28)
+        overlayContentView.addSubview(deleteTitleLabel)
+        deleteTitleLabel.snp.makeConstraints { (make) in
+            make.centerX.equalTo(overlayContentView)
+            make.top.equalTo(32)
+        }
+        let confirmView = UIView()
+        confirmView.isUserInteractionEnabled = true
+        confirmView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onConfirmDeleteTapped)))
+        overlayContentView.addSubview(confirmView)
+        confirmView.snp.makeConstraints { (make) in
+            make.top.equalTo(deleteTitleLabel.snp.bottom).offset(24)
+            make.left.right.equalTo(0)
+            make.height.equalTo(80)
+        }
+        let confirmLabel = UILabel()
+        confirmLabel.text = "Sure"
+        confirmLabel.textColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+        confirmLabel.font = UIFont.systemFont(ofSize: 24)
+        confirmView.addSubview(confirmLabel)
+        confirmLabel.snp.makeConstraints { (make) in
+            make.center.equalTo(confirmView)
+        }
+        let separator = UIView()
+        separator.backgroundColor = UIColor(red: 0.81, green: 0.81, blue: 0.81, alpha: 1)
+        overlayContentView.addSubview(separator)
+        separator.snp.makeConstraints { (make) in
+            make.top.equalTo(confirmView.snp.bottom)
+            make.left.right.equalTo(0)
+            make.height.equalTo(1)
+        }
+        let cancelView = UIView()
+        cancelView.isUserInteractionEnabled = true
+        cancelView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onOverlayTapped)))
+        overlayContentView.addSubview(cancelView)
+        cancelView.snp.makeConstraints { (make) in
+            make.top.equalTo(separator.snp.bottom)
+            make.left.right.equalTo(0)
+            make.height.equalTo(80)
+            make.bottom.equalTo(-20)
+        }
+        let cancelLabel = UILabel()
+        cancelLabel.text = "Cancel"
+        cancelLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        cancelLabel.font = UIFont.systemFont(ofSize: 24)
+        cancelView.addSubview(cancelLabel)
+        cancelLabel.snp.makeConstraints { (make) in
+            make.center.equalTo(cancelView)
         }
 
     }
@@ -85,16 +218,85 @@ class SecondViewController: UIViewController {
         collectionView.reloadData()
     }
 
-    @objc func onSelectAllTapped() {
+    @objc func onConfirmDeleteTapped() {
+        var ids = [String]()
+        for i in 0..<selected.count {
+            if selected[i] == true {
+                ids.append(books[i].id)
+            }
+        }
+        let realm = try! Realm()
+        let predicate = NSPredicate(format: "id IN %@", ids)
+        let booksToDelete = realm.objects(Book.self).filter(predicate)
+        try! realm.write {
+            realm.delete(booksToDelete)
+        }
 
+        books = realm.objects(Book.self).sorted(byKeyPath: "modifyDate", ascending: false)
+        countLabel.text = "All Books (\(books.count))"
+
+        onOverlayTapped()
+        onCancelTapped()
     }
 
-    @objc func onDeSelectAllTapped() {
+    @objc func onOverlayTapped() {
+        self.overlayView.isHidden = true
+        self.overlayContentView.isHidden = true
+    }
 
+    @objc func onDeleteTapped() {
+        if !selected.contains(true) {
+            PopupView.showWithContent("No book selected")
+            return
+        }
+        self.overlayView.isHidden = false
+        self.overlayContentView.isHidden = false
+    }
+
+    @objc func onSelectAllTapped() {
+        if selected.contains(false) {
+            for i in 0..<selected.count {
+                selected[i] = true
+            }
+        } else {
+            for i in 0..<selected.count {
+                selected[i] = false
+            }
+        }
+        self.collectionView.reloadData()
+    }
+
+    @objc func onCancelTapped() {
+        self.tabBarController?.tabBar.isHidden = false
+        self.deleteView.isHidden = true
+        self.searchView.snp.remakeConstraints { (make) in
+            make.left.right.equalTo(0)
+            make.top.equalTo(104)
+        }
+
+        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(onEditTapped))
+
+        selected = []
+        self.collectionView.reloadData()
     }
 
     @objc func onEditTapped() {
+        self.tabBarController?.tabBar.isHidden = true
+        self.deleteView.isHidden = false
+        self.searchView.snp.remakeConstraints { (make) in
+            make.left.right.equalTo(0)
+            make.top.equalTo(104)
+            make.height.equalTo(0)
+        }
 
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Select all", style: .plain, target: self, action: #selector(onSelectAllTapped))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancelTapped))
+
+        for _ in 0..<books.count {
+            selected.append(false)
+        }
+        self.collectionView.reloadData()
     }
 
 }
@@ -125,16 +327,39 @@ extension SecondViewController: UISearchBarDelegate {
 
 extension SecondViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if books.count == 0 {
+            collectionView.isHidden = true
+            emptyImageView.isHidden = false
+        } else {
+            collectionView.isHidden = false
+            emptyImageView.isHidden = true
+        }
         return books.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BookCollectionViewCell.self), for: indexPath) as! BookCollectionViewCell
+        let cell: BookCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BookCollectionViewCell.self), for: indexPath) as! BookCollectionViewCell
         cell.setObject(book: books[indexPath.row])
+
+        if selected.count > 0 {
+            cell.checkButton.isHidden = false
+            cell.checkButton.isSelected = selected[indexPath.row]
+        } else {
+            cell.checkButton.isHidden = true
+        }
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if selected.count > 0 {
+            // editing mode
+            if let cell = collectionView.cellForItem(at: indexPath) as? BookCollectionViewCell {
+                selected[indexPath.row] = !selected[indexPath.row]
+                cell.checkButton.isSelected = selected[indexPath.row]
+            }
+            return
+        }
+
         let book = books[indexPath.row]
         let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
         let path = paths[0] + "/" + book.id
@@ -144,24 +369,13 @@ extension SecondViewController: UICollectionViewDataSource, UICollectionViewDele
             self.present(pdfReaderViewController, animated: true, completion: nil)
         } else {
             let config = FolioReaderConfig()
+            config.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+            config.menuTextColorSelected = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             let folioReader = FolioReader()
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
             folioReader.presentReader(parentViewController: self, withEpubPath: path, unzipPath: nil, andConfig: config, shouldRemoveEpub: false, animated: true)
-        }
-        
-        if book.isPdf {
-            let url = URL(fileURLWithPath: path)
-            let pdfReaderViewController = PdfReaderViewController(url: url)
-            self.present(pdfReaderViewController, animated: true, completion: nil)
-        } else {
-            let config = FolioReaderConfig()
-            let folioReader = FolioReader()
-            if keepScreenOnWhileReading {
-                UIApplication.shared.isIdleTimerDisabled = true
-            }
-            folioReader.presentReader(parentViewController: self, withEpubPath: path, andConfig: config)
         }
 
         // Update modify time

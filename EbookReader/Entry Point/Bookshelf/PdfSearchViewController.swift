@@ -48,7 +48,7 @@ class PdfSearchViewController: UIViewController {
         let closeImageView = UIImageView()
         closeImageView.isUserInteractionEnabled = true
         closeImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onCloseTapped)))
-        closeImageView.image = UIImage(named: "icon-navbar-close")
+        closeImageView.image = UIImage(named: "navi-close")
         headerView.addSubview(closeImageView)
         closeImageView.snp.makeConstraints { (make) in
             make.left.equalTo(15)
@@ -56,6 +56,7 @@ class PdfSearchViewController: UIViewController {
         }
 
         searchBar = UISearchBar()
+        searchBar.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
         searchBar.delegate = self
         searchBar.showsCancelButton = true
         searchBar.searchBarStyle = .minimal
@@ -69,6 +70,7 @@ class PdfSearchViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         tableView = UITableView()
+        tableView.register(PdfSearchTableViewCell.self, forCellReuseIdentifier: String(describing: PdfSearchTableViewCell.self))
         tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -130,12 +132,16 @@ extension PdfSearchViewController: PDFDocumentDelegate {
 }
 
 extension PdfSearchViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         dataSource.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "result")
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: PdfSearchTableViewCell.self)) as! PdfSearchTableViewCell
         if let selection = dataSource[indexPath.row] as? PDFSelection {
             let extendSelection: PDFSelection = selection.copy() as! PDFSelection
             extendSelection.extend(atStart: 0)
@@ -149,9 +155,9 @@ extension PdfSearchViewController: UITableViewDelegate, UITableViewDataSource {
 
             let range = (extendSelection.string! as NSString).range(of: selection.string!, options: .caseInsensitive)
             let attributedString = NSMutableAttributedString(string: extendSelection.string!)
-            attributedString.addAttribute(.backgroundColor, value: UIColor.yellow, range: range)
-            cell.textLabel?.text = outline?.label
-            cell.detailTextLabel?.attributedText = attributedString
+            attributedString.addAttribute(.foregroundColor, value: UIColor(red: 0.75, green: 0.19, blue: 0.25,alpha:1), range: range)
+            cell.titleLabel?.text = outline?.label
+            cell.contentLabel?.attributedText = attributedString
         }
         return cell
     }

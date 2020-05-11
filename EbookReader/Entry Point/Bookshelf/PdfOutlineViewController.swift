@@ -49,7 +49,7 @@ class PdfOutlineViewController: UIViewController {
         let closeImageView = UIImageView()
         closeImageView.isUserInteractionEnabled = true
         closeImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onCloseTapped)))
-        closeImageView.image = UIImage(named: "icon-navbar-close")
+        closeImageView.image = UIImage(named: "navi-close")
         headerView.addSubview(closeImageView)
         closeImageView.snp.makeConstraints { (make) in
             make.left.equalTo(15)
