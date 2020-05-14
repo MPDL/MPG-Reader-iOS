@@ -20,9 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Update schemaVersion every time the schema is changed, +1
         let config = Realm.Configuration(
-             schemaVersion: 0,
+             schemaVersion: 2,
              migrationBlock: { migration, oldSchemaVersion in
-                     if (oldSchemaVersion < 0) {}
+                     if (oldSchemaVersion < 2) {}
              })
         Realm.Configuration.defaultConfiguration = config
 
@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     class func getTopViewController() -> UIViewController {
-        let topWindow: UIWindow = UIApplication.shared.keyWindow!
+        let topWindow: UIWindow = UIApplication.shared.windows[0]
         var rootViewController: UIViewController = topWindow.rootViewController!
         while ((rootViewController.presentedViewController) != nil) {
             rootViewController = rootViewController.presentedViewController!

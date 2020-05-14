@@ -33,9 +33,8 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        if keepScreenOnWhileReading {
-            UIApplication.shared.isIdleTimerDisabled = false
-        }
+        super.viewDidDisappear(animated)
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
 

@@ -48,7 +48,6 @@ class SearchBookViewController: UIViewController {
             make.top.equalTo(100)
             make.left.equalTo(80)
             make.right.equalTo(-56)
-            make.height.equalTo(110)
         }
         historyTitleLabel = UILabel()
         historyTitleLabel.text = "Recent Search"
@@ -71,7 +70,7 @@ class SearchBookViewController: UIViewController {
         historyView.addSubview(historyContentView)
         historyContentView.snp.makeConstraints { (make) in
             make.top.equalTo(historyTitleLabel.snp.bottom).offset(3)
-            make.left.right.equalTo(0)
+            make.left.right.bottom.equalTo(0)
         }
 
 
@@ -85,7 +84,7 @@ class SearchBookViewController: UIViewController {
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalTo(0)
-            make.top.equalTo(historyView.snp.bottom).offset(30)
+            make.top.equalTo(historyView.snp.bottom)
         }
         
         loadHistories()
@@ -179,11 +178,11 @@ class SearchBookViewController: UIViewController {
 
     fileprivate func loadHistories() {
         if let data = prefs.value(forKey: inputKey) as? Data, let histories = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [String], !histories.isEmpty {
-            historyView.isHidden = false
+            historyContentView.isHidden = false
             self.histories = histories
             self.updateHistories()
         } else {
-            historyView.isHidden = true
+            historyContentView.isHidden = true
         }
     }
 
@@ -194,6 +193,8 @@ class SearchBookViewController: UIViewController {
             modelClass: Book.self,
             success: { (books) in
                 guard let books = books as? [Book]  else {
+                    self.dataSource = []
+                    self.tableView.reloadData()
                     return
                 }
                 // Caching last 3 items
@@ -227,6 +228,8 @@ class SearchBookViewController: UIViewController {
 
                 PopupView.showLoading(false)
             }, failure:  { (error) in
+                self.dataSource = []
+                self.tableView.reloadData()
                 PopupView.showLoading(false)
             })
     }
@@ -265,6 +268,10 @@ extension SearchBookViewController: UISearchBarDelegate {
 }
 
 extension SearchBookViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
     }
@@ -272,6 +279,7 @@ extension SearchBookViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: BookTableViewCell.self)) as! BookTableViewCell
         cell.setObject(book: dataSource[indexPath.row])
+        cell.checkMatch(searchText: searchText)
         return cell
     }
 

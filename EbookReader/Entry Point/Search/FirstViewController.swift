@@ -167,6 +167,10 @@ class FirstViewController: UIViewController {
 }
 
 extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let histories = self.histories {
             return histories.count

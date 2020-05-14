@@ -23,7 +23,8 @@ class SecondViewController: UIViewController {
     fileprivate var books: Results<Book>!
     fileprivate var searchText = ""
     fileprivate var selected: [Bool] = []
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -32,7 +33,7 @@ class SecondViewController: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+        self.navigationController?.navigationBar.tintColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
 
         self.navigationItem.title = "My Bookshelf"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(onEditTapped))
@@ -63,6 +64,7 @@ class SecondViewController: UIViewController {
             make.height.equalTo(53)
         }
         countLabel = UILabel()
+        countLabel.font = UIFont.systemFont(ofSize: 20)
         countLabel.text = "All Books"
         searchView.addSubview(countLabel)
         countLabel.snp.makeConstraints { (make) in
@@ -126,6 +128,8 @@ class SecondViewController: UIViewController {
             make.centerX.equalTo(deleteButton).offset(-30)
         }
         let deleteLabel = UILabel()
+        deleteLabel.textColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+        deleteLabel.font = UIFont.systemFont(ofSize: 24)
         deleteLabel.text = "Delete"
         deleteButton.addSubview(deleteLabel)
         deleteLabel.snp.makeConstraints { (make) in
@@ -210,6 +214,7 @@ class SecondViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        UIApplication.shared.isIdleTimerDisabled = false
 
         let realm = try! Realm()
         books = realm.objects(Book.self).sorted(byKeyPath: "modifyDate", ascending: false)
@@ -219,12 +224,28 @@ class SecondViewController: UIViewController {
     }
 
     @objc func onConfirmDeleteTapped() {
+        let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
+        let fileManager = FileManager.default
         var ids = [String]()
+        var allDeletedSuccessfully = true
         for i in 0..<selected.count {
             if selected[i] == true {
-                ids.append(books[i].id)
+                // Delete book file
+                let path = paths[0] + "/" + books[i].id
+                if fileManager.fileExists(atPath: path) {
+                    do {
+                        try fileManager.removeItem(atPath: path)
+                        ids.append(books[i].id)
+                    } catch {
+                        allDeletedSuccessfully = false
+                    }
+                } else {
+                    allDeletedSuccessfully = false
+                }
             }
         }
+
+        // Delete db records
         let realm = try! Realm()
         let predicate = NSPredicate(format: "id IN %@", ids)
         let booksToDelete = realm.objects(Book.self).filter(predicate)
@@ -237,6 +258,10 @@ class SecondViewController: UIViewController {
 
         onOverlayTapped()
         onCancelTapped()
+
+        if !allDeletedSuccessfully {
+            PopupView.showWithContent("Failed to delete some books.")
+        }
     }
 
     @objc func onOverlayTapped() {
@@ -290,7 +315,7 @@ class SecondViewController: UIViewController {
             make.height.equalTo(0)
         }
 
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Select all", style: .plain, target: self, action: #selector(onSelectAllTapped))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Select All", style: .plain, target: self, action: #selector(onSelectAllTapped))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancelTapped))
 
         for _ in 0..<books.count {

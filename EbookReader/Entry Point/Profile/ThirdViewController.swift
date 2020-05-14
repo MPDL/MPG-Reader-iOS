@@ -40,6 +40,8 @@ class ThirdViewController: UIViewController {
             make.centerX.equalTo(headerView)
         }
         let nameLabel = UILabel()
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        nameLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         nameLabel.text = "Jack Jordan"
         headerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { (make) in
@@ -56,6 +58,8 @@ class ThirdViewController: UIViewController {
             make.left.right.equalTo(0)
         }
         let settingTitleLabel = UILabel()
+        settingTitleLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        settingTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         settingTitleLabel.text = "Setting"
         settingView.addSubview(settingTitleLabel)
         settingTitleLabel.snp.makeConstraints { (make) in
@@ -104,6 +108,8 @@ class ThirdViewController: UIViewController {
             make.left.right.equalTo(0)
         }
         let aboutUsTitleLabel = UILabel()
+        aboutUsTitleLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        aboutUsTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         aboutUsTitleLabel.text = "About Us"
         aboutUsView.addSubview(aboutUsTitleLabel)
         aboutUsTitleLabel.snp.makeConstraints { (make) in
@@ -125,7 +131,6 @@ class ThirdViewController: UIViewController {
             make.left.equalTo(aboutUsTitleLabel)
         }
         let versionContentLabel = UILabel()
-        versionContentLabel.font = UIFont.systemFont(ofSize: 18)
         versionContentLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         versionContentLabel.text = "v1.0.1"
         versionView.addSubview(versionContentLabel)
@@ -212,6 +217,8 @@ class ThirdViewController: UIViewController {
             make.left.right.equalTo(0)
         }
         let contactTitleLabel = UILabel()
+        contactTitleLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        contactTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         contactTitleLabel.text = "Contact Us"
         contactUsView.addSubview(contactTitleLabel)
         contactTitleLabel.snp.makeConstraints { (make) in
@@ -233,7 +240,6 @@ class ThirdViewController: UIViewController {
             make.left.equalTo(contactTitleLabel)
         }
         let emailContentLabel = UILabel()
-        emailContentLabel.font = UIFont.systemFont(ofSize: 18)
         emailContentLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         emailContentLabel.text = "email@address.com"
         emailView.addSubview(emailContentLabel)
@@ -246,11 +252,13 @@ class ThirdViewController: UIViewController {
     @objc func onWifiTapped() {
         downloadWithWifiOnly = !downloadWithWifiOnly
         prefs.set(downloadWithWifiOnly, forKey: wifiKey)
+        prefs.synchronize()
     }
 
     @objc func onScreenTapped() {
         keepScreenOnWhileReading = !keepScreenOnWhileReading
         prefs.set(keepScreenOnWhileReading, forKey: screenKey)
+        prefs.synchronize()
     }
 
     @objc func onTermsTapped() {

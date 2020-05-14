@@ -15,6 +15,7 @@ class DownloadViewController: UIViewController {
     fileprivate var bookImageView: UIImageView!
     fileprivate var titleLabel: UILabel!
     fileprivate var authorLabel: UILabel!
+    fileprivate var introductionTitleLabel: UILabel!
     fileprivate var publicationDateLabel: UILabel!
     fileprivate var publicationPressLabel: UILabel!
     fileprivate var isbnLabel: UILabel!
@@ -38,19 +39,34 @@ class DownloadViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         UIApplication.shared.isIdleTimerDisabled = false
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+
+        let scrollView = UIScrollView()
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 120, right: 0)
+        scrollView.showsVerticalScrollIndicator = false
+        self.view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { (make) in
+            make.edges.equalTo(self.view)
+        }
+        let contentView = UIView()
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints { (make) in
+            make.edges.equalTo(scrollView)
+            make.width.equalTo(scrollView)
+        }
 
         // Do any additional setup after loading the view.
         bookImageView = UIImageView()
-        self.view.addSubview(bookImageView)
+        contentView.addSubview(bookImageView)
         bookImageView.snp.makeConstraints { (make) in
-            make.top.equalTo(130)
+            make.top.equalTo(48)
             make.left.equalTo(44)
             make.width.equalTo(180)
             make.height.equalTo(240)
@@ -60,9 +76,9 @@ class DownloadViewController: UIViewController {
         titleLabel.numberOfLines = 2
         titleLabel.font = UIFont.boldSystemFont(ofSize: 28)
         titleLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
-        self.view.addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(125)
+            make.top.equalTo(bookImageView)
             make.left.equalTo(bookImageView.snp.right).offset(37)
             make.right.equalTo(-35)
         }
@@ -70,7 +86,7 @@ class DownloadViewController: UIViewController {
         isbnLabel = UILabel()
         isbnLabel.font = UIFont.systemFont(ofSize: 20)
         isbnLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
-        self.view.addSubview(isbnLabel)
+        contentView.addSubview(isbnLabel)
         isbnLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(bookImageView).offset(-5)
             make.left.equalTo(titleLabel)
@@ -79,7 +95,7 @@ class DownloadViewController: UIViewController {
         publicationDateLabel = UILabel()
         publicationDateLabel.font = UIFont.systemFont(ofSize: 24)
         publicationDateLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
-        self.view.addSubview(publicationDateLabel)
+        contentView.addSubview(publicationDateLabel)
         publicationDateLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(isbnLabel.snp.top).offset(-10)
             make.left.equalTo(titleLabel)
@@ -88,7 +104,7 @@ class DownloadViewController: UIViewController {
         publicationPressLabel = UILabel()
         publicationPressLabel.font = UIFont.systemFont(ofSize: 24)
         publicationPressLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
-        self.view.addSubview(publicationPressLabel)
+        contentView.addSubview(publicationPressLabel)
         publicationPressLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel)
             make.left.equalTo(publicationDateLabel.snp.right).offset(10)
@@ -98,18 +114,17 @@ class DownloadViewController: UIViewController {
         authorLabel.numberOfLines = 2
         authorLabel.font = UIFont.boldSystemFont(ofSize: 26)
         authorLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36,alpha:1)
-        self.view.addSubview(authorLabel)
+        contentView.addSubview(authorLabel)
         authorLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel.snp.top).offset(-6)
             make.left.equalTo(titleLabel)
             make.right.equalTo(-35)
         }
 
-        let introductionTitleLabel = UILabel()
+        introductionTitleLabel = UILabel()
         introductionTitleLabel.font = UIFont.systemFont(ofSize: 24)
         introductionTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-        introductionTitleLabel.text = "Introduction"
-        self.view.addSubview(introductionTitleLabel)
+        contentView.addSubview(introductionTitleLabel)
         introductionTitleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(bookImageView.snp.bottom).offset(50)
             make.left.equalTo(35)
@@ -119,9 +134,10 @@ class DownloadViewController: UIViewController {
         introductionLabel.font = UIFont.systemFont(ofSize: 18)
         introductionLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         introductionLabel.numberOfLines = 0
-        self.view.addSubview(introductionLabel)
+        contentView.addSubview(introductionLabel)
         introductionLabel.snp.makeConstraints { (make) in
             make.top.equalTo(introductionTitleLabel.snp.bottom).offset(30)
+            make.bottom.equalTo(-30)
             make.left.equalTo(introductionTitleLabel)
             make.right.equalTo(-35)
         }
@@ -131,6 +147,7 @@ class DownloadViewController: UIViewController {
         progressBar.layer.cornerRadius = 8
         progressBar.layer.masksToBounds = true
         progressBar.progressTintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+        progressBar.backgroundColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
         self.view.addSubview(progressBar)
         progressBar.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view)
@@ -162,6 +179,7 @@ class DownloadViewController: UIViewController {
     fileprivate func setObject() {
         bookImageView.kf.setImage(with: URL(string: book.thumbnail))
         titleLabel.text = book.title
+        introductionTitleLabel.text = "Introduction"
         introductionLabel.text = book.abs
         if (book.authorsPrimary.count > 0) {
             var text = "Author: "
@@ -251,6 +269,9 @@ class DownloadViewController: UIViewController {
         let url = URL(string: fileUrl)!
         let request = URLRequest(url: url)
 
+        PopupView.showLoading(true)
+        progressBar.backgroundColor = UIColor(red: 0.87, green: 0.87, blue: 0.87, alpha: 1)
+
         let downloadTask = manager.downloadTask(with: request, progress: { (progress) in
             DispatchQueue.main.async {
                 self.progressBar.setProgress(Float(progress.completedUnitCount) / Float(progress.totalUnitCount), animated: true)
@@ -259,6 +280,7 @@ class DownloadViewController: UIViewController {
         }, destination: { (url, response) -> URL in
             return URL(fileURLWithPath: self.path)
         }, completionHandler: { (response, url, error) in
+            PopupView.showLoading(false)
             if self.checkFileExisted(self.path) {
                 self.setObject()
                 self.saveBook()
