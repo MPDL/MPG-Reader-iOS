@@ -93,7 +93,7 @@ class DownloadViewController: UIViewController {
         }
 
         publicationDateLabel = UILabel()
-        publicationDateLabel.font = UIFont.systemFont(ofSize: 24)
+        publicationDateLabel.font = UIFont.italicSystemFont(ofSize: 24)
         publicationDateLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         contentView.addSubview(publicationDateLabel)
         publicationDateLabel.snp.makeConstraints { (make) in
@@ -102,7 +102,7 @@ class DownloadViewController: UIViewController {
         }
 
         publicationPressLabel = UILabel()
-        publicationPressLabel.font = UIFont.systemFont(ofSize: 24)
+        publicationPressLabel.font = UIFont.italicSystemFont(ofSize: 24)
         publicationPressLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         contentView.addSubview(publicationPressLabel)
         publicationPressLabel.snp.makeConstraints { (make) in
@@ -255,7 +255,7 @@ class DownloadViewController: UIViewController {
     }
     
     @objc func onDownloadTapped(_ sender: Any) {
-        if downloadWithWifiOnly && (AFNetworkReachabilityManager.shared().networkReachabilityStatus == .notReachable || AFNetworkReachabilityManager.shared().networkReachabilityStatus == .reachableViaWWAN) {
+        if downloadWithWifiOnly && AFNetworkReachabilityManager.shared().networkReachabilityStatus != .reachableViaWiFi {
             PopupView.showWithContent("Download on Wifi Only")
             return
         }

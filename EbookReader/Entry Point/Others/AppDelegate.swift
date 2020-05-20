@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import AFNetworking
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      if (oldSchemaVersion < 2) {}
              })
         Realm.Configuration.defaultConfiguration = config
+
+        AFNetworkReachabilityManager.shared().startMonitoring()
 
         return true
     }

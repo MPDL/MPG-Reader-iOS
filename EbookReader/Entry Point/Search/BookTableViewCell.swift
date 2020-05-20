@@ -11,6 +11,7 @@ import Kingfisher
 
 class BookTableViewCell: UITableViewCell {
 
+    var contentWrapper: UIView!
     fileprivate var bookImageView: UIImageView!
     fileprivate var titleLabel: UILabel!
     fileprivate var authorLabel: UILabel!
@@ -24,7 +25,7 @@ class BookTableViewCell: UITableViewCell {
         self.backgroundColor = UIColor.clear
         self.selectionStyle = .none
 
-        let contentWrapper = UIView()
+        contentWrapper = UIView()
         contentWrapper.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.88)
         contentWrapper.layer.cornerRadius = 12
         contentWrapper.layer.masksToBounds = true

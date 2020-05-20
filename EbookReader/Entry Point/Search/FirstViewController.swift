@@ -30,28 +30,24 @@ class FirstViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
 
-        let backgroundImageView = UIImageView()
-        backgroundImageView.image = UIImage(named: "background-home")
-        self.view.addSubview(backgroundImageView)
-        backgroundImageView.snp.makeConstraints { (make) in
-            make.edges.equalTo(self.view)
-        }
         let logoImageView = UIImageView()
         logoImageView.image = UIImage(named: "logo")
         self.view.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view)
-            make.top.equalTo(115)
+            make.top.equalTo(107)
         }
 
         let searchView = UIView()
+        searchView.layer.borderWidth = 1
+        searchView.layer.borderColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1).cgColor
+        searchView.layer.cornerRadius = 6
         searchView.isUserInteractionEnabled = true
         searchView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onSearchTapped)))
         searchView.backgroundColor = UIColor.white
-        searchView.layer.cornerRadius = 12
         self.view.addSubview(searchView)
         searchView.snp.makeConstraints { (make) in
-            make.top.equalTo(logoImageView.snp.bottom).offset(40)
+            make.top.equalTo(logoImageView.snp.bottom).offset(76)
             make.centerX.equalTo(self.view)
             make.width.equalTo(544)
             make.height.equalTo(70)
@@ -61,7 +57,7 @@ class FirstViewController: UIViewController {
         searchView.addSubview(searchIcon)
         searchIcon.snp.makeConstraints { (make) in
             make.centerY.equalTo(searchView)
-            make.left.equalTo(26)
+            make.left.equalTo(27)
         }
         let placeholderLabel = UILabel()
         placeholderLabel.font = UIFont.systemFont(ofSize: 20)
@@ -74,33 +70,43 @@ class FirstViewController: UIViewController {
         }
 
         hintView = UIView()
-        hintView.layer.cornerRadius = 12
-        hintView.backgroundColor = UIColor(red: 0.85, green: 0.92, blue: 0.95, alpha: 0.88)
         self.view.addSubview(hintView)
         hintView.snp.makeConstraints { (make) in
-            make.width.equalTo(543)
-            make.height.equalTo(526)
-            make.top.equalTo(searchView.snp.bottom).offset(45)
+            make.width.equalTo(565)
+            make.top.equalTo(searchView.snp.bottom).offset(107)
             make.centerX.equalTo(self.view)
+        }
+        let hintImageView = UIImageView()
+        hintImageView.image = UIImage(named: "icon-book")
+        hintView.addSubview(hintImageView)
+        hintImageView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(hintView)
+            make.top.equalTo(0)
         }
         let hintTitleLabel = UILabel()
         hintTitleLabel.text = "MPG.eBooks"
-        hintTitleLabel.textColor = UIColor(red: 0.42, green: 0.67, blue: 0.77, alpha: 1)
+        hintTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         hintTitleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         hintView.addSubview(hintTitleLabel)
         hintTitleLabel.snp.makeConstraints { (make) in
-            make.top.left.equalTo(40)
+            make.centerX.equalTo(hintView)
+            make.top.equalTo(hintImageView.snp.bottom).offset(-10)
         }
         let hintLabel = UILabel()
         hintLabel.numberOfLines = 0
-        hintLabel.text = "On this search platform,you can find all e-books that are accessible to all institutes of Max Planck Gesellschaft.\n\nCurrently,you have access to 650,000 titles from various publishers and e-book providers.\nThe contents are continuously extended and updated.\n\nClick here for an overview of the included e-books."
-        hintLabel.textColor = UIColor(red: 0.28, green: 0.48, blue: 0.57, alpha: 1)
-        hintLabel.font = UIFont.systemFont(ofSize: 16)
+        let text = "On this search platform, you can find all e-books that are accessible to all institutes of Max Planck Gesellschaft.\nCurrently, you have access to 650,000 titles from various publishers and e-book providers.\nThe contents are continuously extended and updated.\nClick here for an overview of the included e-books."
+        let para = NSMutableParagraphStyle()
+        para.lineSpacing = 5
+        let attr: [NSAttributedString.Key : Any] = [
+                .font: UIFont.systemFont(ofSize: 16),
+                .foregroundColor: UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1),
+                .paragraphStyle: para]
+        hintLabel.attributedText = NSAttributedString(string: text, attributes: attr)
         hintView.addSubview(hintLabel)
         hintLabel.snp.makeConstraints { (make) in
-            make.left.equalTo(40)
-            make.right.equalTo(-40)
-            make.top.equalTo(hintTitleLabel.snp.bottom).offset(24)
+            make.centerX.equalTo(hintView)
+            make.top.equalTo(hintTitleLabel.snp.bottom).offset(22)
+            make.bottom.left.right.equalTo(0)
         }
 
 
@@ -115,7 +121,7 @@ class FirstViewController: UIViewController {
         let tableTitle = UILabel()
         tableTitle.text = "Search History"
         tableTitle.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
-        tableTitle.font = UIFont.systemFont(ofSize: 20)
+        tableTitle.font = UIFont.systemFont(ofSize: 24)
         tableWrapper.addSubview(tableTitle)
         tableTitle.snp.makeConstraints { (make) in
             make.top.equalTo(0)
@@ -131,7 +137,7 @@ class FirstViewController: UIViewController {
         tableWrapper.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalTo(0)
-            make.top.equalTo(tableTitle.snp.bottom).offset(23)
+            make.top.equalTo(tableTitle.snp.bottom).offset(22)
         }
 
         checkHistories()
@@ -184,6 +190,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         if let histories = self.histories {
             cell.setObject(book: histories[indexPath.row])
         }
+        cell.contentWrapper.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         return cell
     }
 
