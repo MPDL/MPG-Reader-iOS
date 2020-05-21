@@ -24,11 +24,24 @@ class ThirdViewController: UIViewController {
         super.viewDidLoad()
 
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
-
+        
         // Do any additional setup after loading the view.
+        let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
+        self.view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { (make) in
+            make.edges.equalTo(self.view)
+        }
+        let contentView = UIView()
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints { (make) in
+            make.edges.equalTo(scrollView)
+            make.width.equalTo(scrollView)
+        }
+
         let headerView = UIView()
         headerView.backgroundColor = UIColor.white
-        self.view.addSubview(headerView)
+        contentView.addSubview(headerView)
         headerView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(0)
         }
@@ -52,7 +65,7 @@ class ThirdViewController: UIViewController {
 
         let settingView = UIView()
         settingView.backgroundColor = UIColor.white
-        self.view.addSubview(settingView)
+        contentView.addSubview(settingView)
         settingView.snp.makeConstraints { (make) in
             make.top.equalTo(headerView.snp.bottom).offset(16)
             make.left.right.equalTo(0)
@@ -102,7 +115,7 @@ class ThirdViewController: UIViewController {
 
         let aboutUsView = UIView()
         aboutUsView.backgroundColor = UIColor.white
-        self.view.addSubview(aboutUsView)
+        contentView.addSubview(aboutUsView)
         aboutUsView.snp.makeConstraints { (make) in
             make.top.equalTo(settingView.snp.bottom).offset(16)
             make.left.right.equalTo(0)
@@ -211,10 +224,11 @@ class ThirdViewController: UIViewController {
 
         let contactUsView = UIView()
         contactUsView.backgroundColor = UIColor.white
-        self.view.addSubview(contactUsView)
+        contentView.addSubview(contactUsView)
         contactUsView.snp.makeConstraints { (make) in
             make.top.equalTo(aboutUsView.snp.bottom).offset(16)
             make.left.right.equalTo(0)
+            make.bottom.equalTo(-16)
         }
         let contactTitleLabel = UILabel()
         contactTitleLabel.font = UIFont.boldSystemFont(ofSize: 22)

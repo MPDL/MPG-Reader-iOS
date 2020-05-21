@@ -240,12 +240,13 @@ class DownloadViewController: UIViewController {
     @objc func onOpenBookTapped() {
         if book.isPdf {
             let url = URL(fileURLWithPath: path)
-            let pdfReaderViewController = PdfReaderViewController(url: url)
+            let pdfReaderViewController = PdfReaderViewController(url: url, bookId: book.id)
             self.present(pdfReaderViewController, animated: true, completion: nil)
         } else {
             let config = FolioReaderConfig()
             config.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             config.menuTextColorSelected = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+            config.allowSharing = false
             let folioReader = FolioReader()
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true

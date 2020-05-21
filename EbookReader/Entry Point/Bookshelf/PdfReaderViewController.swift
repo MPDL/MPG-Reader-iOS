@@ -18,14 +18,16 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
     fileprivate var overlayView: UIView!
     fileprivate var fontView: UIView!
 
-    var isStatusBarHidden: Bool = true
-    var isOverlayHidden: Bool = true
-    var zoomValue: Float = 5
+    fileprivate var isStatusBarHidden: Bool = true
+    fileprivate var isOverlayHidden: Bool = true
+    fileprivate var zoomValue: Float = 5
+    fileprivate var bookId: String!
 
-    init(url: URL) {
+    init(url: URL, bookId: String) {
         super.init(nibName: nil, bundle: nil)
         let document = PDFDocument(url: url)
         self.pdfDocument = document
+        self.bookId = bookId
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -36,7 +38,20 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         super.viewDidDisappear(animated)
         UIApplication.shared.isIdleTimerDisabled = false
     }
-    
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(onDeviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver (self, selector: #selector(onPageChanged), name: NSNotification.Name.PDFViewPageChanged, object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.PDFViewPageChanged, object: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +60,6 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
             UIApplication.shared.isIdleTimerDisabled = true
         }
 
-//        pdfView = PDFView(frame: CGRect(x: -7.8, y: -16.45, width: self.view.frame.width + 15.6, height: self.view.frame.height + 32.9))
         pdfView = PDFView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         pdfView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onPdfViewTapped)))
         pdfView.document = pdfDocument
@@ -54,6 +68,12 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         pdfView.maxScaleFactor = 4
         pdfView.minScaleFactor = 0.5
         self.view.addSubview(pdfView)
+        pdfView.snp.makeConstraints { (make) in
+            make.top.left.right.bottom.equalTo(0)
+        }
+        if let cachePageIndex = prefs.value(forKey: bookId) as? Int, let page = pdfDocument.page(at: cachePageIndex) {
+            pdfView.go(to: page)
+        }
 
         headerView = UIView()
         headerView.isHidden = isStatusBarHidden
@@ -111,7 +131,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         overlayView.backgroundColor = UIColor(white: 0, alpha: 0.6)
         self.view.addSubview(overlayView)
         overlayView.snp.makeConstraints { (make) in
-            make.edges.equalTo(0)
+            make.edges.equalTo(self.view)
         }
         fontView = UIView()
         fontView.isHidden = isOverlayHidden
@@ -148,6 +168,47 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
             make.centerY.equalTo(fontSlider)
             make.left.equalTo(fontSlider.snp.right).offset(33)
         }
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        self.pdfView.autoScales = true
+    }
+
+    @objc func onPageChanged() {
+        if let currentPage = pdfView.currentPage {
+            let currentPageIndex = pdfDocument.index(for: currentPage)
+            prefs.set(currentPageIndex, forKey: bookId)
+            prefs.synchronize()
+        }
+    }
+
+    @objc func onDeviceRotated() {
+//        switch UIDevice.current.orientation {
+//            case .portrait:
+//                pdfView.displayMode = .singlePage
+//                break
+//            case .unknown:
+//                pdfView.displayMode = .twoUp
+//                break
+//            case .portraitUpsideDown:
+//                pdfView.displayMode = .singlePage
+//                break
+//            case .landscapeLeft:
+//                pdfView.displayMode = .twoUp
+//                break
+//            case .landscapeRight:
+//                pdfView.displayMode = .twoUp
+//                break
+//            case .faceUp:
+//                pdfView.displayMode = .singlePage
+//                break
+//            case .faceDown:
+//                pdfView.displayMode = .singlePage
+//                break
+//            @unknown default:
+//                pdfView.displayMode = .singlePage
+//                break
+//            }
     }
 
     @objc func onSliderChanged(slider: UISlider) {

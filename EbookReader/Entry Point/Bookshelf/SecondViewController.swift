@@ -288,6 +288,7 @@ class SecondViewController: UIViewController {
                 selected[i] = false
             }
         }
+        checkAllSelected()
         self.collectionView.reloadData()
     }
 
@@ -322,6 +323,14 @@ class SecondViewController: UIViewController {
             selected.append(false)
         }
         self.collectionView.reloadData()
+    }
+
+    fileprivate func checkAllSelected() {
+        if selected.contains(false) {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Select All", style: .plain, target: self, action: #selector(onSelectAllTapped))
+        } else {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Deselect All", style: .plain, target: self, action: #selector(onSelectAllTapped))
+        }
     }
 
 }
@@ -382,6 +391,7 @@ extension SecondViewController: UICollectionViewDataSource, UICollectionViewDele
                 selected[indexPath.row] = !selected[indexPath.row]
                 cell.checkButton.isSelected = selected[indexPath.row]
             }
+            checkAllSelected()
             return
         }
 
@@ -390,12 +400,14 @@ extension SecondViewController: UICollectionViewDataSource, UICollectionViewDele
         let path = paths[0] + "/" + book.id
         if book.isPdf {
             let url = URL(fileURLWithPath: path)
-            let pdfReaderViewController = PdfReaderViewController(url: url)
+            let pdfReaderViewController = PdfReaderViewController(url: url, bookId: book.id)
             self.present(pdfReaderViewController, animated: true, completion: nil)
         } else {
             let config = FolioReaderConfig()
             config.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             config.menuTextColorSelected = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+            config.allowSharing = false
+            config.enableTTS = false
             let folioReader = FolioReader()
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true
