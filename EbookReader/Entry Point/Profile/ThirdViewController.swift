@@ -255,7 +255,7 @@ class ThirdViewController: UIViewController {
         }
         let emailContentLabel = UILabel()
         emailContentLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
-        emailContentLabel.text = "email@address.com"
+        emailContentLabel.text = "reader@mpdl.mpg.de"
         emailView.addSubview(emailContentLabel)
         emailContentLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(emailView)
@@ -278,21 +278,21 @@ class ThirdViewController: UIViewController {
     @objc func onTermsTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Terms of Use"
-        viewController.urlString = "https://www.yituishui.com"
+        viewController.urlString = "http://register.dev-mpad.mpdl.mpg.de/mpgReaderTerms.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func onPpTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Privacy Policy"
-        viewController.urlString = "https://www.yituishui.com"
+        viewController.urlString = "http://register.dev-mpad.mpdl.mpg.de/mpgReaderPrivacyPolicy.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func onDisTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Disclaimer"
-        viewController.urlString = "https://www.yituishui.com"
+        viewController.urlString = "http://register.dev-mpad.mpdl.mpg.de/mpgReaderDisclaimer.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
