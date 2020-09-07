@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import FolioReaderKit
 
+@available(iOS 13.0, *)
 class SecondViewController: UIViewController {
 
     fileprivate var searchView: UIView!
@@ -335,6 +336,7 @@ class SecondViewController: UIViewController {
 
 }
 
+@available(iOS 13.0, *)
 extension SecondViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
@@ -359,6 +361,7 @@ extension SecondViewController: UISearchBarDelegate {
 
 }
 
+@available(iOS 13.0, *)
 extension SecondViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if books.count == 0 {

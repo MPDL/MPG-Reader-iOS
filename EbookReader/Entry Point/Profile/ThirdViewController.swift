@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import AWSDK
 
 class ThirdViewController: UIViewController {
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -52,16 +54,18 @@ class ThirdViewController: UIViewController {
             make.top.equalTo(70)
             make.centerX.equalTo(headerView)
         }
+        
         let nameLabel = UILabel()
         nameLabel.font = UIFont.boldSystemFont(ofSize: 30)
         nameLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-        nameLabel.text = "Jack Jordan"
+        nameLabel.text = ""
         headerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(headerView)
             make.top.equalTo(avatarImageView.snp.bottom).offset(26)
             make.bottom.equalTo(-40)
         }
+        
 
         let settingView = UIView()
         settingView.backgroundColor = UIColor.white
@@ -261,6 +265,8 @@ class ThirdViewController: UIViewController {
             make.centerY.equalTo(emailView)
             make.right.equalTo(-40)
         }
+        
+        self.fetchUserInfo(nameLabel)
     }
 
     @objc func onWifiTapped() {
@@ -306,5 +312,51 @@ class ThirdViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
+    
+    /*
+     * retrieveUserInfo is an asyncronous call that returns the below
+     * UserInformation object which we later parsed to get the user related information
+     */
+    func fetchUserInfo(_ nameLabel: UILabel) {
+        UserInformationController.sharedInstance.retrieveUserInfo { [weak self] (userInformation, error) in
+            guard let weakself = self else {
+                AWLogError("Controller got deallocated to display result")
+                return
+            }
+
+            guard
+                let userInformation = userInformation,
+                error == nil
+                else {
+                    AWLogError("Error fetching information: \(error.debugDescription)")
+                    weakself.displayFetchUserInfoError()
+                    return
+            }
+            
+            DispatchQueue.main.async {
+                nameLabel.text = userInformation.firstName + " " + userInformation.lastName
+            }
+        }
+    }
+    
+    
+    func displayFetchUserInfoError() -> Void {
+        AWLogError("Log In error")
+
+        let alert = UIAlertController(title: "SDKError",
+                                      message: "An Error Occured while Workspace ONE SDK was trying to fetch user info from Workspace ONE backend. Please make sure your device is enrolled",
+                                      preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: "Dismiss", style: .default) { _ in
+            AWLogInfo("Dismiss")
+        }
+
+        alert.addAction(okAction)
+        DispatchQueue.main.async {
+            // Set the labels based on the data/response values
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 
 }

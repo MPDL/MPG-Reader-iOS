@@ -34,8 +34,27 @@
 		0CF67A0D24693E1C006A9AFD /* WebviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */; };
 		0CF67A0F24696CAF006A9AFD /* UIImage+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A0E24696CAF006A9AFD /* UIImage+Draw.swift */; };
 		0CF67A1124698A9D006A9AFD /* PdfSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A1024698A9D006A9AFD /* PdfSearchTableViewCell.swift */; };
+		2EDAF4E524853946001199C3 /* AWCMWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDAF4E324853946001199C3 /* AWCMWrapper.framework */; };
+		2EDAF4E624853946001199C3 /* AWCMWrapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDAF4E324853946001199C3 /* AWCMWrapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2EDAF4E724853946001199C3 /* AWSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDAF4E424853946001199C3 /* AWSDK.framework */; };
+		2EDAF4E824853946001199C3 /* AWSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDAF4E424853946001199C3 /* AWSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7CE201AF1FEE885DC6B88B08 /* Pods_EbookReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2EDAF4E924853946001199C3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2EDAF4E624853946001199C3 /* AWCMWrapper.framework in Embed Frameworks */,
+				2EDAF4E824853946001199C3 /* AWSDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
@@ -67,6 +86,9 @@
 		0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewViewController.swift; sourceTree = "<group>"; };
 		0CF67A0E24696CAF006A9AFD /* UIImage+Draw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Draw.swift"; sourceTree = "<group>"; };
 		0CF67A1024698A9D006A9AFD /* PdfSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfSearchTableViewCell.swift; sourceTree = "<group>"; };
+		2ECE37922500EBD0007558CA /* EbookReader.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EbookReader.entitlements; sourceTree = "<group>"; };
+		2EDAF4E324853946001199C3 /* AWCMWrapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWCMWrapper.framework; path = EbookReader/Frameworks/AWCMWrapper.framework; sourceTree = "<group>"; };
+		2EDAF4E424853946001199C3 /* AWSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSDK.framework; path = EbookReader/Frameworks/AWSDK.framework; sourceTree = "<group>"; };
 		35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EbookReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B92D47838628A7C53AE35DA /* Pods-EbookReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbookReader.release.xcconfig"; path = "Target Support Files/Pods-EbookReader/Pods-EbookReader.release.xcconfig"; sourceTree = "<group>"; };
 		C14047676556C2FD068D2F2B /* Pods-EbookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbookReader.debug.xcconfig"; path = "Target Support Files/Pods-EbookReader/Pods-EbookReader.debug.xcconfig"; sourceTree = "<group>"; };
@@ -77,6 +99,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EDAF4E724853946001199C3 /* AWSDK.framework in Frameworks */,
+				2EDAF4E524853946001199C3 /* AWCMWrapper.framework in Frameworks */,
 				7CE201AF1FEE885DC6B88B08 /* Pods_EbookReader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,6 +111,8 @@
 		0C1AD32EF8FBDDD647526411 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2EDAF4E324853946001199C3 /* AWCMWrapper.framework */,
+				2EDAF4E424853946001199C3 /* AWSDK.framework */,
 				35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */,
 			);
 			name = Frameworks;
@@ -188,6 +214,7 @@
 		0CC4DDE2243C58A100FB792E /* EbookReader */ = {
 			isa = PBXGroup;
 			children = (
+				2ECE37922500EBD0007558CA /* EbookReader.entitlements */,
 				0C7B4030243EE9D4009D6513 /* Entry Point */,
 			);
 			path = EbookReader;
@@ -214,6 +241,8 @@
 				0CC4DDDD243C58A100FB792E /* Frameworks */,
 				0CC4DDDE243C58A100FB792E /* Resources */,
 				31402CCCAAE3AE0876F45655 /* [CP] Embed Pods Frameworks */,
+				2EDAF4E924853946001199C3 /* Embed Frameworks */,
+				2EDAF4EA2485491F001199C3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -272,6 +301,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2EDAF4EA2485491F001199C3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\nFRAMEWORK_TMP_PATH=\"$FRAMEWORK_EXECUTABLE_PATH-tmp\"\n\ncase \"${TARGET_BUILD_DIR}\" in\n*\"iphonesimulator\")\n    echo \"No need to remove archs\"\n    ;;\n*)\n    if $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"i386\") ; then\n    lipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"i386\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    echo \"i386 architecture removed\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    fi\n    if $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"x86_64\") ; then\n    lipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"x86_64\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    echo \"x86_64 architecture removed\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    fi\n    ;;\nesac\n\necho \"Completed for executable $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\ndone\n";
+		};
 		31402CCCAAE3AE0876F45655 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -487,14 +533,22 @@
 			baseConfigurationReference = C14047676556C2FD068D2F2B /* Pods-EbookReader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = EbookReader/EbookReader.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 47D5YXL84Q;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = HU7SCWF2RM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/EbookReader/Frameworks",
+				);
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.safetytaxfree.EbookReader;
+				MARKETING_VERSION = 1.0.6;
+				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.qa.reader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -506,14 +560,22 @@
 			baseConfigurationReference = 9B92D47838628A7C53AE35DA /* Pods-EbookReader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = EbookReader/EbookReader.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 47D5YXL84Q;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = HU7SCWF2RM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/EbookReader/Frameworks",
+				);
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.safetytaxfree.EbookReader;
+				MARKETING_VERSION = 1.0.6;
+				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.qa.reader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

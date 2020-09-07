@@ -8,6 +8,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 class FirstViewController: UIViewController {
 
     fileprivate var tableWrapper: UIView!
@@ -172,6 +173,7 @@ class FirstViewController: UIViewController {
     }
 }
 
+@available(iOS 13.0, *)
 extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
@@ -194,6 +196,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 
+    @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let book = histories![indexPath.row]
         let viewController = DownloadViewController(book: book)

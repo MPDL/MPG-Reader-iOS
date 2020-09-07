@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MBProgressHUD
 
+@available(iOS 13.0, *)
 class PopupView: NSObject {
     static var stack: NSMutableArray = []
     static let kLoadingViewTag = 1000

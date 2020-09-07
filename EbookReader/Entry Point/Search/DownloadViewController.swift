@@ -11,6 +11,7 @@ import AFNetworking
 import FolioReaderKit
 import RealmSwift
 
+@available(iOS 13.0, *)
 class DownloadViewController: UIViewController {
     fileprivate var bookImageView: UIImageView!
     fileprivate var titleLabel: UILabel!

@@ -17,6 +17,7 @@ class TitleSearchBar: UISearchBar {
     }
 }
 
+@available(iOS 13.0, *)
 class SearchBookViewController: UIViewController {
     fileprivate var tableView: UITableView!
     fileprivate var searchBar: UISearchBar!
@@ -235,6 +236,7 @@ class SearchBookViewController: UIViewController {
     }
 }
 
+@available(iOS 13.0, *)
 extension SearchBookViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
@@ -267,6 +269,8 @@ extension SearchBookViewController: UISearchBarDelegate {
     }
 }
 
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
 extension SearchBookViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
