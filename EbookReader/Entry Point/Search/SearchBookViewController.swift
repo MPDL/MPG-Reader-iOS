@@ -36,6 +36,7 @@ class SearchBookViewController: UIViewController {
 
         let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 40))
         searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 400, height: 40))
+        searchBar.becomeFirstResponder()
         titleView.addSubview(searchBar)
         searchBar.delegate = self
         searchBar.showsCancelButton = true
@@ -195,6 +196,7 @@ class SearchBookViewController: UIViewController {
                 guard let books = books as? [Book]  else {
                     self.dataSource = []
                     self.tableView.reloadData()
+                    PopupView.showWithContent("No Results")
                     return
                 }
                 // Caching last 3 items
@@ -228,6 +230,7 @@ class SearchBookViewController: UIViewController {
 
                 PopupView.showLoading(false)
             }, failure:  { (error) in
+                PopupView.showWithContent("No Results")
                 self.dataSource = []
                 self.tableView.reloadData()
                 PopupView.showLoading(false)

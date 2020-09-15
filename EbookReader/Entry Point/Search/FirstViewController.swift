@@ -10,9 +10,11 @@ import UIKit
 
 class FirstViewController: UIViewController {
 
-    fileprivate var tableWrapper: UIView!
+    fileprivate var headerView: UIView!
     fileprivate var tableView: UITableView!
     fileprivate var hintView: UIView!
+    fileprivate var tableTitle: UILabel!
+    fileprivate var searchView: UIView!
 
     fileprivate var histories: [Book]?
 
@@ -30,25 +32,27 @@ class FirstViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
 
+        headerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 1))
+
         let logoImageView = UIImageView()
         logoImageView.image = UIImage(named: "logo")
-        self.view.addSubview(logoImageView)
+        headerView.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.view)
+            make.centerX.equalTo(headerView)
             make.top.equalTo(107)
         }
 
-        let searchView = UIView()
+        searchView = UIView()
         searchView.layer.borderWidth = 1
         searchView.layer.borderColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1).cgColor
         searchView.layer.cornerRadius = 6
         searchView.isUserInteractionEnabled = true
         searchView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onSearchTapped)))
         searchView.backgroundColor = UIColor.white
-        self.view.addSubview(searchView)
+        headerView.addSubview(searchView)
         searchView.snp.makeConstraints { (make) in
             make.top.equalTo(logoImageView.snp.bottom).offset(76)
-            make.centerX.equalTo(self.view)
+            make.centerX.equalTo(headerView)
             make.width.equalTo(544)
             make.height.equalTo(70)
         }
@@ -70,11 +74,12 @@ class FirstViewController: UIViewController {
         }
 
         hintView = UIView()
-        self.view.addSubview(hintView)
+        headerView.addSubview(hintView)
         hintView.snp.makeConstraints { (make) in
             make.width.equalTo(565)
             make.top.equalTo(searchView.snp.bottom).offset(107)
-            make.centerX.equalTo(self.view)
+            make.centerX.equalTo(headerView)
+            make.bottom.equalTo(-60)
         }
         let hintImageView = UIImageView()
         hintImageView.image = UIImage(named: "icon-book")
@@ -109,40 +114,35 @@ class FirstViewController: UIViewController {
             make.bottom.left.right.equalTo(0)
         }
 
-
-        tableWrapper = UIView()
-        self.view.addSubview(tableWrapper)
-        tableWrapper.snp.makeConstraints { (make) in
-            make.top.equalTo(searchView.snp.bottom).offset(60)
-            make.left.equalTo(48)
-            make.right.equalTo(-48)
-            make.bottom.equalTo(0)
-        }
-        let tableTitle = UILabel()
+        tableTitle = UILabel()
         tableTitle.text = "Search History"
         tableTitle.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         tableTitle.font = UIFont.systemFont(ofSize: 24)
-        tableWrapper.addSubview(tableTitle)
+        headerView.addSubview(tableTitle)
         tableTitle.snp.makeConstraints { (make) in
-            make.top.equalTo(0)
+            make.top.equalTo(searchView.snp.bottom).offset(60)
             make.left.equalTo(7)
+            make.bottom.equalTo(-22)
         }
+
         tableView = UITableView()
+        tableView.tableHeaderView = headerView
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
         tableView.register(BookTableViewCell.self, forCellReuseIdentifier: String(describing: BookTableViewCell.self))
-        tableWrapper.addSubview(tableView)
+        self.view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
-            make.left.right.bottom.equalTo(0)
-            make.top.equalTo(tableTitle.snp.bottom).offset(22)
+            make.top.bottom.equalTo(0)
+            make.left.equalTo(48)
+            make.right.equalTo(-48)
         }
 
         checkHistories()
     }
-
+    
     @objc func onSearchTapped() {
         let searchViewController = SearchBookViewController()
         self.navigationController?.pushViewController(searchViewController, animated: true)
@@ -162,13 +162,34 @@ class FirstViewController: UIViewController {
         if let histories = self.histories, histories.count > 0 {
             self.histories = histories
             hintView.isHidden = true
-            tableWrapper.isHidden = false
-            tableView.reloadData()
+            tableTitle.isHidden = false
+
+            hintView.snp.removeConstraints()
+            tableTitle.snp.remakeConstraints { (make) in
+                make.top.equalTo(searchView.snp.bottom).offset(60)
+                make.left.equalTo(7)
+                make.bottom.equalTo(-22)
+            }
         } else {
             self.histories = nil
             hintView.isHidden = false
-            tableWrapper.isHidden = true
+            tableTitle.isHidden = true
+
+            hintView.snp.remakeConstraints { (make) in
+                make.width.equalTo(565)
+                make.top.equalTo(searchView.snp.bottom).offset(107)
+                make.centerX.equalTo(headerView)
+                make.bottom.equalTo(-60)
+            }
+            tableTitle.snp.removeConstraints()
         }
+
+        headerView.layoutIfNeeded()
+        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        var frame = headerView.frame
+        frame.size.height = height
+        headerView.frame = frame
+        tableView.reloadData()
     }
 }
 
