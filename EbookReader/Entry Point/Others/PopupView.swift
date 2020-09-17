@@ -36,7 +36,7 @@ class PopupView: NSObject {
         }
     }
 
-    class func showLoading(_ show: Bool, parentView: UIView?) {
+    class func showLoading(_ show: Bool, parentView: UIView?, isWhite: Bool) {
         var parentView = parentView
         if (!show) {
             if let loadingView: UIView = stack.lastObject as? UIView {
@@ -51,26 +51,36 @@ class PopupView: NSObject {
         var backgroundView = parentView?.viewWithTag(kLoadingViewTag)
         if (backgroundView == nil) {
             backgroundView = UIView(frame: parentView!.bounds)
-            backgroundView!.backgroundColor = UIColor.clear
+            if (isWhite) {
+                backgroundView!.backgroundColor = UIColor.white
+            } else {
+                backgroundView!.backgroundColor = UIColor.clear
+            }
             backgroundView!.tag = kLoadingViewTag
             parentView?.addSubview(backgroundView!)
             stack.add(backgroundView!)
 
-            let loadingView = UIActivityIndicatorView(style: .large)
-            backgroundView!.addSubview(loadingView)
-            loadingView.snp.makeConstraints({ (make) in
-                make.centerX.equalTo(backgroundView!)
-                make.centerY.equalTo(backgroundView!).offset(-20)
-            })
+            if (!isWhite) {
+                let loadingView = UIActivityIndicatorView(style: .large)
+                backgroundView!.addSubview(loadingView)
+                loadingView.snp.makeConstraints({ (make) in
+                    make.centerX.equalTo(backgroundView!)
+                    make.centerY.equalTo(backgroundView!).offset(-20)
+                })
+                loadingView.startAnimating()
+            }
 
             backgroundView?.layoutIfNeeded()
-            loadingView.startAnimating()
         }
         parentView?.bringSubviewToFront(backgroundView!)
     }
 
     class func showLoading(_ show: Bool) {
-        self.showLoading(show, parentView: nil)
+        self.showLoading(show, parentView: nil, isWhite: false)
+    }
+
+    class func showLoading(_ show: Bool, isWhite: Bool) {
+        self.showLoading(show, parentView: nil, isWhite: isWhite)
     }
 
     @objc class func dismissLoadingIndicator() {

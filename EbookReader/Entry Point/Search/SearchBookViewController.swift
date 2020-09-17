@@ -29,6 +29,11 @@ class SearchBookViewController: UIViewController {
     fileprivate var searchText: String = ""
     fileprivate var histories: [String] = []
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.perform(#selector(setSearchBarFocus), with: nil, afterDelay: 0.5)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,7 +41,6 @@ class SearchBookViewController: UIViewController {
 
         let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 40))
         searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 400, height: 40))
-        searchBar.becomeFirstResponder()
         titleView.addSubview(searchBar)
         searchBar.delegate = self
         searchBar.showsCancelButton = true
@@ -89,6 +93,10 @@ class SearchBookViewController: UIViewController {
         }
         
         loadHistories()
+    }
+
+    @objc func setSearchBarFocus() {
+        searchBar.becomeFirstResponder()
     }
 
     @objc func onTrashTapped() {
