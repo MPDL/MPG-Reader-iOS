@@ -278,21 +278,21 @@ class ThirdViewController: UIViewController {
     @objc func onTermsTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Terms of Use"
-        viewController.urlString = "http://register.dev-mpad.mpdl.mpg.de/mpgReaderTerms.html"
+        viewController.urlString = "https://register.qa-mpad.mpdl.mpg.de/mpgReaderTerms.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func onPpTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Privacy Policy"
-        viewController.urlString = "http://register.dev-mpad.mpdl.mpg.de/mpgReaderPrivacyPolicy.html"
+        viewController.urlString = "https://register.qa-mpad.mpdl.mpg.de/mpgReaderPrivacyPolicy.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func onDisTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Disclaimer"
-        viewController.urlString = "http://register.dev-mpad.mpdl.mpg.de/mpgReaderDisclaimer.html"
+        viewController.urlString = "https://register.qa-mpad.mpdl.mpg.de/mpgReaderDisclaimer.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
