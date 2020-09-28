@@ -261,7 +261,7 @@ class DownloadViewController: UIViewController {
             return
         }
         guard book.downloadUrl != "" else {
-            PopupView.showWithContent("该书没有下载链接")
+            PopupView.showWithContent("Download link not found")
             return
         }
         var fileUrl = book.downloadUrl
@@ -286,7 +286,7 @@ class DownloadViewController: UIViewController {
                 self.setObject()
                 self.saveBook()
             } else {
-                PopupView.showWithContent("下载失败，请重试")
+                PopupView.showWithContent("Download failed, Please try again")
             }
         })
         downloadTask.resume()
@@ -297,7 +297,7 @@ class DownloadViewController: UIViewController {
 
         let predicate = NSPredicate(format: "id == %@", book.id)
         if !realm.objects(Book.self).filter(predicate).isEmpty {
-            PopupView.showWithContent("书已经存在")
+            PopupView.showWithContent("Book already exists")
             return
         }
 

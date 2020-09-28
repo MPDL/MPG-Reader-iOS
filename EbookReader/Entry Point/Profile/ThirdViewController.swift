@@ -55,7 +55,6 @@ class ThirdViewController: UIViewController {
         let nameLabel = UILabel()
         nameLabel.font = UIFont.boldSystemFont(ofSize: 30)
         nameLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-        nameLabel.text = "Jack Jordan"
         headerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(headerView)
@@ -145,7 +144,6 @@ class ThirdViewController: UIViewController {
         }
         let versionContentLabel = UILabel()
         versionContentLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
-        versionContentLabel.text = "v1.0.1"
         versionView.addSubview(versionContentLabel)
         versionContentLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(versionView)
@@ -254,13 +252,14 @@ class ThirdViewController: UIViewController {
             make.left.equalTo(contactTitleLabel)
         }
         let emailContentLabel = UILabel()
-        emailContentLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         emailContentLabel.text = "reader@mpdl.mpg.de"
+        emailContentLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         emailView.addSubview(emailContentLabel)
         emailContentLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(emailView)
             make.right.equalTo(-40)
         }
+        self.fetchAppConfiguration(fullnameLabel: nameLabel, versionLabel: versionContentLabel)
     }
 
     @objc func onWifiTapped() {
@@ -307,4 +306,24 @@ class ThirdViewController: UIViewController {
     }
     */
 
+    func fetchAppConfiguration(fullnameLabel
+        : UILabel, versionLabel: UILabel) {
+         if let managedConfigDict = UserDefaults.standard.dictionary(forKey: "com.apple.configuration.managed"){
+            let firstname = managedConfigDict["firstname"] as? String ?? " "
+            let lastname = managedConfigDict["lastname"] as? String ?? " "
+            let fullname = firstname + " " + lastname
+            DispatchQueue.main.async {
+                fullnameLabel.text = fullname
+            }
+            
+            
+            if let version = managedConfigDict["version"] {
+                DispatchQueue.main.async {
+                    versionLabel.text = version as? String
+                }
+            }
+         }else{
+              print("Error fetching app config values. Please make sure your device is enrolled with Workspace ONE")
+         }
+    }
 }
