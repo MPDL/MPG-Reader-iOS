@@ -16,7 +16,7 @@ class NetworkManager: AFHTTPSessionManager {
         if let manager = networkManager {
             return manager
         } else {
-            networkManager = NetworkManager(baseURL: URL(string: "https://mpgreader.mpdl.mpg.de/"))
+            networkManager = NetworkManager(baseURL: URL(string: "http://dev-mpgreader.mpdl.mpg.de/"))
             networkManager!.requestSerializer = AFHTTPRequestSerializer()
             networkManager!.responseSerializer = AFHTTPResponseSerializer()
             return networkManager!
