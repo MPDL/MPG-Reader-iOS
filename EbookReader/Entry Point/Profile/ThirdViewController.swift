@@ -252,7 +252,7 @@ class ThirdViewController: UIViewController {
             make.left.equalTo(contactTitleLabel)
         }
         let emailContentLabel = UILabel()
-        emailContentLabel.text = "reader@mpdl.mpg.de"
+        emailContentLabel.text = "mpgreader@mpdl.mpg.de"
         emailContentLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         emailView.addSubview(emailContentLabel)
         emailContentLabel.snp.makeConstraints { (make) in
@@ -277,21 +277,21 @@ class ThirdViewController: UIViewController {
     @objc func onTermsTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Terms of Use"
-        viewController.urlString = "https://register.qa-mpad.mpdl.mpg.de/mpgReaderTerms.html"
+        viewController.urlString = "https://mpgreader.mpdl.mpg.de/mpgReaderTerms.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func onPpTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Privacy Policy"
-        viewController.urlString = "https://register.qa-mpad.mpdl.mpg.de/mpgReaderPrivacyPolicy.html"
+        viewController.urlString = "https://mpgreader.mpdl.mpg.de/mpgReaderPrivacyPolicy.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func onDisTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Disclaimer"
-        viewController.urlString = "https://register.qa-mpad.mpdl.mpg.de/mpgReaderDisclaimer.html"
+        viewController.urlString = "https://mpgreader.mpdl.mpg.de/mpgReaderDisclaimer.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

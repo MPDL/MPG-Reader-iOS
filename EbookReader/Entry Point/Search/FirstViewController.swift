@@ -99,7 +99,7 @@ class FirstViewController: UIViewController {
         }
         let hintLabel = UILabel()
         hintLabel.numberOfLines = 0
-        let text = "On this search platform, you can find all e-books that are accessible to all institutes of Max Planck Gesellschaft.\nCurrently, you have access to 650,000 titles from various publishers and e-book providers.\nThe contents are continuously extended and updated.\nClick here for an overview of the included e-books."
+        let text = "On this search platform, you can find all e-books that are accessible to all institutes of Max Planck Gesellschaft.\nCurrently you have access to ca.120,000 publications from Springer eBooks.\nThe contents are continuously extended and updated.\nClick here for an overview of the included e-books."
         let para = NSMutableParagraphStyle()
         para.lineSpacing = 5
         let attr: [NSAttributedString.Key : Any] = [

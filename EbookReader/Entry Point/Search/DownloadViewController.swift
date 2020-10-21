@@ -214,7 +214,17 @@ class DownloadViewController: UIViewController {
             progressBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onOpenBookTapped)))
         } else {
             progressBar.progress = 0
-            downloadLabel.text = "Download"
+            
+            if (book.downloadUrl == "") {
+                downloadLabel.text = "Currently unavailable"
+                progressBar.backgroundColor = UIColor.init(red: 85.0/255.0, green: 85.0/255.0, blue: 85.0/255.0, alpha: 1.0)
+                downloadImageView.removeFromSuperview()
+                downloadLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+            } else if (book.isPdf) {
+                downloadLabel.text = "Download PDF"
+            } else {
+                downloadLabel.text = "Download EPUB"
+            }
             downloadImageView.image = UIImage(named: "icon-download")
             progressBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDownloadTapped)))
         }
@@ -261,7 +271,7 @@ class DownloadViewController: UIViewController {
             return
         }
         guard book.downloadUrl != "" else {
-            PopupView.showWithContent("Download link not found")
+            //PopupView.showWithContent("Download link not found")
             return
         }
         var fileUrl = book.downloadUrl
