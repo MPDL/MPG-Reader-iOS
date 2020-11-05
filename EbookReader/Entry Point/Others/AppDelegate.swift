@@ -29,6 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         AFNetworkReachabilityManager.shared().startMonitoring()
 
+        // initialize swizzle methods
+        UIViewController.initializeMethod()
+
         return true
     }
 
@@ -46,11 +49,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return true
+    }
+
     class func getTopView() -> UIView {
         let topView: UIView = AppDelegate.getTopViewController().view
         return topView
     }
 
+    // deprecated
     class func getTopViewController() -> UIViewController {
         let topWindow: UIWindow = UIApplication.shared.windows[0]
         var rootViewController: UIViewController = topWindow.rootViewController!

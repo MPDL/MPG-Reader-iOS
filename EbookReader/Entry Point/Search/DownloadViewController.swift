@@ -10,6 +10,7 @@ import UIKit
 import AFNetworking
 import FolioReaderKit
 import RealmSwift
+import MJRefresh
 
 class DownloadViewController: UIViewController {
     fileprivate var bookImageView: UIImageView!
@@ -20,18 +21,33 @@ class DownloadViewController: UIViewController {
     fileprivate var publicationPressLabel: UILabel!
     fileprivate var isbnLabel: UILabel!
     fileprivate var introductionLabel: UILabel!
-    fileprivate var downloadView: UIView!
-    fileprivate var downloadImageView: UIImageView!
+    fileprivate var progressBar: UIProgressView!
     fileprivate var downloadLabel: UILabel!
+    fileprivate var navigationItemView: NavigationItemView!
+    fileprivate var writeReviewView: WriteReviewView?
+    fileprivate var citeView: CiteView?
+    fileprivate var ratingLabel: UILabel!
+    fileprivate var starImageView: UIImageView!
+    fileprivate var reviewView: UIView!
+    fileprivate var addReadingListTextLabel: UILabel!
+    fileprivate var addReadingListView: UIControl!
+    fileprivate var downloadView: UIView!
+    fileprivate var shareBarButton: UIBarButtonItem!
 
     fileprivate var book: Book!
+    fileprivate var bookId: String!
+    fileprivate var bookStatistic: BookStatistic!
     fileprivate var path: String!
+    fileprivate var delegate: PdfReaderViewControllerDelegate?
+    fileprivate var reviewPage: Int = 0
+    fileprivate var reviewPageSize: Int = 10
+    fileprivate var reviewFooter: MJRefreshAutoNormalFooter?
 
-    fileprivate var progressBar: UIProgressView!
+    fileprivate var reviews: [Review] = []
 
-    init(book: Book) {
+    init(bookId: String) {
         super.init(nibName: nil, bundle: nil)
-        self.book = book
+        self.bookId = bookId
     }
     
     required init?(coder: NSCoder) {
@@ -45,11 +61,90 @@ class DownloadViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadStatistic), name: .readingListDidChange, object: nil)
 
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        self.setupUI()
+        self.loadData()
+    }
 
+    fileprivate func loadData() {
+        if Reachability.isConnectedToNetwork() {
+            loadBook()
+            loadStatistic()
+            loadReviews()
+        } else {
+            // load local book
+            let realm = try! Realm()
+            let predicate = NSPredicate(format: "id == %@", bookId)
+            let results = realm.objects(Book.self).filter(predicate)
+            if results.count > 0 {
+                self.book = results.first
+                self.setObject()
+            }
+        }
+    }
+
+    fileprivate func loadReviews() {
+        NetworkManager.sharedInstance().POST(path: "rest/ebook/" + bookId + "/reviews",
+            parameters: ["pageNumber": reviewPage, "pageSize": reviewPageSize],
+            modelClass: PageDTO<Review>.self,
+            success: { (pageDTO) in
+                self.reviewFooter?.endRefreshing()
+                if let pageDTO = pageDTO, let reviews = pageDTO.content, reviews.count > 0 {
+                    if self.reviewPage == 0 {
+                        self.reviews = reviews
+                    } else {
+                        self.reviews.append(contentsOf: reviews)
+                        for subview in self.reviewView.subviews {
+                            subview.removeFromSuperview()
+                        }
+                    }
+                    self.setReviews()
+                } else if self.reviewPage > 0 {
+                    PopupView.showWithContent("No more results")
+                    self.reviewPage -= 1
+                }
+            },
+            failure: { (error) in
+                self.reviewFooter?.endRefreshing()
+            })
+    }
+
+    @objc fileprivate func loadMoreReviews() {
+        reviewPage += 1
+        loadReviews()
+    }
+
+    @objc fileprivate func loadStatistic() {
+        NetworkManager.sharedInstance().GET(path: "rest/ebook/" + bookId,
+            parameters: nil,
+            modelClass: BookStatistic.self,
+            success: { (bookStatistic) in
+                self.bookStatistic = bookStatistic
+                self.setStatistic()
+            },
+            failure: { (error) in
+                print(error)
+            })
+    }
+
+    fileprivate func loadBook() {
+        NetworkManager.sharedInstance().GET(path: "rest/ebook/record",
+            parameters: ["bookId": bookId],
+            modelClass: Book.self,
+            success: { (book) in
+                self.book = book
+                self.setObject()
+            },
+            failure: { (error) in
+                print(error)
+            })
+    }
+
+    fileprivate func setupUI() {
         let scrollView = UIScrollView()
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 120, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         scrollView.showsVerticalScrollIndicator = false
         self.view.addSubview(scrollView)
         scrollView.snp.makeConstraints { (make) in
@@ -121,15 +216,115 @@ class DownloadViewController: UIViewController {
             make.right.equalTo(-35)
         }
 
+        let actionView = UIView()
+        contentView.addSubview(actionView)
+        actionView.snp.makeConstraints { (make) in
+            make.top.equalTo(bookImageView.snp.bottom).offset(26)
+            make.left.equalTo(bookImageView)
+            make.right.equalTo(titleLabel)
+            make.height.equalTo(50)
+        }
+        let ratingView = UIView()
+        actionView.addSubview(ratingView)
+        ratingView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(actionView)
+            make.left.equalTo(21)
+        }
+        starImageView = UIImageView()
+        ratingView.addSubview(starImageView)
+        starImageView.snp.makeConstraints { (make) in
+            make.width.equalTo(130)
+            make.height.equalTo(22)
+            make.top.left.right.equalTo(0)
+        }
+        ratingLabel = UILabel()
+        ratingLabel.font = UIFont.systemFont(ofSize: 12)
+        ratingLabel.textColor = UIColor(hex: 0x999999)
+        ratingView.addSubview(ratingLabel)
+        ratingLabel.snp.makeConstraints { (make) in
+            make.centerX.equalTo(ratingView)
+            make.top.equalTo(starImageView.snp.bottom).offset(12)
+            make.bottom.equalTo(0)
+        }
+        addReadingListView = UIControl()
+        addReadingListView.isHidden = true
+        addReadingListView.reactive.controlEvents(.touchUpInside).observeValues { [weak self] (control) in
+            guard let self = self else {
+                return
+            }
+            if let bookStatistic = self.bookStatistic, let inReadingList = bookStatistic.inReadingList, inReadingList {
+                NetworkManager.sharedInstance().POST(path: "rest/user/readinglist/delete",
+                    parameters: ["bookIds": [self.bookId]],
+                    modelClass: ReadingList.self,
+                    success: { (pageDTO) in
+                        PopupView.showWithContent("Remove from the reading list successfully.")
+                        NotificationCenter.default.post(name: .readingListDidChange, object: nil)
+                    },
+                    failure: nil)
+            } else {
+                NetworkManager.sharedInstance().POST(path: "rest/user/readinglist/add/" + self.bookId,
+                    parameters: nil,
+                    modelClass: ReadingList.self,
+                    success: { (pageDTO) in
+                        PopupView.showWithContent("Add into the reading list successfully.")
+                        NotificationCenter.default.post(name: .readingListDidChange, object: nil)
+                    },
+                    failure: nil)
+            }
+        }
+        addReadingListView.layer.borderWidth = 2
+        addReadingListView.layer.borderColor = UIColor(hex: 0x009FA1).cgColor
+        addReadingListView.layer.cornerRadius = 8
+        actionView.addSubview(addReadingListView)
+        addReadingListView.snp.makeConstraints { (make) in
+            make.left.equalTo(titleLabel)
+            make.centerY.equalTo(actionView)
+            make.width.equalTo(220)
+            make.height.equalTo(50)
+        }
+        addReadingListTextLabel = UILabel()
+        addReadingListTextLabel.text = "Add to Reading List"
+        addReadingListTextLabel.textColor = UIColor(hex: 0x009FA1)
+        addReadingListTextLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        addReadingListView.addSubview(addReadingListTextLabel)
+        addReadingListTextLabel.snp.makeConstraints { (make) in
+            make.center.equalTo(addReadingListView)
+        }
+        downloadView = UIView()
+        downloadView.isHidden = true
+        downloadView.layer.masksToBounds = true
+        downloadView.layer.cornerRadius = 8
+        actionView.addSubview(downloadView)
+        downloadView.snp.makeConstraints { (make) in
+            make.left.equalTo(addReadingListView.snp.right).offset(32)
+            make.centerY.equalTo(actionView)
+            make.width.height.equalTo(addReadingListView)
+        }
+        progressBar = UIProgressView()
+        progressBar.isUserInteractionEnabled = true
+        progressBar.layer.masksToBounds = true
+        progressBar.progressTintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+        progressBar.backgroundColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+        downloadView.addSubview(progressBar)
+        progressBar.snp.makeConstraints { (make) in
+            make.edges.equalTo(downloadView)
+        }
+        downloadLabel = UILabel()
+        downloadLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        downloadLabel.textColor = UIColor.white
+        downloadView.addSubview(downloadLabel)
+        downloadLabel.snp.makeConstraints { (make) in
+            make.center.equalTo(downloadView)
+        }
+
         introductionTitleLabel = UILabel()
         introductionTitleLabel.font = UIFont.systemFont(ofSize: 24)
         introductionTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         contentView.addSubview(introductionTitleLabel)
         introductionTitleLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(bookImageView.snp.bottom).offset(50)
+            make.top.equalTo(actionView.snp.bottom).offset(60)
             make.left.equalTo(35)
         }
-
         introductionLabel = UILabel()
         introductionLabel.font = UIFont.systemFont(ofSize: 18)
         introductionLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
@@ -137,47 +332,61 @@ class DownloadViewController: UIViewController {
         contentView.addSubview(introductionLabel)
         introductionLabel.snp.makeConstraints { (make) in
             make.top.equalTo(introductionTitleLabel.snp.bottom).offset(30)
-            make.bottom.equalTo(-30)
             make.left.equalTo(introductionTitleLabel)
             make.right.equalTo(-35)
         }
 
-        progressBar = UIProgressView()
-        progressBar.isUserInteractionEnabled = true
-        progressBar.layer.cornerRadius = 8
-        progressBar.layer.masksToBounds = true
-        progressBar.progressTintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
-        progressBar.backgroundColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
-        self.view.addSubview(progressBar)
-        progressBar.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.view)
-            make.bottom.equalTo(-50)
-            make.width.equalTo(454)
-            make.height.equalTo(66)
+        reviewView = UIView()
+        contentView.addSubview(reviewView)
+        reviewView.snp.makeConstraints { (make) in
+            make.top.equalTo(introductionLabel.snp.bottom).offset(60)
+            make.bottom.equalTo(-30)
+            make.left.equalTo(35)
+            make.right.equalTo(-35)
         }
-        downloadView = UIView()
-        progressBar.addSubview(downloadView)
-        downloadView.snp.makeConstraints { (make) in
-            make.top.bottom.centerX.equalTo(progressBar)
-        }
-        downloadImageView = UIImageView()
-        downloadView.addSubview(downloadImageView)
-        downloadImageView.snp.makeConstraints { (make) in
-            make.left.centerY.equalTo(downloadView)
-        }
-        downloadLabel = UILabel()
-        downloadLabel.textColor = UIColor.white
-        downloadView.addSubview(downloadLabel)
-        downloadLabel.snp.makeConstraints { (make) in
-            make.right.centerY.equalTo(downloadView)
-            make.left.equalTo(downloadImageView.snp.right).offset(20)
-        }
+    }
 
-        searchBook()
+    fileprivate func setReviews() {
+        let reviewTitleLabel = UILabel()
+        reviewTitleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        reviewTitleLabel.textColor = UIColor(hex: 0x333333)
+        reviewTitleLabel.text = "User Reviews:"
+        reviewView.addSubview(reviewTitleLabel)
+        reviewTitleLabel.snp.makeConstraints { (make) in
+            make.top.left.equalTo(0)
+        }
+        let commentsView = ReviewsView(reviews: reviews)
+        reviewFooter = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(loadMoreReviews))
+        commentsView.mj_footer = reviewFooter
+        reviewView.addSubview(commentsView)
+        commentsView.snp.makeConstraints { (make) in
+            make.top.equalTo(reviewTitleLabel.snp.bottom).offset(30)
+            make.left.right.bottom.equalTo(0)
+            make.height.equalTo(500)
+        }
+    }
+
+    fileprivate func setStatistic() {
+        guard let bookStatistic = self.bookStatistic else {
+            return
+        }
+        ratingLabel?.text = "\(String(describing: bookStatistic.reviews ?? 0)) Ratings"
+        let rating = ceil(bookStatistic.rating ?? 0)
+        starImageView?.image = UIImage(named: "icon-star-\(rating)")
+        addReadingListView.isHidden = false
+        if let inReadingList = bookStatistic.inReadingList, inReadingList {
+            addReadingListTextLabel.text = "Remove from Reading List"
+        } else {
+            addReadingListTextLabel.text = "Add to Reading List"
+        }
     }
 
     fileprivate func setObject() {
-        bookImageView.kf.setImage(with: URL(string: book.thumbnail))
+        if let thumbnail = book.thumbnail {
+            bookImageView.kf.setImage(with: URL(string: thumbnail))
+        } else {
+            bookImageView.image = UIImage(named: "default-book-cover")
+        }
         titleLabel.text = book.title
         introductionTitleLabel.text = "Introduction"
         introductionLabel.text = book.abs
@@ -205,12 +414,12 @@ class DownloadViewController: UIViewController {
             publicationPressLabel.text = book.publishers[0]
         }
 
+        downloadView.isHidden = false
         let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
         path = paths[0] + "/" + book.id
         if (checkFileExisted(path)) {
             progressBar.progress = 100
             downloadLabel.text = "Start Reading"
-            downloadImageView.image = UIImage(named: "icon-downloaded")
             progressBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onOpenBookTapped)))
         } else {
             progressBar.progress = 0
@@ -218,50 +427,38 @@ class DownloadViewController: UIViewController {
             if (book.downloadUrl == "") {
                 downloadLabel.text = "Currently unavailable"
                 progressBar.backgroundColor = UIColor.init(red: 85.0/255.0, green: 85.0/255.0, blue: 85.0/255.0, alpha: 1.0)
-                downloadImageView.removeFromSuperview()
-                downloadLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
             } else if (book.isPdf) {
                 downloadLabel.text = "Download PDF"
             } else {
                 downloadLabel.text = "Download EPUB"
             }
-            downloadImageView.image = UIImage(named: "icon-download")
             progressBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDownloadTapped)))
         }
-    }
-
-    fileprivate func searchBook() {
-        PopupView.showLoading(true)
-        NetworkManager.sharedInstance().GET(path: "record?id=" + book.id,
-            parameters: nil,
-            modelClass: Book.self,
-            success: { (books) in
-                if let books = books as? [Book] {
-                    self.book = books[0]
-                }
-
-                self.setObject()
-                PopupView.showLoading(false)
-            }, failure:  { (error) in
-                PopupView.showLoading(false)
-            })
     }
 
     @objc func onOpenBookTapped() {
         if book.isPdf {
             let url = URL(fileURLWithPath: path)
-            let pdfReaderViewController = PdfReaderViewController(url: url, bookId: book.id)
+            let pdfReaderViewController = PdfReaderViewController(url: url, book: book)
             self.present(pdfReaderViewController, animated: true, completion: nil)
         } else {
             let config = FolioReaderConfig()
             config.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             config.menuTextColorSelected = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             config.allowSharing = false
+            config.enableTTS = false
             let folioReader = FolioReader()
+            folioReader.delegate = self
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
             folioReader.presentReader(parentViewController: self, withEpubPath: path, unzipPath: nil, andConfig: config, shouldRemoveEpub: false, animated: true)
+            navigationItemView = NavigationItemView(delegate: self)
+            AppDelegate.getTopView().addSubview(navigationItemView)
+            navigationItemView.snp.makeConstraints { (make) in
+                make.top.equalTo(70)
+                make.left.right.bottom.equalTo(0)
+            }
         }
     }
     
@@ -295,11 +492,21 @@ class DownloadViewController: UIViewController {
             if self.checkFileExisted(self.path) {
                 self.setObject()
                 self.saveBook()
+                self.notifyServer()
             } else {
                 PopupView.showWithContent("Download failed, Please try again")
             }
         })
         downloadTask.resume()
+    }
+
+    fileprivate func notifyServer() {
+        NetworkManager.sharedInstance().POST(path: "rest/statistic/downloaded/" + bookId,
+            parameters: nil,
+            modelClass: BookStatistic.self,
+            success: { (pageDTO) in
+            },
+            failure: nil)
     }
 
     fileprivate func saveBook() {
@@ -321,4 +528,70 @@ class DownloadViewController: UIViewController {
         return fileManager.fileExists(atPath: path)
     }
 
+    @objc func onMoreTapped() {
+        navigationItemView.display()
+    }
+
+    @objc func onShareTapped() {
+        var title = book.title
+        if book.publicationDates.count > 0 {
+            title += " (\(book.publicationDates.joined(separator: ", ")))"
+        }
+        let jumpValue = "[Read in MPG Reader](mpgreader://\(String(describing: book.id)))"
+        let linkValue = NSURL(string: book.doi)!
+        let activityItems = [title, jumpValue, linkValue] as [Any]
+        let viewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        viewController.excludedActivityTypes = [.airDrop, .assignToContact, .markupAsPDF, .message, .openInIBooks, .postToFacebook, .postToFlickr, .postToTencentWeibo, .postToTwitter, .postToVimeo, .postToWeibo, .print, .saveToCameraRoll]
+        AppDelegate.getTopViewController().present(viewController, animated: true)
+
+        if let popOver = viewController.popoverPresentationController {
+            popOver.barButtonItem = shareBarButton
+        }
+    }
+
+}
+
+extension DownloadViewController: FolioReaderDelegate {
+    func folioReader(_ folioReader: FolioReader, didFinishedLoading book: FRBook) {
+        let centerViewController = (AppDelegate.getTopViewController() as! FolioReaderContainer).centerViewController!
+        let rightBarButtonItems = centerViewController.navigationItem.rightBarButtonItems!
+        let item1 = UIBarButtonItem(image: UIImage(named: "icon-navbar-more"), style: .plain, target: self, action: #selector(onMoreTapped))
+        let item2 = rightBarButtonItems[0]
+        shareBarButton = UIBarButtonItem(image: UIImage(named: "icon-navbar-share"), style: .plain, target: self, action: #selector(onShareTapped))
+        centerViewController.navigationItem.rightBarButtonItems = [item1, item2, shareBarButton]
+    }
+}
+
+extension DownloadViewController: NavigationItemDelegate {
+    func onOneActionTapped(action: NaviAction) {
+        switch action {
+            case .writeReview:
+                if let writeReviewView = writeReviewView {
+                    writeReviewView.display()
+                } else {
+                    writeReviewView = WriteReviewView(bookId: bookId)
+                    AppDelegate.getTopView().addSubview(writeReviewView!)
+                    writeReviewView?.snp.makeConstraints({ (make) in
+                        make.edges.equalTo(AppDelegate.getTopView())
+                    })
+                    writeReviewView?.display()
+                }
+                break
+            case .citeItem:
+                if let citeView = citeView {
+                    citeView.display()
+                } else {
+                    citeView = CiteView(bookId: bookId)
+                    AppDelegate.getTopView().addSubview(citeView!)
+                    citeView?.snp.makeConstraints({ (make) in
+                        make.edges.equalTo(AppDelegate.getTopView())
+                    })
+                    citeView?.display()
+                }
+                break
+            case .gotoInfo:
+                self.dismiss(animated: true, completion: nil)
+                break
+        }
+    }
 }

@@ -14,6 +14,7 @@ class BookTableViewCell: UITableViewCell {
     var contentWrapper: UIView!
     fileprivate var bookImageView: UIImageView!
     fileprivate var titleLabel: UILabel!
+    fileprivate var starImageView: UIImageView!
     fileprivate var authorLabel: UILabel!
     fileprivate var publicationDateLabel: UILabel!
     fileprivate var publicationPressLabel: UILabel!
@@ -53,6 +54,13 @@ class BookTableViewCell: UITableViewCell {
             make.top.equalTo(10)
             make.left.equalTo(bookImageView.snp.right).offset(40)
             make.right.equalTo(-30)
+        }
+
+        starImageView = UIImageView()
+        contentWrapper.addSubview(starImageView)
+        starImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.left.equalTo(titleLabel)
         }
 
         publicationDateLabel = UILabel()
@@ -97,7 +105,13 @@ class BookTableViewCell: UITableViewCell {
     }
 
     func setObject(book: Book) {
-        bookImageView.kf.setImage(with: URL(string: book.thumbnail))
+        let stars = ceil(book.rating)
+        starImageView.image = UIImage(named: "icon-star-" + String(stars))
+        if let thumbnail = book.thumbnail {
+            bookImageView.kf.setImage(with: URL(string: thumbnail))
+        } else {
+            bookImageView.image = UIImage(named: "default-book-cover")
+        }
         titleLabel.text = book.title
         if (book.authorsPrimary.count > 0) {
             var text = "Author: "

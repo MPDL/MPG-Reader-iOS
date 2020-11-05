@@ -50,7 +50,11 @@ class BookCollectionViewCell: UICollectionViewCell {
     }
 
     func setObject(book: Book) {
-        bookImageView.kf.setImage(with: URL(string: book.thumbnail))
+        if let thumbnail = book.thumbnail {
+            bookImageView.kf.setImage(with: URL(string: thumbnail))
+        } else {
+            bookImageView.image = UIImage(named: "default-book-cover")
+        }
         bookLabel.text = book.title
     }
 

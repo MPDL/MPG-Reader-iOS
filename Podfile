@@ -11,5 +11,7 @@ target 'EbookReader' do
     pod 'MBProgressHUD'
     pod 'Kingfisher'
     pod 'ReactiveCocoa'
+    pod 'TTTAttributedLabel'
+    pod 'MJRefresh'
 end
 

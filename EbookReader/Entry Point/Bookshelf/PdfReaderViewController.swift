@@ -9,6 +9,11 @@
 import UIKit
 import PDFKit
 import SnapKit
+import RealmSwift
+
+@objc protocol PdfReaderViewControllerDelegate: class {
+    @objc optional func showInfoPage(bookId: String)
+}
 
 class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegate, PdfSearchViewControllerDelegate {
     fileprivate var pdfDocument: PDFDocument!
@@ -17,17 +22,23 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
     fileprivate var headerView: UIView!
     fileprivate var overlayView: UIView!
     fileprivate var fontView: UIView!
+    fileprivate var navigationItemView: NavigationItemView!
+    fileprivate var writeReviewView: WriteReviewView?
+    fileprivate var citeView: CiteView?
+    fileprivate var shareImageView: UIImageView!
 
     fileprivate var isStatusBarHidden: Bool = true
     fileprivate var isOverlayHidden: Bool = true
     fileprivate var zoomValue: Float = 5
-    fileprivate var bookId: String!
+    fileprivate var book: Book!
 
-    init(url: URL, bookId: String) {
+    var delegate: PdfReaderViewControllerDelegate?
+
+    init(url: URL, book: Book) {
         super.init(nibName: nil, bundle: nil)
         let document = PDFDocument(url: url)
         self.pdfDocument = document
-        self.bookId = bookId
+        self.book = book
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -43,7 +54,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         super.viewDidAppear(animated)
 
         NotificationCenter.default.addObserver(self, selector: #selector(onDeviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
-        NotificationCenter.default.addObserver (self, selector: #selector(onPageChanged), name: NSNotification.Name.PDFViewPageChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onPageChanged), name: NSNotification.Name.PDFViewPageChanged, object: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,7 +82,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         pdfView.snp.makeConstraints { (make) in
             make.top.left.right.bottom.equalTo(0)
         }
-        if let cachePageIndex = prefs.value(forKey: bookId) as? Int, let page = pdfDocument.page(at: cachePageIndex) {
+        if let cachePageIndex = prefs.value(forKey: book.id) as? Int, let page = pdfDocument.page(at: cachePageIndex) {
             pdfView.go(to: page)
         }
 
@@ -90,7 +101,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         closeImageView.image = UIImage(named: "navi-close")
         headerView.addSubview(closeImageView)
         closeImageView.snp.makeConstraints { (make) in
-            make.left.equalTo(15)
+            make.left.equalTo(20)
             make.centerY.equalTo(headerView).offset(5)
         }
 
@@ -100,7 +111,17 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         outlineImageView.image = UIImage(named: "navi-index")
         headerView.addSubview(outlineImageView)
         outlineImageView.snp.makeConstraints { (make) in
-            make.left.equalTo(closeImageView.snp.right).offset(15)
+            make.left.equalTo(closeImageView.snp.right).offset(25)
+            make.centerY.equalTo(headerView).offset(5)
+        }
+
+        let moreImageView = UIImageView()
+        moreImageView.isUserInteractionEnabled = true
+        moreImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMoreTapped)))
+        moreImageView.image = UIImage(named: "icon-navbar-more")
+        headerView.addSubview(moreImageView)
+        moreImageView.snp.makeConstraints { (make) in
+            make.right.equalTo(headerView).offset(-20)
             make.centerY.equalTo(headerView).offset(5)
         }
 
@@ -110,7 +131,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         searchImageView.image = UIImage(named: "navi-search")
         headerView.addSubview(searchImageView)
         searchImageView.snp.makeConstraints { (make) in
-            make.right.equalTo(headerView).offset(-15)
+            make.right.equalTo(moreImageView.snp.left).offset(-25)
             make.centerY.equalTo(headerView).offset(5)
         }
 
@@ -120,7 +141,17 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         fontImageView.image = UIImage(named: "navi-font")
         headerView.addSubview(fontImageView)
         fontImageView.snp.makeConstraints { (make) in
-            make.right.equalTo(searchImageView.snp.left).offset(-15)
+            make.right.equalTo(searchImageView.snp.left).offset(-25)
+            make.centerY.equalTo(headerView).offset(5)
+        }
+
+        shareImageView = UIImageView()
+        shareImageView.isUserInteractionEnabled = true
+        shareImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onShareTapped)))
+        shareImageView.image = UIImage(named: "icon-navbar-share")
+        headerView.addSubview(shareImageView)
+        shareImageView.snp.makeConstraints { (make) in
+            make.right.equalTo(fontImageView.snp.left).offset(-25)
             make.centerY.equalTo(headerView).offset(5)
         }
 
@@ -168,6 +199,13 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
             make.centerY.equalTo(fontSlider)
             make.left.equalTo(fontSlider.snp.right).offset(33)
         }
+
+        navigationItemView = NavigationItemView(delegate: self)
+        self.view.addSubview(navigationItemView)
+        navigationItemView.snp.makeConstraints { (make) in
+            make.top.equalTo(70)
+            make.left.right.bottom.equalTo(0)
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -177,36 +215,21 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
     @objc func onPageChanged() {
         if let currentPage = pdfView.currentPage {
             let currentPageIndex = pdfDocument.index(for: currentPage)
-            prefs.set(currentPageIndex, forKey: bookId)
+            prefs.set(currentPageIndex, forKey: book.id)
             prefs.synchronize()
         }
     }
 
     @objc func onDeviceRotated() {
 //        switch UIDevice.current.orientation {
-//            case .portrait:
-//                pdfView.displayMode = .singlePage
+//            case .portrait, .portraitUpsideDown:
+//                pdfView.displayDirection = .vertical
 //                break
-//            case .unknown:
-//                pdfView.displayMode = .twoUp
+//            case .landscapeLeft, .landscapeRight:
+//                pdfView.displayDirection = .horizontal
 //                break
-//            case .portraitUpsideDown:
-//                pdfView.displayMode = .singlePage
-//                break
-//            case .landscapeLeft:
-//                pdfView.displayMode = .twoUp
-//                break
-//            case .landscapeRight:
-//                pdfView.displayMode = .twoUp
-//                break
-//            case .faceUp:
-//                pdfView.displayMode = .singlePage
-//                break
-//            case .faceDown:
-//                pdfView.displayMode = .singlePage
-//                break
-//            @unknown default:
-//                pdfView.displayMode = .singlePage
+//            default:
+//                pdfView.displayDirection = .vertical
 //                break
 //            }
     }
@@ -220,6 +243,28 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         isOverlayHidden = !isOverlayHidden
         overlayView.isHidden = isOverlayHidden
         fontView.isHidden = isOverlayHidden
+    }
+
+    @objc func onMoreTapped() {
+        navigationItemView.display()
+    }
+
+    @objc func onShareTapped() {
+        var title = book.title
+        if book.publicationDates.count > 0 {
+            title += " (\(book.publicationDates.joined(separator: ", ")))"
+        }
+        let jumpValue = "[Read in MPG Reader](mpgreader://\(String(describing: book.id)))"
+        let linkValue = NSURL(string: book.doi)!
+        let activityItems = [title, jumpValue, linkValue] as [Any]
+        let viewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        viewController.excludedActivityTypes = [.airDrop, .assignToContact, .markupAsPDF, .message, .openInIBooks, .postToFacebook, .postToFlickr, .postToTencentWeibo, .postToTwitter, .postToVimeo, .postToWeibo, .print, .saveToCameraRoll]
+        self.present(viewController, animated: true)
+
+        if let popOver = viewController.popoverPresentationController {
+            popOver.sourceView = self.view
+            popOver.sourceRect = self.shareImageView.frame
+        }
     }
 
     @objc func onFontTapped() {
@@ -264,4 +309,42 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
         self.pdfView.go(to: selection)
     }
 
+}
+
+extension PdfReaderViewController: NavigationItemDelegate {
+    func onOneActionTapped(action: NaviAction) {
+        switch action {
+            case .writeReview:
+                if let writeReviewView = writeReviewView {
+                    writeReviewView.display()
+                } else {
+                    writeReviewView = WriteReviewView(bookId: book.id)
+                    self.view.addSubview(writeReviewView!)
+                    writeReviewView?.snp.makeConstraints({ (make) in
+                        make.edges.equalTo(self.view)
+                    })
+                    writeReviewView?.display()
+                }
+                break
+            case .citeItem:
+                if let citeView = citeView {
+                    citeView.display()
+                } else {
+                    citeView = CiteView(bookId: book.id)
+                    self.view.addSubview(citeView!)
+                    citeView?.snp.makeConstraints({ (make) in
+                        make.edges.equalTo(self.view)
+                    })
+                    citeView?.display()
+                }
+                break
+            case .gotoInfo:
+                self.dismiss(animated: true) {
+                    if let delegate = self.delegate {
+                        delegate.showInfoPage?(bookId: self.book.id)
+                    }
+                }
+                break
+        }
+    }
 }

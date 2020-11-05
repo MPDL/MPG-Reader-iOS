@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="ipad11_0rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17504.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--First View Controller-->
+        <!--Search Book View Controller-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController id="9pv-A4-QxB" customClass="FirstViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="9pv-A4-QxB" customClass="SearchBookViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
                         <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="ViE-c4-nu3"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1659.4202898550725" y="-320.08928571428572"/>
+            <point key="canvasLocation" x="2412.9496402877699" y="-320.1005025125628"/>
         </scene>
-        <!--Second View Controller-->
+        <!--Bookshelf View Controller-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController id="8rJ-Kc-sve" customClass="SecondViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="8rJ-Kc-sve" customClass="BookshelfViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
                         <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="phm-1d-wle"/>
                 </viewController>
@@ -54,6 +56,7 @@
                         </userDefinedRuntimeAttributes>
                     </tabBar>
                     <connections>
+                        <segue destination="lhx-8w-2Rr" kind="relationship" relationship="viewControllers" id="38Y-z7-XFC"/>
                         <segue destination="PqJ-Ja-kHh" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="GhX-zO-jAV" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
                         <segue destination="MCv-jd-glw" kind="relationship" relationship="viewControllers" id="Qkz-o4-dZq"/>
@@ -62,6 +65,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
+        </scene>
+        <!--Home View Controller-->
+        <scene sceneID="l9x-d0-fdr">
+            <objects>
+                <viewController id="w79-01-7OJ" customClass="HomeViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sGK-FG-sak">
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="aZk-JZ-3Bk"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="vgs-lO-dvN"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Ol-aa-FiM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1104" y="-795"/>
         </scene>
         <!--Search-->
         <scene sceneID="es2-TJ-Nyo">
@@ -86,17 +105,17 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="22P-yY-JwS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="749.27536231884062" y="-320.08928571428572"/>
+            <point key="canvasLocation" x="1502.8776978417268" y="-320.1005025125628"/>
         </scene>
-        <!--Third View Controller-->
+        <!--Profile View Controller-->
         <scene sceneID="RSL-wk-vvM">
             <objects>
-                <viewController id="LSf-eI-hn7" customClass="ThirdViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="LSf-eI-hn7" customClass="ProfileViewController" customModule="EbookReader" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cU5-Gc-E4g">
                         <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="7Dr-wz-n3T"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="awT-aY-ypD"/>
                 </viewController>
@@ -154,13 +173,43 @@
             </objects>
             <point key="canvasLocation" x="1012.9496402877699" y="881.9095477386935"/>
         </scene>
+        <!--Home-->
+        <scene sceneID="wn1-bC-4PU">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lhx-8w-2Rr" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Home" image="tab-home-disable" selectedImage="tab-home" id="JE4-2P-mmd">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" red="0.0" green="0.62352941179999999" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Udm-As-rDB">
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="w79-01-7OJ" kind="relationship" relationship="rootViewController" id="wHs-lH-Sxq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QfW-9i-UZe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="394" y="-795"/>
+        </scene>
     </scenes>
     <resources>
         <image name="tab-bookshelf" width="27" height="28"/>
         <image name="tab-bookshelf-disable" width="27" height="28"/>
+        <image name="tab-home" width="30" height="30"/>
+        <image name="tab-home-disable" width="30" height="30"/>
         <image name="tab-profile" width="27" height="27"/>
         <image name="tab-profile-disable" width="27" height="27"/>
         <image name="tab-search" width="27" height="27"/>
         <image name="tab-search-disable" width="27" height="27"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

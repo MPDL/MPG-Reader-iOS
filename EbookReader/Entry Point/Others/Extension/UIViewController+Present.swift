@@ -10,9 +10,13 @@ import Foundation
 import UIKit
 import RealmSwift
 
-extension UIViewController: SelfAware {
+extension UIViewController {
 
-    static func awake() {
+    public class func initializeMethod() {
+
+        if self != UIViewController.self {
+            return
+        }
 
         DispatchQueue.once(token: "UIViewController+EmptyBackButton") {
             let originalSelector = #selector(UIViewController.viewDidLoad)
