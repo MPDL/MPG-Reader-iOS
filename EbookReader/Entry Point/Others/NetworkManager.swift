@@ -17,7 +17,8 @@ class NetworkManager: AFHTTPSessionManager {
             return manager
         } else {
             // TODO: 切换成正式的地址
-            networkManager = NetworkManager(baseURL: URL(string: "http://8.129.114.118:8089/"))
+//            networkManager = NetworkManager(baseURL: URL(string: "http://8.129.114.118:8089/"))
+            networkManager = NetworkManager(baseURL: URL(string: "http://dev-mpgreader.mpdl.mpg.de/"))
             networkManager!.requestSerializer = AFJSONRequestSerializer()
             networkManager!.responseSerializer = AFHTTPResponseSerializer()
             if let path = Bundle.main.path(forResource: "credential", ofType: "json") {
@@ -26,10 +27,16 @@ class NetworkManager: AFHTTPSessionManager {
                       let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
                       if let jsonResult = jsonResult as? Dictionary<String, String>, let client = jsonResult["client"], let secret = jsonResult["secret"] {
                         // TODO: 从mdm读取
-                        networkManager?.requestSerializer.setValue("yu@mpdl.mpg.de", forHTTPHeaderField: "X-Email")
-                        networkManager?.requestSerializer.setValue("snOfThePad", forHTTPHeaderField: "X-SN")
-                        let authorization = "\(client):\(secret)".data(using: String.Encoding.utf8)!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                        networkManager?.requestSerializer.setValue("Basic \(authorization)", forHTTPHeaderField: "Authorization")
+                        if let managedConfigDict = UserDefaults.standard.dictionary(forKey: "com.apple.configuration.managed"){
+                            let email = managedConfigDict["email"] as? String
+                            let sn = managedConfigDict["sn"] as? String
+                            networkManager?.requestSerializer.setValue(email, forHTTPHeaderField: "X-Email")
+                            networkManager?.requestSerializer.setValue(sn, forHTTPHeaderField: "X-SN")
+                            let authorization = "\(client):\(secret)".data(using: String.Encoding.utf8)!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                            networkManager?.requestSerializer.setValue("Basic \(authorization)", forHTTPHeaderField: "Authorization")
+                        }else{
+                             print("Error fetching app config values. Please make sure your device is enrolled with Workspace ONE")
+                        }
                       }
                   } catch {
                        // handle error
