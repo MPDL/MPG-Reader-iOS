@@ -23,6 +23,7 @@ class DownloadViewController: UIViewController {
     fileprivate var introductionLabel: UILabel!
     fileprivate var progressBar: UIProgressView!
     fileprivate var downloadLabel: UILabel!
+    fileprivate var actionView: UIView!
     fileprivate var navigationItemView: NavigationItemView!
     fileprivate var writeReviewView: WriteReviewView?
     fileprivate var citeView: CiteView?
@@ -33,6 +34,7 @@ class DownloadViewController: UIViewController {
     fileprivate var addReadingListView: UIControl!
     fileprivate var downloadView: UIView!
     fileprivate var shareBarButton: UIBarButtonItem!
+    fileprivate var folioReader: FolioReader!
 
     fileprivate var book: Book!
     fileprivate var bookId: String!
@@ -69,7 +71,7 @@ class DownloadViewController: UIViewController {
     }
 
     fileprivate func loadData() {
-        if Reachability.isConnectedToNetwork() {
+        if networkStatus != .notReachable {
             loadBook()
             loadStatistic()
             loadReviews()
@@ -216,7 +218,8 @@ class DownloadViewController: UIViewController {
             make.right.equalTo(-35)
         }
 
-        let actionView = UIView()
+        actionView = UIView()
+        actionView.isHidden = true
         contentView.addSubview(actionView)
         actionView.snp.makeConstraints { (make) in
             make.top.equalTo(bookImageView.snp.bottom).offset(26)
@@ -247,12 +250,11 @@ class DownloadViewController: UIViewController {
             make.bottom.equalTo(0)
         }
         addReadingListView = UIControl()
-        addReadingListView.isHidden = true
         addReadingListView.reactive.controlEvents(.touchUpInside).observeValues { [weak self] (control) in
-            guard let self = self else {
+            guard let self = self, let bookStatistic = self.bookStatistic, let inReadingList = bookStatistic.inReadingList else {
                 return
             }
-            if let bookStatistic = self.bookStatistic, let inReadingList = bookStatistic.inReadingList, inReadingList {
+            if inReadingList {
                 NetworkManager.sharedInstance().POST(path: "rest/user/readinglist/delete",
                     parameters: ["bookIds": [self.bookId]],
                     modelClass: ReadingList.self,
@@ -291,7 +293,6 @@ class DownloadViewController: UIViewController {
             make.center.equalTo(addReadingListView)
         }
         downloadView = UIView()
-        downloadView.isHidden = true
         downloadView.layer.masksToBounds = true
         downloadView.layer.cornerRadius = 8
         actionView.addSubview(downloadView)
@@ -373,7 +374,6 @@ class DownloadViewController: UIViewController {
         ratingLabel?.text = "\(String(describing: bookStatistic.reviews ?? 0)) Ratings"
         let rating = ceil(bookStatistic.rating ?? 0)
         starImageView?.image = UIImage(named: "icon-star-\(rating)")
-        addReadingListView.isHidden = false
         if let inReadingList = bookStatistic.inReadingList, inReadingList {
             addReadingListTextLabel.text = "Remove from Reading List"
         } else {
@@ -389,7 +389,7 @@ class DownloadViewController: UIViewController {
         }
         titleLabel.text = book.title
         introductionTitleLabel.text = "Introduction"
-        introductionLabel.text = book.abs
+        introductionLabel.text = book.abstract
         if (book.authorsPrimary.count > 0) {
             var text = "Author: "
             for author in book.authorsPrimary {
@@ -413,8 +413,7 @@ class DownloadViewController: UIViewController {
         if (book.publishers.count > 0) {
             publicationPressLabel.text = book.publishers[0]
         }
-
-        downloadView.isHidden = false
+        actionView.isHidden = false
         let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
         path = paths[0] + "/" + book.id
         if (checkFileExisted(path)) {
@@ -427,7 +426,7 @@ class DownloadViewController: UIViewController {
             if (book.downloadUrl == "") {
                 downloadLabel.text = "Currently unavailable"
                 progressBar.backgroundColor = UIColor.init(red: 85.0/255.0, green: 85.0/255.0, blue: 85.0/255.0, alpha: 1.0)
-            } else if (book.isPdf) {
+            } else if (book.pdf) {
                 downloadLabel.text = "Download PDF"
             } else {
                 downloadLabel.text = "Download EPUB"
@@ -437,7 +436,7 @@ class DownloadViewController: UIViewController {
     }
 
     @objc func onOpenBookTapped() {
-        if book.isPdf {
+        if book.pdf {
             let url = URL(fileURLWithPath: path)
             let pdfReaderViewController = PdfReaderViewController(url: url, book: book)
             self.present(pdfReaderViewController, animated: true, completion: nil)
@@ -447,13 +446,13 @@ class DownloadViewController: UIViewController {
             config.menuTextColorSelected = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             config.allowSharing = false
             config.enableTTS = false
-            let folioReader = FolioReader()
+            folioReader = FolioReader()
             folioReader.delegate = self
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
             folioReader.presentReader(parentViewController: self, withEpubPath: path, unzipPath: nil, andConfig: config, shouldRemoveEpub: false, animated: true)
-            navigationItemView = NavigationItemView(delegate: self)
+            navigationItemView = NavigationItemView(bookId: book.id, delegate: self)
             AppDelegate.getTopView().addSubview(navigationItemView)
             navigationItemView.snp.makeConstraints { (make) in
                 make.top.equalTo(70)
@@ -538,7 +537,7 @@ class DownloadViewController: UIViewController {
             title += " (\(book.publicationDates.joined(separator: ", ")))"
         }
         let jumpValue = "[Read in MPG Reader](mpgreader://\(String(describing: book.id)))"
-        let linkValue = NSURL(string: book.doi)!
+        let linkValue = NSURL(string: book.url)!
         let activityItems = [title, jumpValue, linkValue] as [Any]
         let viewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         viewController.excludedActivityTypes = [.airDrop, .assignToContact, .markupAsPDF, .message, .openInIBooks, .postToFacebook, .postToFlickr, .postToTencentWeibo, .postToTwitter, .postToVimeo, .postToWeibo, .print, .saveToCameraRoll]
@@ -569,7 +568,7 @@ extension DownloadViewController: NavigationItemDelegate {
                 if let writeReviewView = writeReviewView {
                     writeReviewView.display()
                 } else {
-                    writeReviewView = WriteReviewView(bookId: bookId)
+                    writeReviewView = WriteReviewView(book: book)
                     AppDelegate.getTopView().addSubview(writeReviewView!)
                     writeReviewView?.snp.makeConstraints({ (make) in
                         make.edges.equalTo(AppDelegate.getTopView())
@@ -581,7 +580,7 @@ extension DownloadViewController: NavigationItemDelegate {
                 if let citeView = citeView {
                     citeView.display()
                 } else {
-                    citeView = CiteView(bookId: bookId)
+                    citeView = CiteView(book: book)
                     AppDelegate.getTopView().addSubview(citeView!)
                     citeView?.snp.makeConstraints({ (make) in
                         make.edges.equalTo(AppDelegate.getTopView())
@@ -591,6 +590,7 @@ extension DownloadViewController: NavigationItemDelegate {
                 break
             case .gotoInfo:
                 self.dismiss(animated: true, completion: nil)
+                self.folioReader.close()
                 break
         }
     }

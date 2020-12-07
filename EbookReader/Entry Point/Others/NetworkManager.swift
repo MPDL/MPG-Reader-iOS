@@ -68,7 +68,16 @@ class NetworkManager: AFHTTPSessionManager {
         }
     }
 
-    func GET<T>(path: String, parameters: Any?, modelClass: T.Type, success: ((T?) -> Void)?, failure: ((Error) -> Void)?) where T: Codable {
+    func errorHandler(error: NSError, task: URLSessionDataTask?, failure: ((NSError) -> Void)?) {
+        PopupView.showLoading(false)
+        if let httpResponse = task?.response as? HTTPURLResponse, httpResponse.statusCode == 401 {
+            PopupView.showWithContent("You are not authorized")
+        } else {
+            failure?(error)
+        }
+    }
+
+    func GET<T>(path: String, parameters: Any?, modelClass: T.Type, success: ((T?) -> Void)?, failure: ((NSError) -> Void)?) where T: Codable {
         PopupView.showLoading(true)
         self.get(path,
             parameters: parameters,
@@ -77,12 +86,11 @@ class NetworkManager: AFHTTPSessionManager {
             success: { (task, response) in
                 self.successHandler(response: response, modelClass: modelClass, success: success)
             }, failure: { (task, error) in
-                PopupView.showLoading(false)
-                failure?(error)
+                self.errorHandler(error: error as NSError, task: task, failure: failure)
             })
     }
 
-    func POST<T>(path: String, parameters: Any?, modelClass: T.Type, success: ((T?) -> Void)?, failure: ((Error) -> Void)?) where T: Codable {
+    func POST<T>(path: String, parameters: Any?, modelClass: T.Type, success: ((T?) -> Void)?, failure: ((NSError) -> Void)?) where T: Codable {
         PopupView.showLoading(true)
         self.post(path,
             parameters: parameters,
@@ -91,8 +99,7 @@ class NetworkManager: AFHTTPSessionManager {
             success: { (task, response) in
                 self.successHandler(response: response, modelClass: modelClass, success: success)
             }, failure: { (task, error) in
-                PopupView.showLoading(false)
-                failure?(error)
+                self.errorHandler(error: error as NSError, task: task, failure: failure)
             })
     }
 }

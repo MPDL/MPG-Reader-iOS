@@ -33,11 +33,15 @@ class HomeViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(reloadHistory), name: .searchResultsDidReturn, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadReadingList), name: .readingListDidChange, object: nil)
-        
-        if Reachability.isConnectedToNetwork() {
-            self.setupView()
-        } else {
-            self.setupEmptyView()
+
+        manager.setReachabilityStatusChange { (status) in
+            if status == .unknown || status == .notReachable {
+                networkStatus = .notReachable
+                self.setupEmptyView()
+            } else {
+                networkStatus = status
+                self.setupView()
+            }
         }
     }
 
@@ -127,8 +131,8 @@ class HomeViewController: UIViewController {
         }
         let retryControl = UIControl()
         retryControl.reactive.controlEvents(.touchUpInside).observeValues { [weak self] (control) in
-            if Reachability.isConnectedToNetwork() {
-                self?.setupView()
+            if let self = self, networkStatus != .notReachable {
+                self.setupView()
             }
         }
         retryControl.backgroundColor = UIColor(hex: 0x009FA1)

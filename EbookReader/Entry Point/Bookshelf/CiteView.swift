@@ -10,11 +10,12 @@ import UIKit
 
 class CiteView: UIView {
 
+    fileprivate var book: Book!
     fileprivate var contentView: UIView!
 
-    init(bookId: String) {
+    init(book: Book) {
         super.init(frame: .zero)
-
+        self.book = book
         self.backgroundColor = UIColor(white: 0, alpha: 0.6)
         self.isHidden = true
 
@@ -67,12 +68,12 @@ class CiteView: UIView {
             make.width.equalTo(scrollView)
         }
 
-        loadCitations(bookId: bookId)
+        loadCitations()
     }
 
-    fileprivate func loadCitations (bookId: String) {
+    fileprivate func loadCitations () {
         NetworkManager.sharedInstance().GET(
-            path: "rest/ebook/\(bookId)/citations",
+            path: "rest/ebook/\(book.id)/citations",
             parameters: nil,
             modelClass: CitationRS.self,
             success: { (citationRS) in
@@ -127,9 +128,13 @@ class CiteView: UIView {
         }
         let contentLabel = UILabel()
         contentLabel.numberOfLines = 0
-        contentLabel.text = citation.value
-        contentLabel.textColor = UIColor(hex: 0x333333)
-        contentLabel.font = UIFont.systemFont(ofSize: 16)
+        if let citationContent = citation.value {
+            let title = book.title.replacingOccurrences(of: " : ", with: ": ")
+            let titleRange = (citationContent as NSString).range(of: title, options: .caseInsensitive)
+            let attributedString = NSMutableAttributedString(string: citationContent)
+            attributedString.addAttribute(.font, value: UIFont.italicSystemFont(ofSize: 16), range: titleRange)
+            contentLabel.attributedText = attributedString
+        }
         contentWrapper.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { (make) in
             make.top.equalTo(12)

@@ -11,15 +11,15 @@ import RealmSwift
 import Realm
 
 class Book: Object, Codable {
-    @objc dynamic var abs = ""
+    @objc dynamic var abstract = ""
     @objc dynamic var id = ""
     @objc dynamic var title = ""
     @objc dynamic var downloadUrl = ""
     @objc dynamic var modifyDate = Date()
-    @objc dynamic var isPdf = true
+    @objc dynamic var pdf = true
     @objc dynamic var thumbnail: String?
     @objc dynamic var rating = 0.0
-    @objc dynamic var doi = ""
+    @objc dynamic var url = ""
 
     let authorsPrimary = List<String>()
     let isbns = List<String>()
@@ -31,15 +31,15 @@ class Book: Object, Codable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case abs, id, title, downloadUrl, modifyDate, isPdf, thumbnail, rating, authorsPrimary, isbns, publicationDates, publishers, doi
+        case abstract, id, title, downloadUrl, modifyDate, pdf, thumbnail, rating, authorsPrimary, isbns, publicationDates, publishers, url
     }
 
     required convenience public init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        if let str = try container.decodeIfPresent(String.self, forKey: .abs) {
-            abs = str
+        if let str = try container.decodeIfPresent(String.self, forKey: .abstract) {
+            abstract = str
         }
         if let str = try container.decodeIfPresent(String.self, forKey: .id) {
             id = str
@@ -53,14 +53,14 @@ class Book: Object, Codable {
         if let date = try container.decodeIfPresent(Date.self, forKey: .modifyDate) {
             modifyDate = date
         }
-        if let bool = try container.decodeIfPresent(Bool.self, forKey: .isPdf) {
-            isPdf = bool
+        if let bool = try container.decodeIfPresent(Bool.self, forKey: .pdf) {
+            pdf = bool
         }
         if let str = try container.decodeIfPresent(String.self, forKey: .thumbnail) {
             thumbnail = str
         }
-        if let str = try container.decodeIfPresent(String.self, forKey: .doi) {
-            doi = str
+        if let str = try container.decodeIfPresent(String.self, forKey: .url) {
+            url = str
         }
         if let double = try container.decodeIfPresent(Double.self, forKey: .rating) {
             rating = double

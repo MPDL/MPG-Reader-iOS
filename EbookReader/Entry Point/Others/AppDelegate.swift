@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import AFNetworking
+import Bugly
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,13 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Update schemaVersion every time the schema is changed, +1
         let config = Realm.Configuration(
-             schemaVersion: 2,
+             schemaVersion: 3,
              migrationBlock: { migration, oldSchemaVersion in
-                     if (oldSchemaVersion < 2) {}
+                     if (oldSchemaVersion < 3) {}
              })
         Realm.Configuration.defaultConfiguration = config
+        Bugly.start(withAppId: "497035eca0")
 
-        AFNetworkReachabilityManager.shared().startMonitoring()
+        // AFNetworkReachabilityManager
+        manager.startMonitoring()
 
         // initialize swizzle methods
         UIViewController.initializeMethod()

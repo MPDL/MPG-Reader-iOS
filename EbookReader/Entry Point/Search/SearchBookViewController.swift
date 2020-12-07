@@ -122,16 +122,20 @@ class SearchBookViewController: UIViewController {
             make.centerX.equalTo(logoWrapper)
             make.top.equalTo(logoImageView.snp.bottom).offset(60)
         }
+        let para = NSMutableParagraphStyle()
+        para.lineSpacing = 4
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor(hex: 0x999999),
+                          NSAttributedString.Key.paragraphStyle: para]
         let descriptionLabel = UILabel()
-        descriptionLabel.textColor = UIColor(hex: 0x999999)
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.text = "On this search platform,you can find all e-books that are accessible to all institutes of Max Planck Gesellschaft. Currently,you have access to 650,000 titles from various publishers and e-book providers. The contents are continuously extended and updated. Click here for an overview of the included e-books."
+        descriptionLabel.textAlignment = .left
+        let text = "On this search platform, you can find all e-books that are accessible to all institutes of Max Planck Gesellschaft.\nCurrently, you have access to ca.120,000 publications from Springer eBooks. The contents are continuously extended and updated.\nClick here for an overview of the included e-books."
+        descriptionLabel.attributedText = NSAttributedString(string: text, attributes: attributes)
         logoWrapper.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(logoWrapper)
             make.top.equalTo(nameLabel.snp.bottom).offset(22)
-            make.width.equalTo(logoWrapper)
+            make.width.equalTo(600)
             make.bottom.equalTo(0)
         }
 

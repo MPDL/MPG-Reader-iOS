@@ -13,11 +13,11 @@ class WriteReviewView: UIView {
     fileprivate var starImageViewList: [UIImageView] = []
     fileprivate var organizationSwitch: UISwitch!
     fileprivate var rating: String = "five"
-    fileprivate var bookId: String!
+    fileprivate var book: Book!
 
-    init(bookId: String) {
+    init(book: Book) {
         super.init(frame: .zero)
-        self.bookId = bookId
+        self.book = book
         self.backgroundColor = UIColor(white: 0, alpha: 0.6)
         self.isHidden = true
 
@@ -61,7 +61,9 @@ class WriteReviewView: UIView {
         bookImageView.layer.shadowOffset = CGSize(width: 0, height: 2)
         bookImageView.layer.shadowOpacity = 1
         bookImageView.layer.shadowRadius = 4
-        bookImageView.kf.setImage(with: URL(string: "https://stf-ecommerce-images-prod.oss-accelerate.aliyuncs.com/262892bec8eba26c668444a3b595f21b-dahags.jpg"))
+        if let url = book.thumbnail {
+            bookImageView.kf.setImage(with: URL(string: url))
+        }
         writeReviewView.addSubview(bookImageView)
         bookImageView.snp.makeConstraints { (make) in
             make.width.equalTo(83)
@@ -70,13 +72,15 @@ class WriteReviewView: UIView {
             make.left.equalTo(68)
         }
         let nameLabel = UILabel()
-        nameLabel.text = "Yoga Bitch"
+        nameLabel.numberOfLines = 0
+        nameLabel.text = book.title
         nameLabel.font = UIFont.systemFont(ofSize: 20)
         nameLabel.textColor = UIColor(hex: 0x333333)
         writeReviewView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { (make) in
             make.top.equalTo(bookImageView)
             make.left.equalTo(bookImageView.snp.right).offset(29)
+            make.right.equalTo(-30)
         }
         let question1Label = UILabel()
         question1Label.text = "1. How do you think of this book? "
@@ -154,11 +158,11 @@ class WriteReviewView: UIView {
         }
         let submitView = UIControl()
         submitView.reactive.controlEvents(.touchUpInside).observeValues { [weak self] (control) in
-            guard let self = self, let bookId = self.bookId else {
+            guard let self = self else {
                 return
             }
             let parameters = [
-                "bookId": bookId,
+                "bookId": book.id,
                 "comment": textArea.text ?? "",
                 "name": textField.text ?? "",
                 "rating": self.rating,

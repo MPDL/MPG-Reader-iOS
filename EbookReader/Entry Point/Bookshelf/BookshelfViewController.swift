@@ -350,7 +350,7 @@ class BookshelfViewController: UIViewController {
             title += " (\(selectedBook.publicationDates.joined(separator: ", ")))"
         }
         let jumpValue = "[Read in MPG Reader](mpgreader://\(String(describing: selectedBook.id)))"
-        let linkValue = NSURL(string: selectedBook.doi)!
+        let linkValue = NSURL(string: selectedBook.url)!
         let activityItems = [title, jumpValue, linkValue] as [Any]
         let viewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         viewController.excludedActivityTypes = [.airDrop, .assignToContact, .markupAsPDF, .message, .openInIBooks, .postToFacebook, .postToFlickr, .postToTencentWeibo, .postToTwitter, .postToVimeo, .postToWeibo, .print, .saveToCameraRoll]
@@ -367,7 +367,7 @@ extension BookshelfViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
 
         let realm = try! Realm()
-        let predicate = NSPredicate(format: "title CONTAINS[c] %@ OR abs CONTAINS[c] %@", searchText, searchText)
+        let predicate = NSPredicate(format: "title CONTAINS[c] %@ OR abstract CONTAINS[c] %@", searchText, searchText)
         books = realm.objects(Book.self).filter(predicate).sorted(byKeyPath: "modifyDate", ascending: false)
 
         collectionView.reloadData()
@@ -426,7 +426,7 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
         selectedBook = book
         let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
         let path = paths[0] + "/" + book.id
-        if book.isPdf {
+        if book.pdf {
             let url = URL(fileURLWithPath: path)
             let pdfReaderViewController = PdfReaderViewController(url: url, book: book)
             pdfReaderViewController.delegate = self
@@ -449,7 +449,7 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
                 UIApplication.shared.isIdleTimerDisabled = true
             }
             folioReader.presentReader(parentViewController: self, withEpubPath: path, unzipPath: nil, andConfig: config, shouldRemoveEpub: false, animated: true)
-            navigationItemView = NavigationItemView(delegate: self)
+            navigationItemView = NavigationItemView(bookId: book.id, delegate: self)
             AppDelegate.getTopView().addSubview(navigationItemView)
             navigationItemView.snp.makeConstraints { (make) in
                 make.top.equalTo(70)
@@ -491,7 +491,7 @@ extension BookshelfViewController: NavigationItemDelegate {
                 if let writeReviewView = writeReviewView {
                     writeReviewView.display()
                 } else {
-                    writeReviewView = WriteReviewView(bookId: selectedBook.id)
+                    writeReviewView = WriteReviewView(book: selectedBook)
                     AppDelegate.getTopView().addSubview(writeReviewView!)
                     writeReviewView?.snp.makeConstraints({ (make) in
                         make.edges.equalTo(AppDelegate.getTopView())
@@ -503,7 +503,7 @@ extension BookshelfViewController: NavigationItemDelegate {
                 if let citeView = citeView {
                     citeView.display()
                 } else {
-                    citeView = CiteView(bookId: selectedBook.id)
+                    citeView = CiteView(book: selectedBook)
                     AppDelegate.getTopView().addSubview(citeView!)
                     citeView?.snp.makeConstraints({ (make) in
                         make.edges.equalTo(AppDelegate.getTopView())
@@ -516,6 +516,7 @@ extension BookshelfViewController: NavigationItemDelegate {
                     let viewController = DownloadViewController(bookId: self.selectedBook.id)
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
+                self.folioReader.close()
                 break
         }
     }

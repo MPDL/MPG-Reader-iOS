@@ -200,7 +200,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
             make.left.equalTo(fontSlider.snp.right).offset(33)
         }
 
-        navigationItemView = NavigationItemView(delegate: self)
+        navigationItemView = NavigationItemView(bookId: book.id, delegate: self)
         self.view.addSubview(navigationItemView)
         navigationItemView.snp.makeConstraints { (make) in
             make.top.equalTo(70)
@@ -255,7 +255,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
             title += " (\(book.publicationDates.joined(separator: ", ")))"
         }
         let jumpValue = "[Read in MPG Reader](mpgreader://\(String(describing: book.id)))"
-        let linkValue = NSURL(string: book.doi)!
+        let linkValue = NSURL(string: book.url)!
         let activityItems = [title, jumpValue, linkValue] as [Any]
         let viewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         viewController.excludedActivityTypes = [.airDrop, .assignToContact, .markupAsPDF, .message, .openInIBooks, .postToFacebook, .postToFlickr, .postToTencentWeibo, .postToTwitter, .postToVimeo, .postToWeibo, .print, .saveToCameraRoll]
@@ -318,7 +318,7 @@ extension PdfReaderViewController: NavigationItemDelegate {
                 if let writeReviewView = writeReviewView {
                     writeReviewView.display()
                 } else {
-                    writeReviewView = WriteReviewView(bookId: book.id)
+                    writeReviewView = WriteReviewView(book: book)
                     self.view.addSubview(writeReviewView!)
                     writeReviewView?.snp.makeConstraints({ (make) in
                         make.edges.equalTo(self.view)
@@ -330,7 +330,7 @@ extension PdfReaderViewController: NavigationItemDelegate {
                 if let citeView = citeView {
                     citeView.display()
                 } else {
-                    citeView = CiteView(bookId: book.id)
+                    citeView = CiteView(book: book)
                     self.view.addSubview(citeView!)
                     citeView?.snp.makeConstraints({ (make) in
                         make.edges.equalTo(self.view)

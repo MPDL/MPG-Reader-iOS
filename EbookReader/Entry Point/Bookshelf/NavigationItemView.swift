@@ -20,11 +20,14 @@ enum NaviAction {
 
 class NavigationItemView: UIView {
 
-    fileprivate var contentView: UIView!
+    fileprivate var bookId: String!
     fileprivate var delegate: NavigationItemDelegate!
+    fileprivate var contentView: UIView!
+    fileprivate var reviewView: UIControl!
 
-    init(delegate: NavigationItemDelegate) {
+    init(bookId: String, delegate: NavigationItemDelegate) {
         super.init(frame: .zero)
+        self.bookId = bookId
         self.delegate = delegate
         self.backgroundColor = UIColor.clear
         self.isHidden = true
@@ -43,7 +46,6 @@ class NavigationItemView: UIView {
         self.addSubview(contentView)
         contentView.snp.makeConstraints { (make) in
             make.width.equalTo(262)
-            make.height.equalTo(207)
             make.top.equalTo(10)
             make.right.equalTo(-18)
         }
@@ -54,7 +56,7 @@ class NavigationItemView: UIView {
         }
         contentView.addSubview(infoView)
         infoView.snp.makeConstraints { (make) in
-            make.height.equalTo(contentView).multipliedBy(0.33)
+            make.height.equalTo(68)
             make.width.left.top.equalTo(contentView)
         }
         let infoImageView = UIImageView()
@@ -73,14 +75,15 @@ class NavigationItemView: UIView {
             make.centerY.equalTo(infoView)
             make.left.equalTo(infoImageView.snp.right).offset(12)
         }
-        let reviewView = UIControl()
+        reviewView = UIControl()
+        reviewView.clipsToBounds = true
         reviewView.reactive.controlEvents(.touchUpInside).observeValues { [weak self] (control) in
             self?.dismiss()
             self?.delegate.onOneActionTapped(action: .writeReview)
         }
         contentView.addSubview(reviewView)
         reviewView.snp.makeConstraints { (make) in
-            make.height.equalTo(contentView).multipliedBy(0.33)
+            make.height.equalTo(68)
             make.width.left.equalTo(contentView)
             make.top.equalTo(infoView.snp.bottom)
         }
@@ -107,9 +110,10 @@ class NavigationItemView: UIView {
         }
         contentView.addSubview(citeView)
         citeView.snp.makeConstraints { (make) in
-            make.height.equalTo(contentView).multipliedBy(0.33)
+            make.height.equalTo(68)
             make.width.left.equalTo(contentView)
             make.top.equalTo(reviewView.snp.bottom)
+            make.bottom.equalTo(0)
         }
         let citeImageView = UIImageView()
         citeImageView.image = UIImage(named: "icon-navbar-cite")
@@ -127,6 +131,8 @@ class NavigationItemView: UIView {
             make.centerY.equalTo(citeView)
             make.left.equalTo(citeImageView.snp.right).offset(12)
         }
+
+        self.loadStatistic()
     }
 
     @objc func dismiss() {
@@ -134,11 +140,30 @@ class NavigationItemView: UIView {
     }
 
     func display() {
+        self.loadStatistic()
         self.isHidden = false
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    fileprivate func loadStatistic() {
+        NetworkManager.sharedInstance().GET(path: "rest/ebook/" + bookId,
+            parameters: nil,
+            modelClass: BookStatistic.self,
+            success: { (bookStatistic) in
+                if let isReviewedByMe = bookStatistic?.isReviewedByMe, isReviewedByMe {
+                    self.reviewView.snp.updateConstraints { (make) in
+                        make.height.equalTo(0)
+                    }
+                } else {
+                    self.reviewView.snp.updateConstraints { (make) in
+                        make.height.equalTo(68)
+                    }
+                }
+                self.layoutIfNeeded()
+            }, failure: nil)
     }
 
 }
