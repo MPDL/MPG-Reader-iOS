@@ -103,6 +103,15 @@ class ReviewsView: UIScrollView {
             make.top.equalTo(commentsLabel.snp.bottom).offset(18)
             make.bottom.equalTo(-20)
         }
+        let organizationLabel = UILabel()
+        organizationLabel.text = review.organization ?? ""
+        organizationLabel.textColor = UIColor(hex: 0x999999)
+        organizationLabel.font = UIFont.systemFont(ofSize: 16)
+        view.addSubview(organizationLabel)
+        organizationLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(dateLabel.snp.right).offset(15)
+            make.centerY.equalTo(dateLabel)
+        }
         return view
     }
 

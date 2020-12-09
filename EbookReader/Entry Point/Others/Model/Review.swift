@@ -15,4 +15,5 @@ class Review: Codable {
     var rating: Int?
     var userName: String?
     var uuid: String?
+    var organization: String?
 }

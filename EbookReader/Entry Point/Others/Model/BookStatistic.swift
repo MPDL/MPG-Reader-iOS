@@ -19,5 +19,5 @@ class BookStatistic: Codable {
     var rating: Double?
     var reviews: Int?
     var uuid: String?
-    var isReviewedByMe: Bool?
+    var reviewedByMe: Bool?
 }

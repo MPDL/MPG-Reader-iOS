@@ -153,7 +153,7 @@ class NavigationItemView: UIView {
             parameters: nil,
             modelClass: BookStatistic.self,
             success: { (bookStatistic) in
-                if let isReviewedByMe = bookStatistic?.isReviewedByMe, isReviewedByMe {
+                if let reviewedByMe = bookStatistic?.reviewedByMe, reviewedByMe {
                     self.reviewView.snp.updateConstraints { (make) in
                         make.height.equalTo(0)
                     }
