@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import RealmSwift
 import ReactiveCocoa
+import MJRefresh
 
 class TitleSearchBar: UISearchBar {
     override public var intrinsicContentSize: CGSize {
@@ -29,6 +30,10 @@ class SearchBookViewController: UIViewController {
     fileprivate var dataSource: [Book] = []
     fileprivate var searchText: String = ""
     fileprivate var histories: [String] = []
+    fileprivate var pageSize = 10
+    fileprivate var pageNumber = 0
+    fileprivate var tableHeader: MJRefreshNormalHeader?
+    fileprivate var tableFooter: MJRefreshAutoNormalFooter?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -141,6 +146,10 @@ class SearchBookViewController: UIViewController {
 
 
         tableView = UITableView()
+        tableHeader = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(reloadData))
+        tableFooter = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(loadMore))
+        tableView.mj_header = tableHeader
+        tableView.mj_footer = tableFooter
         tableView.isHidden = true
         tableView.backgroundColor = UIColor.white
         tableView.delegate = self
@@ -155,6 +164,16 @@ class SearchBookViewController: UIViewController {
         }
         
         loadHistories()
+    }
+
+    @objc fileprivate func reloadData() {
+        pageNumber = 0
+        searchBook()
+    }
+
+    @objc fileprivate func loadMore() {
+        pageNumber += 1
+        searchBook()
     }
 
     @objc func deviceRotated() {
@@ -260,17 +279,30 @@ class SearchBookViewController: UIViewController {
 
     fileprivate func searchBook() {
         PopupView.showLoading(true)
-        NetworkManager.sharedInstance().GET(path: "rest/ebook/search",
-            parameters: ["keyword": self.searchText],
+        let parameters = [
+            "pageSize": pageSize,
+            "pageNumber": pageNumber
+        ]
+        NetworkManager.sharedInstance().POST(path: "rest/ebook/search?keyword=\(self.searchText)",
+            parameters: parameters,
             modelClass: [Book].self,
             success: { (books) in
+                self.tableHeader?.endRefreshing()
+                self.tableFooter?.endRefreshing()
+
                 guard let books = books, books.count > 0  else {
-                    self.dataSource = []
-                    self.tableView.reloadData()
-                    self.hideTableView()
-                    PopupView.showWithContent("No Results")
+                    if self.pageNumber > 0 {
+                        PopupView.showWithContent("No more results")
+                        self.pageNumber -= 1
+                    } else {
+                        self.dataSource = []
+                        self.tableView.reloadData()
+                        self.hideTableView()
+                        PopupView.showWithContent("No Results")
+                    }
                     return
                 }
+
                 // Caching last 10 items
                 var histories: [Book] = []
                 if let data = prefs.value(forKey: bookHistoryKey) as? Data {
@@ -289,22 +321,26 @@ class SearchBookViewController: UIViewController {
                 while histories.count > 10 {
                     _ = histories.remove(at: 0)
                 }
-
                 let archiver = NSKeyedArchiver(requiringSecureCoding: false)
                 try! archiver.encodeEncodable(histories, forKey: NSKeyedArchiveRootObjectKey)
                 archiver.finishEncoding()
                 prefs.set(archiver.encodedData, forKey: bookHistoryKey)
                 prefs.synchronize()
-
                 NotificationCenter.default.post(name: .searchResultsDidReturn, object: nil)
 
-                self.dataSource = books
+                if self.pageNumber == 0 {
+                    self.dataSource = books
+                } else {
+                    self.dataSource.append(contentsOf: books)
+                }
                 self.tableView.reloadData()
                 self.showTableView()
             }, failure:  { (error) in
-                PopupView.showWithContent("No Results")
+                self.tableHeader?.endRefreshing()
+                self.tableFooter?.endRefreshing()
                 self.dataSource = []
                 self.tableView.reloadData()
+                PopupView.showWithContent("No Results")
             })
     }
 
@@ -327,7 +363,7 @@ extension SearchBookViewController: UISearchBarDelegate {
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        searchBook()
+        reloadData()
 
         var histories: [String] = []
         if let data = prefs.value(forKey: inputKey) as? Data, let saved = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [String], !saved.isEmpty {

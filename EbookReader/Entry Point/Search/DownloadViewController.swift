@@ -368,13 +368,10 @@ class DownloadViewController: UIViewController {
     }
 
     fileprivate func setStatistic() {
-        guard let bookStatistic = self.bookStatistic else {
-            return
-        }
-        ratingLabel?.text = "\(String(describing: bookStatistic.reviews ?? 0)) Ratings"
-        let rating = ceil(bookStatistic.rating ?? 0)
+        ratingLabel?.text = "\(String(describing: bookStatistic?.reviews ?? 0)) Ratings"
+        let rating = ceil(bookStatistic?.rating ?? 0)
         starImageView?.image = UIImage(named: "icon-star-\(rating)")
-        if let inReadingList = bookStatistic.inReadingList, inReadingList {
+        if let inReadingList = bookStatistic?.inReadingList, inReadingList {
             addReadingListTextLabel.text = "Remove from Reading List"
         } else {
             addReadingListTextLabel.text = "Add to Reading List"
