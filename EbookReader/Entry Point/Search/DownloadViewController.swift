@@ -64,6 +64,7 @@ class DownloadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(loadStatistic), name: .readingListDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadReviews), name: .reviewDidAdd, object: nil)
 
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.setupUI()
@@ -73,7 +74,6 @@ class DownloadViewController: UIViewController {
     fileprivate func loadData() {
         if networkStatus != .notReachable {
             loadBook()
-            loadStatistic()
             loadReviews()
         } else {
             // load local book
@@ -85,6 +85,11 @@ class DownloadViewController: UIViewController {
                 self.setObject()
             }
         }
+    }
+
+    @objc fileprivate func reloadReviews() {
+        reviewPage = 0
+        loadReviews()
     }
 
     fileprivate func loadReviews() {
@@ -138,6 +143,8 @@ class DownloadViewController: UIViewController {
             success: { (book) in
                 self.book = book
                 self.setObject()
+
+                self.loadStatistic()
             },
             failure: { (error) in
                 print(error)
@@ -368,7 +375,9 @@ class DownloadViewController: UIViewController {
     }
 
     fileprivate func setStatistic() {
-        ratingLabel?.text = "\(String(describing: bookStatistic?.reviews ?? 0)) Ratings"
+        let numberOfReviews = bookStatistic?.reviews ?? 0
+        let ratingText = numberOfReviews < 2 ? "rating" : "ratings"
+        ratingLabel?.text = "\(numberOfReviews) \(ratingText)"
         let rating = ceil(bookStatistic?.rating ?? 0)
         starImageView?.image = UIImage(named: "icon-star-\(rating)")
         if let inReadingList = bookStatistic?.inReadingList, inReadingList {

@@ -174,6 +174,7 @@ class WriteReviewView: UIView {
                 modelClass: Review.self,
                 success: { (review) in
                     self.dismiss()
+                    NotificationCenter.default.post(name: .reviewDidAdd, object: nil)
                     PopupView.showWithContent("Thanks!")
                 }, failure: nil)
         }

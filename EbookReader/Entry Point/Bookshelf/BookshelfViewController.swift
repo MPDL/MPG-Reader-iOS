@@ -224,8 +224,11 @@ class BookshelfViewController: UIViewController {
 
         let realm = try! Realm()
         books = realm.objects(Book.self).sorted(byKeyPath: "modifyDate", ascending: false)
-
         countLabel.text = "All Books (\(books.count))"
+        if searchText != "" {
+            let predicate = NSPredicate(format: "title CONTAINS[c] %@ OR abstract CONTAINS[c] %@", searchText, searchText)
+            books = realm.objects(Book.self).filter(predicate).sorted(byKeyPath: "modifyDate", ascending: false)
+        }
         collectionView.reloadData()
     }
 

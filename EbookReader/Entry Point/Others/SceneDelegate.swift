@@ -67,7 +67,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let viewController = DownloadViewController(bookId: bookId)
         DispatchQueue.main.async {
-            UIApplication.getTopViewController()?.navigationController?.pushViewController(viewController, animated: true)
+            if let top = UIApplication.getTopViewController(), top.presentingViewController != nil {
+                top.dismiss(animated: false, completion: {
+                    UIApplication.getTopViewController()?.navigationController?.popToRootViewController(animated: false)
+                    UIApplication.getTopViewController()?.navigationController?.pushViewController(viewController, animated: true)
+                })
+            } else {
+                UIApplication.getTopViewController()?.navigationController?.popToRootViewController(animated: false)
+                UIApplication.getTopViewController()?.navigationController?.pushViewController(viewController, animated: true)
+            }
         }
     }
 }

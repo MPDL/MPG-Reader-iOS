@@ -15,6 +15,7 @@ class ReadingListViewController: UIViewController {
 
     fileprivate var collectionView: UICollectionView!
     fileprivate var deleteView: UIView!
+    fileprivate var emptyView: UIView!
     fileprivate var overlayView: UIView!
     fileprivate var overlayContentView: UIView!
     fileprivate var footer: MJRefreshAutoNormalFooter!
@@ -31,7 +32,6 @@ class ReadingListViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.navigationItem.title = "My Reading List"
         self.navigationController?.navigationBar.tintColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(onEditTapped))
         self.view.backgroundColor = UIColor(hex: 0xF9F9F9)
 
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -42,6 +42,7 @@ class ReadingListViewController: UIViewController {
         collectionView.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.isHidden = true
         self.header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(reloadData))
         self.footer = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(loadMore))
         collectionView.mj_footer = footer
@@ -166,6 +167,62 @@ class ReadingListViewController: UIViewController {
             make.center.equalTo(cancelView)
         }
 
+        emptyView = UIView()
+        emptyView.isHidden = true
+        self.view.addSubview(emptyView)
+        emptyView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.view)
+            make.centerY.equalTo(self.view).offset(-50)
+        }
+        let emptyIcon = UIImageView()
+        emptyIcon.image = UIImage(named: "icon-empty-shelf")
+        emptyView.addSubview(emptyIcon)
+        emptyIcon.snp.makeConstraints { (make) in
+            make.top.left.right.equalTo(emptyView)
+            make.width.equalTo(518)
+            make.height.equalTo(372)
+        }
+        let emptyTitleLabel = UILabel()
+        emptyTitleLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        emptyTitleLabel.textColor = UIColor(hex: 0x333333)
+        emptyTitleLabel.text = "Your reading list is empty"
+        emptyView.addSubview(emptyTitleLabel)
+        emptyTitleLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(emptyIcon.snp.bottom).offset(43)
+            make.centerX.equalTo(emptyView)
+        }
+        let emptySubTitleLabel = UILabel()
+        emptySubTitleLabel.font = UIFont.systemFont(ofSize: 20)
+        emptySubTitleLabel.textColor = UIColor(hex: 0x999999)
+        emptySubTitleLabel.text = "Tap here to discover and add books."
+        emptyView.addSubview(emptySubTitleLabel)
+        emptySubTitleLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(emptyTitleLabel.snp.bottom).offset(13)
+            make.centerX.equalTo(emptyView)
+        }
+        let emptyButton = UIControl()
+        emptyButton.reactive.controlEvents(.touchUpInside).observeValues { (control) in
+            self.tabBarController?.selectedIndex = 0
+        }
+        emptyButton.layer.cornerRadius = 8
+        emptyButton.backgroundColor = UIColor(hex: 0x009FA1)
+        emptyView.addSubview(emptyButton)
+        emptyButton.snp.makeConstraints { (make) in
+            make.centerX.equalTo(emptyView)
+            make.top.equalTo(emptySubTitleLabel.snp.bottom).offset(37)
+            make.bottom.equalTo(0)
+            make.width.equalTo(220)
+            make.height.equalTo(50)
+        }
+        let emptyButtonLabel = UILabel()
+        emptyButtonLabel.text = "Get inspired"
+        emptyButtonLabel.textColor = UIColor.white
+        emptyButtonLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        emptyButton.addSubview(emptyButtonLabel)
+        emptyButtonLabel.snp.makeConstraints { (make) in
+            make.center.equalTo(emptyButton)
+        }
+
         loadData()
     }
 
@@ -195,6 +252,10 @@ class ReadingListViewController: UIViewController {
                 self.footer.endRefreshing()
                 if let pageDTO = pageDTO, let books = pageDTO.content, books.count > 0 {
                     if self.page == 0 {
+                        self.collectionView.isHidden = false
+                        self.emptyView.isHidden = true
+                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.onEditTapped))
+
                         self.books = books
                     } else {
                         self.books.append(contentsOf: books)
@@ -202,6 +263,10 @@ class ReadingListViewController: UIViewController {
                     self.collectionView.reloadData()
                 } else {
                     if self.page == 0 {
+                        self.collectionView.isHidden = true
+                        self.emptyView.isHidden = false
+                        self.navigationItem.rightBarButtonItem = nil
+
                         self.books = []
                         self.collectionView.reloadData()
                     } else {

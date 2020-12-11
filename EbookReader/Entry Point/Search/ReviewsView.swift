@@ -60,7 +60,11 @@ class ReviewsView: UIScrollView {
             make.left.equalTo(27)
         }
         let nameLabel = UILabel()
-        nameLabel.text = review.userName
+        if let userName = review.userName, userName != "" {
+            nameLabel.text = review.userName
+        } else {
+            nameLabel.text = "MPG Reader User"
+        }
         nameLabel.textColor = UIColor(hex: 0x333333)
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
         view.addSubview(nameLabel)
