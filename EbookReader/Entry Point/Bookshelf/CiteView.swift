@@ -77,7 +77,7 @@ class CiteView: UIView {
             parameters: nil,
             modelClass: CitationRS.self,
             success: { (citationRS) in
-                guard let citeList = citationRS?.citationContents?.array else {
+                guard let citeList = citationRS?.citationContents else {
                     return
                 }
                 self.setObject(citeList: citeList)
@@ -86,7 +86,7 @@ class CiteView: UIView {
             })
     }
 
-    fileprivate func setObject (citeList: [Citation]) {
+    fileprivate func setObject (citeList: [CitationContent]) {
         var last: UIView?
         for i in 0..<citeList.count {
             let citationView = generateOneCitationView(citation: citeList[i])
@@ -106,10 +106,10 @@ class CiteView: UIView {
         }
     }
 
-    fileprivate func generateOneCitationView(citation: Citation) -> UIView {
+    fileprivate func generateOneCitationView(citation: CitationContent) -> UIView {
         let view = UIView()
         let titleLabel = UILabel()
-        titleLabel.text = citation.key
+        titleLabel.text = citation.type
         titleLabel.textColor = UIColor(hex: 0x333333)
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         view.addSubview(titleLabel)
