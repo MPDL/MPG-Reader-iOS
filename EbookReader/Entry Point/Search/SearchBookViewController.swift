@@ -287,6 +287,7 @@ class SearchBookViewController: UIViewController {
             parameters: parameters,
             modelClass: [Book].self,
             success: { (books) in
+                PopupView.showLoading(false)
                 self.tableHeader?.endRefreshing()
                 self.tableFooter?.endRefreshing()
 

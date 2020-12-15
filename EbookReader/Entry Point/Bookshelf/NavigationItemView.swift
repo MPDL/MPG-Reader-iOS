@@ -153,6 +153,7 @@ class NavigationItemView: UIView {
             parameters: nil,
             modelClass: BookStatistic.self,
             success: { (bookStatistic) in
+                PopupView.showLoading(false)
                 if let reviewedByMe = bookStatistic?.reviewedByMe, reviewedByMe {
                     self.reviewView.snp.updateConstraints { (make) in
                         make.height.equalTo(0)

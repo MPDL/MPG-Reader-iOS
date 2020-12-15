@@ -35,6 +35,7 @@ class DownloadViewController: UIViewController {
     fileprivate var downloadView: UIView!
     fileprivate var shareBarButton: UIBarButtonItem!
     fileprivate var folioReader: FolioReader!
+    fileprivate var refreshHeader: MJRefreshNormalHeader?
 
     fileprivate var book: Book!
     fileprivate var bookId: String!
@@ -68,13 +69,13 @@ class DownloadViewController: UIViewController {
 
         self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.setupUI()
-        self.loadData()
+        self.reloadData()
     }
 
-    fileprivate func loadData() {
+    @objc fileprivate func reloadData() {
+        refreshHeader?.endRefreshing()
         if networkStatus != .notReachable {
             loadBook()
-            loadReviews()
         } else {
             // load local book
             let realm = try! Realm()
@@ -92,11 +93,17 @@ class DownloadViewController: UIViewController {
         loadReviews()
     }
 
+    @objc fileprivate func loadMoreReviews() {
+        reviewPage += 1
+        loadReviews()
+    }
+
     fileprivate func loadReviews() {
         NetworkManager.sharedInstance().POST(path: "rest/ebook/" + bookId + "/reviews",
             parameters: ["pageNumber": reviewPage, "pageSize": reviewPageSize],
             modelClass: PageDTO<Review>.self,
             success: { (pageDTO) in
+                PopupView.showLoading(false)
                 self.reviewFooter?.endRefreshing()
                 if let pageDTO = pageDTO, let reviews = pageDTO.content, reviews.count > 0 {
                     if self.reviewPage == 0 {
@@ -118,11 +125,6 @@ class DownloadViewController: UIViewController {
             })
     }
 
-    @objc fileprivate func loadMoreReviews() {
-        reviewPage += 1
-        loadReviews()
-    }
-
     @objc fileprivate func loadStatistic() {
         NetworkManager.sharedInstance().GET(path: "rest/ebook/" + bookId,
             parameters: nil,
@@ -130,6 +132,8 @@ class DownloadViewController: UIViewController {
             success: { (bookStatistic) in
                 self.bookStatistic = bookStatistic
                 self.setStatistic()
+
+                self.reloadReviews()
             },
             failure: { (error) in
                 print(error)
@@ -153,6 +157,9 @@ class DownloadViewController: UIViewController {
 
     fileprivate func setupUI() {
         let scrollView = UIScrollView()
+        refreshHeader = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(reloadData))
+        refreshHeader?.ignoredScrollViewContentInsetTop = 70
+        scrollView.mj_header = refreshHeader
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         scrollView.showsVerticalScrollIndicator = false
         self.view.addSubview(scrollView)
@@ -178,7 +185,7 @@ class DownloadViewController: UIViewController {
 
         titleLabel = UILabel()
         titleLabel.numberOfLines = 2
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 28)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
         titleLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
@@ -266,6 +273,7 @@ class DownloadViewController: UIViewController {
                     parameters: ["bookIds": [self.bookId]],
                     modelClass: ReadingList.self,
                     success: { (pageDTO) in
+                        PopupView.showLoading(false)
                         PopupView.showWithContent("Remove from the reading list successfully.")
                         NotificationCenter.default.post(name: .readingListDidChange, object: nil)
                     },
@@ -275,6 +283,7 @@ class DownloadViewController: UIViewController {
                     parameters: nil,
                     modelClass: ReadingList.self,
                     success: { (pageDTO) in
+                        PopupView.showLoading(false)
                         PopupView.showWithContent("Add into the reading list successfully.")
                         NotificationCenter.default.post(name: .readingListDidChange, object: nil)
                     },
@@ -510,8 +519,8 @@ class DownloadViewController: UIViewController {
             parameters: nil,
             modelClass: BookStatistic.self,
             success: { (pageDTO) in
-            },
-            failure: nil)
+                PopupView.showLoading(false)
+            }, failure: nil)
     }
 
     fileprivate func saveBook() {

@@ -248,6 +248,7 @@ class ReadingListViewController: UIViewController {
             parameters: parameters,
             modelClass: PageDTO<BookStatistic>.self,
             success: { (pageDTO) in
+                PopupView.showLoading(false)
                 self.header.endRefreshing()
                 self.footer.endRefreshing()
                 if let pageDTO = pageDTO, let books = pageDTO.content, books.count > 0 {
@@ -296,6 +297,7 @@ class ReadingListViewController: UIViewController {
             parameters: parameters,
             modelClass: ReadingList.self,
             success: { (pageDTO) in
+                PopupView.showLoading(false)
                 self.onCancelTapped()
                 PopupView.showWithContent("Remove from the reading list successfully.")
                 NotificationCenter.default.post(name: .readingListDidChange, object: nil)

@@ -77,6 +77,7 @@ class CiteView: UIView {
             parameters: nil,
             modelClass: CitationRS.self,
             success: { (citationRS) in
+                PopupView.showLoading(false)
                 guard let citeList = citationRS?.citationContents else {
                     return
                 }

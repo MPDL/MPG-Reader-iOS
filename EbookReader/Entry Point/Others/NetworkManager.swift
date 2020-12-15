@@ -50,7 +50,6 @@ class NetworkManager: AFHTTPSessionManager {
     }
 
     func successHandler<T>(response: Any?, modelClass: T.Type, success: ((T?) -> Void)?) where T: Codable {
-        PopupView.showLoading(false)
         guard let response = response as? Data else {
             return
         }

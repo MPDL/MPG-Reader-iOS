@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveSwift
 import AFNetworking
+import MJRefresh
 
 class HomeViewController: UIViewController {
 
@@ -17,6 +18,7 @@ class HomeViewController: UIViewController {
     fileprivate var readingListGalleryView: BookGalleryView!
     fileprivate var mostDownloadedGalleryView: BookGalleryView!
     fileprivate var topRatedGalleryView: BookGalleryView!
+    fileprivate var refreshHeader: MJRefreshNormalHeader!
 
     fileprivate var readingList: [BookStatistic] = []
     fileprivate var topDownloads: [BookStatistic] = []
@@ -160,6 +162,9 @@ class HomeViewController: UIViewController {
             subview.removeFromSuperview()
         }
         let scrollView = UIScrollView()
+        refreshHeader = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(reloadData))
+        refreshHeader.ignoredScrollViewContentInsetTop = 20
+        scrollView.mj_header = refreshHeader
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { (make) in
             make.edges.equalTo(view)
@@ -308,6 +313,7 @@ class HomeViewController: UIViewController {
             parameters: parameters,
             modelClass: PageDTO<BookStatistic>.self,
             success: { (pageDTO) in
+                PopupView.showLoading(false)
                 if let pageDTO = pageDTO, let bookStatisticList = pageDTO.content, bookStatisticList.count > 0 {
                     self.mostDownloadedGalleryView.snp.remakeConstraints { (make) in
                         make.left.right.equalTo(self.magazineView)
@@ -338,6 +344,7 @@ class HomeViewController: UIViewController {
             parameters: parameters,
             modelClass: PageDTO<BookStatistic>.self,
             success: { (pageDTO) in
+                PopupView.showLoading(false)
                 if let pageDTO = pageDTO, let bookStatisticList = pageDTO.content, bookStatisticList.count > 0 {
                     self.topRatedGalleryView.snp.remakeConstraints { (make) in
                         make.left.right.equalTo(self.magazineView)
@@ -370,6 +377,7 @@ class HomeViewController: UIViewController {
             parameters: parameters,
             modelClass: PageDTO<BookStatistic>.self,
             success: { (pageDTO) in
+                PopupView.showLoading(false)
                 if let pageDTO = pageDTO, let bookStatisticList = pageDTO.content, bookStatisticList.count > 0 {
                     self.readingListGalleryView.snp.remakeConstraints { (make) in
                         make.left.right.equalTo(self.magazineView)
@@ -416,12 +424,17 @@ class HomeViewController: UIViewController {
         topDownloadsPage = 0
         readingListPage = 0
 
+        readingList = []
+        topDownloads = []
+        topScores = []
+
         searchHistoryGalleryView.clear()
         readingListGalleryView.clear()
         topRatedGalleryView.clear()
         mostDownloadedGalleryView.clear()
 
         loadData()
+        refreshHeader.endRefreshing()
     }
 
 }
