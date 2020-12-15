@@ -17,31 +17,34 @@ class NetworkManager: AFHTTPSessionManager {
             return manager
         } else {
             // TODO: 切换成正式的地址
-//            networkManager = NetworkManager(baseURL: URL(string: "http://8.129.114.118:8089/"))
+            // networkManager = NetworkManager(baseURL: URL(string: "http://8.129.114.118:8089/"))
             networkManager = NetworkManager(baseURL: URL(string: "http://dev-mpgreader.mpdl.mpg.de/"))
             networkManager!.requestSerializer = AFJSONRequestSerializer()
             networkManager!.responseSerializer = AFHTTPResponseSerializer()
             if let path = Bundle.main.path(forResource: "credential", ofType: "json") {
                 do {
-                      let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                      let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                      if let jsonResult = jsonResult as? Dictionary<String, String>, let client = jsonResult["client"], let secret = jsonResult["secret"] {
+                    let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                    let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                    if let jsonResult = jsonResult as? Dictionary<String, String>, let client = jsonResult["client"], let secret = jsonResult["secret"] {
                         // TODO: 从mdm读取
                         if let managedConfigDict = UserDefaults.standard.dictionary(forKey: "com.apple.configuration.managed"){
                             let email = managedConfigDict["email"] as? String
                             let sn = managedConfigDict["sn"] as? String
                             networkManager?.requestSerializer.setValue(email, forHTTPHeaderField: "X-Email")
                             networkManager?.requestSerializer.setValue(sn, forHTTPHeaderField: "X-SN")
+                            if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                                networkManager?.requestSerializer.setValue(appVersion, forHTTPHeaderField: "X-Version")
+                            }
                             let authorization = "\(client):\(secret)".data(using: String.Encoding.utf8)!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                             networkManager?.requestSerializer.setValue("Basic \(authorization)", forHTTPHeaderField: "Authorization")
-                        }else{
-                             print("Error fetching app config values. Please make sure your device is enrolled with Workspace ONE")
+                        } else {
+                            print("Error fetching app config values. Please make sure your device is enrolled with Workspace ONE")
                         }
-                      }
-                  } catch {
-                       // handle error
-                       PopupView.showWithContent("failed to load credential file")
-                  }
+                    }
+                } catch {
+                    // handle error
+                    PopupView.showWithContent("failed to load credential file")
+                }
             } else {
                 PopupView.showWithContent("failed to load credential file")
             }
@@ -79,26 +82,26 @@ class NetworkManager: AFHTTPSessionManager {
     func GET<T>(path: String, parameters: Any?, modelClass: T.Type, success: ((T?) -> Void)?, failure: ((NSError) -> Void)?) where T: Codable {
         PopupView.showLoading(true)
         self.get(path,
-            parameters: parameters,
-            headers: nil,
-            progress: nil,
-            success: { (task, response) in
-                self.successHandler(response: response, modelClass: modelClass, success: success)
-            }, failure: { (task, error) in
-                self.errorHandler(error: error as NSError, task: task, failure: failure)
-            })
+                 parameters: parameters,
+                 headers: nil,
+                 progress: nil,
+                 success: { (task, response) in
+                    self.successHandler(response: response, modelClass: modelClass, success: success)
+                 }, failure: { (task, error) in
+                    self.errorHandler(error: error as NSError, task: task, failure: failure)
+                 })
     }
 
     func POST<T>(path: String, parameters: Any?, modelClass: T.Type, success: ((T?) -> Void)?, failure: ((NSError) -> Void)?) where T: Codable {
         PopupView.showLoading(true)
         self.post(path,
-            parameters: parameters,
-            headers: nil,
-            progress: nil,
-            success: { (task, response) in
-                self.successHandler(response: response, modelClass: modelClass, success: success)
-            }, failure: { (task, error) in
-                self.errorHandler(error: error as NSError, task: task, failure: failure)
-            })
+                  parameters: parameters,
+                  headers: nil,
+                  progress: nil,
+                  success: { (task, response) in
+                    self.successHandler(response: response, modelClass: modelClass, success: success)
+                  }, failure: { (task, error) in
+                    self.errorHandler(error: error as NSError, task: task, failure: failure)
+                  })
     }
 }

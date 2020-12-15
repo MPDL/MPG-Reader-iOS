@@ -20,10 +20,6 @@ class HomeViewController: UIViewController {
     fileprivate var topRatedGalleryView: BookGalleryView!
     fileprivate var refreshHeader: MJRefreshNormalHeader!
 
-    fileprivate var readingList: [BookStatistic] = []
-    fileprivate var topDownloads: [BookStatistic] = []
-    fileprivate var topScores: [BookStatistic] = []
-
     fileprivate var readingListPage = 0
     fileprivate var topDownloadsPage = 0
     fileprivate var topScoresPage = 0
@@ -45,6 +41,8 @@ class HomeViewController: UIViewController {
                 self.setupView()
             }
         }
+
+        checkVersion()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -55,6 +53,18 @@ class HomeViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
+    }
+
+    fileprivate func checkVersion () {
+        NetworkManager.sharedInstance().GET(path: "rest/info/version",
+            parameters: nil,
+            modelClass: Bool.self,
+            success: { (hasNewVersion) in
+                PopupView.showLoading(false)
+                if let hasNewVersion = hasNewVersion, hasNewVersion {
+                    PopupView.showWithContent("New version is available!")
+                }
+            }, failure: nil)
     }
 
     fileprivate func generateMagazineView(image: UIImage, title: String, url: String) -> UIView {
@@ -267,7 +277,7 @@ class HomeViewController: UIViewController {
             make.height.equalTo(0)
         }
 
-        loadData()
+        reloadData()
     }
 
     @objc fileprivate func loadHistoryBooks() {
@@ -295,6 +305,7 @@ class HomeViewController: UIViewController {
                 bookStatistic.bookId = history.id
                 bookStatisticList.append(bookStatistic)
             }
+            searchHistoryGalleryView.clear()
             searchHistoryGalleryView.appendBooks(books: bookStatisticList)
         } else {
             searchHistoryGalleryView.snp.remakeConstraints { (make) in
@@ -318,6 +329,9 @@ class HomeViewController: UIViewController {
                     self.mostDownloadedGalleryView.snp.remakeConstraints { (make) in
                         make.left.right.equalTo(self.magazineView)
                         make.top.equalTo(self.readingListGalleryView.snp.bottom)
+                    }
+                    if self.topDownloadsPage == 0 {
+                        self.mostDownloadedGalleryView.clear()
                     }
                     self.mostDownloadedGalleryView.appendBooks(books: bookStatisticList)
                     self.view.layoutIfNeeded()
@@ -351,6 +365,9 @@ class HomeViewController: UIViewController {
                         make.top.equalTo(self.mostDownloadedGalleryView.snp.bottom)
                         make.bottom.equalTo(0)
                     }
+                    if self.topScoresPage == 0 {
+                        self.topRatedGalleryView.clear()
+                    }
                     self.topRatedGalleryView.appendBooks(books: bookStatisticList)
                     self.view.layoutIfNeeded()
                 } else if self.topScoresPage == 0 {
@@ -382,6 +399,9 @@ class HomeViewController: UIViewController {
                     self.readingListGalleryView.snp.remakeConstraints { (make) in
                         make.left.right.equalTo(self.magazineView)
                         make.top.equalTo(self.searchHistoryGalleryView.snp.bottom)
+                    }
+                    if self.readingListPage == 0 {
+                        self.readingListGalleryView.clear()
                     }
                     self.readingListGalleryView.appendBooks(books: bookStatisticList)
                     self.view.layoutIfNeeded()
@@ -423,10 +443,6 @@ class HomeViewController: UIViewController {
         topScoresPage = 0
         topDownloadsPage = 0
         readingListPage = 0
-
-        readingList = []
-        topDownloads = []
-        topScores = []
 
         searchHistoryGalleryView.clear()
         readingListGalleryView.clear()
