@@ -62,7 +62,7 @@ class HomeViewController: UIViewController {
             success: { (hasNewVersion) in
                 PopupView.showLoading(false)
                 if let hasNewVersion = hasNewVersion, hasNewVersion {
-                    PopupView.showWithContent("New version is available!")
+                    PopupView.showWithContent("Please update your MPG Reader to the newest version!")
                 }
             }, failure: nil)
     }
@@ -236,13 +236,13 @@ class HomeViewController: UIViewController {
             make.left.equalTo(nyMagazineView.snp.right)
             make.width.equalTo(160)
         }
-        let fazMagazineView = generateMagazineView(image: UIImage(named: "magazine-faz")!, title: "FAZ", url: "https://www.faz.net/")
-        magazineContentView.addSubview(fazMagazineView)
-        fazMagazineView.snp.makeConstraints { (make) in
-            make.top.bottom.right.equalTo(0)
-            make.left.equalTo(prMagazineView.snp.right)
-            make.width.equalTo(160)
-        }
+//        let fazMagazineView = generateMagazineView(image: UIImage(named: "magazine-faz")!, title: "FAZ", url: "https://www.faz.net/")
+//        magazineContentView.addSubview(fazMagazineView)
+//        fazMagazineView.snp.makeConstraints { (make) in
+//            make.top.bottom.right.equalTo(0)
+//            make.left.equalTo(prMagazineView.snp.right)
+//            make.width.equalTo(160)
+//        }
         
         searchHistoryGalleryView = BookGalleryView(title: "SEARCH HISTORY", galleryType: GalleryType.searchHistory, delegate: self)
         contentView.addSubview(searchHistoryGalleryView)
