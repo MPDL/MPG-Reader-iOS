@@ -278,12 +278,15 @@ class SearchBookViewController: UIViewController {
     }
 
     fileprivate func searchBook() {
+        guard let keyword = self.searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return
+        }
         PopupView.showLoading(true)
         let parameters = [
             "pageSize": pageSize,
             "pageNumber": pageNumber
         ]
-        NetworkManager.sharedInstance().POST(path: "rest/ebook/search?keyword=\(self.searchText)",
+        NetworkManager.sharedInstance().POST(path: "rest/ebook/search?keyword=\(keyword)",
             parameters: parameters,
             modelClass: [Book].self,
             success: { (books) in
