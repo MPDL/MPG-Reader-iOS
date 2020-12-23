@@ -27,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      if (oldSchemaVersion < 3) {
                         migration.enumerateObjects(ofType: Book.className()) { (oldObject, newObject) in
                             newObject?["pdf"] = oldObject?["isPdf"]
-                            newObject?["url"] = oldObject?["doi"]
                             newObject?["abstract"] = oldObject?["abs"]
                         }
                      }
