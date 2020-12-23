@@ -24,7 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let config = Realm.Configuration(
              schemaVersion: 3,
              migrationBlock: { migration, oldSchemaVersion in
-                     if (oldSchemaVersion < 3) {}
+                     if (oldSchemaVersion < 3) {
+                        migration.enumerateObjects(ofType: Book.className()) { (oldObject, newObject) in
+                            newObject?["pdf"] = oldObject?["isPdf"]
+                            newObject?["url"] = oldObject?["doi"]
+                            newObject?["abstract"] = oldObject?["abs"]
+                        }
+                     }
              })
         Realm.Configuration.defaultConfiguration = config
         Bugly.start(withAppId: "497035eca0")

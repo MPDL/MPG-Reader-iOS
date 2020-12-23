@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0C000DF92553982E006C36B9 /* block-ads.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C000DF82553982E006C36B9 /* block-ads.json */; };
-		0C1AB9AF256DEB240089B481 /* credential.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C1AB9AE256DEB240089B481 /* credential.json */; };
 		0C1AB9B7256DFBEF0089B481 /* BookStatistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1AB9B6256DFBEF0089B481 /* BookStatistic.swift */; };
 		0C1AB9BA256DFC840089B481 /* BaseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1AB9B9256DFC840089B481 /* BaseDTO.swift */; };
 		0C1AB9BD256DFDCB0089B481 /* PageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1AB9BC256DFDCB0089B481 /* PageDTO.swift */; };
+		0C20FFBE2592D5F700D82968 /* credential.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C20FFBD2592D5F700D82968 /* credential.json */; };
 		0C48141E2570943C00964E83 /* CountDownLatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C48141D2570943C00964E83 /* CountDownLatch.swift */; };
 		0C4ED06B245953D100226AF5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */; };
 		0C4ED06E2459671E00226AF5 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */; };
@@ -64,10 +64,10 @@
 
 /* Begin PBXFileReference section */
 		0C000DF82553982E006C36B9 /* block-ads.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-ads.json"; sourceTree = SOURCE_ROOT; };
-		0C1AB9AE256DEB240089B481 /* credential.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = credential.json; sourceTree = SOURCE_ROOT; };
 		0C1AB9B6256DFBEF0089B481 /* BookStatistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStatistic.swift; sourceTree = "<group>"; };
 		0C1AB9B9256DFC840089B481 /* BaseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDTO.swift; sourceTree = "<group>"; };
 		0C1AB9BC256DFDCB0089B481 /* PageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDTO.swift; sourceTree = "<group>"; };
+		0C20FFBD2592D5F700D82968 /* credential.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = credential.json; path = ../../../../Desktop/credential.json; sourceTree = "<group>"; };
 		0C48141D2570943C00964E83 /* CountDownLatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownLatch.swift; sourceTree = "<group>"; };
 		0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -273,7 +273,7 @@
 		0CC4DDE2243C58A100FB792E /* EbookReader */ = {
 			isa = PBXGroup;
 			children = (
-				0C1AB9AE256DEB240089B481 /* credential.json */,
+				0C20FFBD2592D5F700D82968 /* credential.json */,
 				0C000DF82553982E006C36B9 /* block-ads.json */,
 				0C7B4030243EE9D4009D6513 /* Entry Point */,
 			);
@@ -363,7 +363,7 @@
 				0CC4DDF2243C58A200FB792E /* LaunchScreen.storyboard in Resources */,
 				0C7B4032243EE9F5009D6513 /* Default-568h@2x.png in Resources */,
 				0CC4DDEF243C58A200FB792E /* Assets.xcassets in Resources */,
-				0C1AB9AF256DEB240089B481 /* credential.json in Resources */,
+				0C20FFBE2592D5F700D82968 /* credential.json in Resources */,
 				0CC4DDED243C58A100FB792E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -637,7 +637,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.5;
-				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.qa.reader;
+				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.mpgreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -663,7 +663,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.5;
-				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.qa.reader;
+				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.mpgreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
