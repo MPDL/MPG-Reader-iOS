@@ -232,7 +232,7 @@ class HomeViewController: UIViewController {
         let prMagazineView = generateMagazineView(image: UIImage(named: "magazine-pr")!, title: "PressReader", url: "https://www.pressreader.com/catalog/")
         magazineContentView.addSubview(prMagazineView)
         prMagazineView.snp.makeConstraints { (make) in
-            make.top.bottom.equalTo(0)
+            make.top.bottom.right.equalTo(0)
             make.left.equalTo(nyMagazineView.snp.right)
             make.width.equalTo(160)
         }
