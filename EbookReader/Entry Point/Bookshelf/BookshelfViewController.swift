@@ -429,7 +429,10 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
         selectedBook = book
         let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
         let path = paths[0] + "/" + book.id
+        //todo: remove alert
         if book.pdf {
+            alertBookPath(path:path, type:"pdf")
+            PopupView.showWithContent(path)
             let url = URL(fileURLWithPath: path)
             let pdfReaderViewController = PdfReaderViewController(url: url, book: book)
             pdfReaderViewController.delegate = self
@@ -441,6 +444,8 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
                 self.navigationController?.pushViewController(downloadViewController, animated: true)
             }
         } else {
+            alertBookPath(path:path, type:"epub")
+            PopupView.showWithContent(path)
             let config = FolioReaderConfig()
             config.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             config.menuTextColorSelected = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
@@ -521,6 +526,20 @@ extension BookshelfViewController: NavigationItemDelegate {
                 }
                 self.folioReader.close()
                 break
+        }
+    }
+
+    private func alertBookPath(path:String?, type:String?) {
+        let title: String? = type
+        let message: String? = path
+        let alertController = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: { (action) in
+
+        }))
+        DispatchQueue.main.async { [unowned self] in
+            self.view.window?.rootViewController?.present(alertController, animated: true, completion: {
+
+            })
         }
     }
 }
