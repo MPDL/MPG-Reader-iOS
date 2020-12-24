@@ -429,7 +429,7 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
         selectedBook = book
         let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
         let path = paths[0] + "/" + book.id
-        if book.pdf {
+        if book.pdf || book.downloadUrl.contains(".pdf") {
             let url = URL(fileURLWithPath: path)
             let pdfReaderViewController = PdfReaderViewController(url: url, book: book)
             pdfReaderViewController.delegate = self

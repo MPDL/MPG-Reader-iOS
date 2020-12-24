@@ -451,7 +451,7 @@ class DownloadViewController: UIViewController {
     }
 
     @objc func onOpenBookTapped() {
-        if book.pdf {
+        if book.pdf || book.downloadUrl.contains(".pdf") {
             let url = URL(fileURLWithPath: path)
             let pdfReaderViewController = PdfReaderViewController(url: url, book: book)
             self.present(pdfReaderViewController, animated: true, completion: nil)
