@@ -432,7 +432,7 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
         //todo: remove alert
         if book.pdf {
             alertBookPath(path:path, type:"pdf")
-            PopupView.showWithContent(path)
+            PopupView.showWithContent("pdf")
             let url = URL(fileURLWithPath: path)
             let pdfReaderViewController = PdfReaderViewController(url: url, book: book)
             pdfReaderViewController.delegate = self
@@ -445,7 +445,7 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
             }
         } else {
             alertBookPath(path:path, type:"epub")
-            PopupView.showWithContent(path)
+            PopupView.showWithContent("epub")
             let config = FolioReaderConfig()
             config.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
             config.menuTextColorSelected = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
