@@ -208,7 +208,7 @@ class HomeViewController: UIViewController {
             make.height.equalTo(1)
         }
         let titleLabel = UILabel()
-        titleLabel.text = "MAGAZINES AND NEWSPAPER"
+        titleLabel.text = "MAGAZINES AND NEWSPAPERS"
         titleLabel.textColor = UIColor(hex: 0x999999)
         magazineView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
@@ -232,7 +232,7 @@ class HomeViewController: UIViewController {
         let prMagazineView = generateMagazineView(image: UIImage(named: "magazine-pr")!, title: "PressReader", url: "https://www.pressreader.com/catalog/")
         magazineContentView.addSubview(prMagazineView)
         prMagazineView.snp.makeConstraints { (make) in
-            make.top.bottom.right.equalTo(0)
+            make.top.bottom.equalTo(0)
             make.left.equalTo(nyMagazineView.snp.right)
             make.width.equalTo(160)
         }
@@ -243,6 +243,22 @@ class HomeViewController: UIViewController {
 //            make.left.equalTo(prMagazineView.snp.right)
 //            make.width.equalTo(160)
 //        }
+
+        let szMagazineView = generateMagazineView(image: UIImage(named: "magazine-sz")!, title: "SZ", url: "https://www.sueddeutsche.de/")
+        magazineContentView.addSubview(szMagazineView)
+        szMagazineView.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(0)
+            make.left.equalTo(prMagazineView.snp.right)
+            make.width.equalTo(160)
+        }
+
+        let zeitMagazineView = generateMagazineView(image: UIImage(named: "magazine-zeit")!, title: "Zeit Online", url: "https://www.zeit.de/index/")
+        magazineContentView.addSubview(zeitMagazineView)
+        zeitMagazineView.snp.makeConstraints { (make) in
+            make.top.bottom.right.equalTo(0)
+            make.left.equalTo(szMagazineView.snp.right)
+            make.width.equalTo(160)
+        }
         
         searchHistoryGalleryView = BookGalleryView(title: "SEARCH HISTORY", galleryType: GalleryType.searchHistory, delegate: self)
         contentView.addSubview(searchHistoryGalleryView)
