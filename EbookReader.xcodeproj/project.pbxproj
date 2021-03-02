@@ -7,57 +7,92 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C000DF92553982E006C36B9 /* block-ads.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C000DF82553982E006C36B9 /* block-ads.json */; };
+		0C1AB9B7256DFBEF0089B481 /* BookStatistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1AB9B6256DFBEF0089B481 /* BookStatistic.swift */; };
+		0C1AB9BA256DFC840089B481 /* BaseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1AB9B9256DFC840089B481 /* BaseDTO.swift */; };
+		0C1AB9BD256DFDCB0089B481 /* PageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1AB9BC256DFDCB0089B481 /* PageDTO.swift */; };
+		0C48141E2570943C00964E83 /* CountDownLatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C48141D2570943C00964E83 /* CountDownLatch.swift */; };
 		0C4ED06B245953D100226AF5 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */; };
 		0C4ED06E2459671E00226AF5 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */; };
 		0C4ED0702459736A00226AF5 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED06F2459736A00226AF5 /* Queue.swift */; };
 		0C4ED0722459766B00226AF5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED0712459766B00226AF5 /* Constants.swift */; };
-		0C4ED078245986CB00226AF5 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED077245986CB00226AF5 /* ThirdViewController.swift */; };
+		0C4ED078245986CB00226AF5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4ED077245986CB00226AF5 /* ProfileViewController.swift */; };
 		0C60B371244FF43A00383E94 /* PdfSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */; };
+		0C6DE00E25806CC700982982 /* Bugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6DE00D25806CC700982982 /* Bugly.framework */; };
+		0C6DE01125806CDF00982982 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6DE01025806CDF00982982 /* SystemConfiguration.framework */; };
+		0C6DE01325806CE800982982 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6DE01225806CE800982982 /* Security.framework */; };
+		0C6DE01525806CF500982982 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6DE01425806CF500982982 /* libz.tbd */; };
+		0C6DE01825806D0400982982 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6DE01725806D0400982982 /* libc++.tbd */; };
 		0C7B4024243EB8AB009D6513 /* SearchBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */; };
 		0C7B4026243EBB4F009D6513 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */; };
 		0C7B4028243ED120009D6513 /* PdfReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */; };
 		0C7B402A243EE061009D6513 /* UIViewController+Present.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B4029243EE061009D6513 /* UIViewController+Present.swift */; };
 		0C7B402C243EE204009D6513 /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B402B243EE204009D6513 /* DispatchQueue.swift */; };
-		0C7B402E243EE6F2009D6513 /* UIApplication+SelfAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B402D243EE6F2009D6513 /* UIApplication+SelfAware.swift */; };
 		0C7B4032243EE9F5009D6513 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C7B4031243EE9F5009D6513 /* Default-568h@2x.png */; };
+		0C95B2152575E5D700362F25 /* Application+Top.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C95B2142575E5D700362F25 /* Application+Top.swift */; };
 		0C9C224F244FE5DD009A403B /* PdfOutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */; };
+		0CAE3F9F256F4C9D00093B08 /* Int+DateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE3F9E256F4C9D00093B08 /* Int+DateString.swift */; };
+		0CAE3FA2256F4FBC00093B08 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE3FA1256F4FBC00093B08 /* File.swift */; };
 		0CC4DDE4243C58A100FB792E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC4DDE3243C58A100FB792E /* AppDelegate.swift */; };
 		0CC4DDE6243C58A100FB792E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC4DDE5243C58A100FB792E /* SceneDelegate.swift */; };
-		0CC4DDE8243C58A100FB792E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC4DDE7243C58A100FB792E /* FirstViewController.swift */; };
-		0CC4DDEA243C58A100FB792E /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC4DDE9243C58A100FB792E /* SecondViewController.swift */; };
+		0CC4DDEA243C58A100FB792E /* BookshelfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC4DDE9243C58A100FB792E /* BookshelfViewController.swift */; };
 		0CC4DDED243C58A100FB792E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CC4DDEB243C58A100FB792E /* Main.storyboard */; };
 		0CC4DDEF243C58A200FB792E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CC4DDEE243C58A200FB792E /* Assets.xcassets */; };
 		0CC4DDF2243C58A200FB792E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0CC4DDF0243C58A200FB792E /* LaunchScreen.storyboard */; };
 		0CCCDBFB24514E33004B2C5A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */; };
 		0CCCDBFD24516266004B2C5A /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDBFC24516266004B2C5A /* Book.swift */; };
 		0CCCDC012451974F004B2C5A /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCCDC002451974F004B2C5A /* PopupView.swift */; };
+		0CE636C325539F9B00997057 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE636C225539F9B00997057 /* HomeViewController.swift */; };
+		0CE636C62553A02800997057 /* BookGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE636C52553A02700997057 /* BookGalleryView.swift */; };
+		0CEE12B72554DE9B0018F1C6 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE12B62554DE9B0018F1C6 /* Review.swift */; };
+		0CEE12BB2554E02D0018F1C6 /* ReviewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE12BA2554E02D0018F1C6 /* ReviewsView.swift */; };
+		0CEE12BE2554E9800018F1C6 /* ReadingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE12BD2554E9800018F1C6 /* ReadingListViewController.swift */; };
+		0CEE13032554F7590018F1C6 /* NavigationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE13022554F7590018F1C6 /* NavigationItemView.swift */; };
+		0CEE1306255527880018F1C6 /* WriteReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE1305255527880018F1C6 /* WriteReviewView.swift */; };
+		0CEE130925552DC40018F1C6 /* CiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE130825552DC40018F1C6 /* CiteView.swift */; };
+		0CEE130C255531F40018F1C6 /* Citation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEE130B255531F40018F1C6 /* Citation.swift */; };
+		0CEECCA7255E1BC400AA9F24 /* Notification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEECCA6255E1BC400AA9F24 /* Notification+Name.swift */; };
 		0CF67A0D24693E1C006A9AFD /* WebviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */; };
 		0CF67A0F24696CAF006A9AFD /* UIImage+Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A0E24696CAF006A9AFD /* UIImage+Draw.swift */; };
 		0CF67A1124698A9D006A9AFD /* PdfSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF67A1024698A9D006A9AFD /* PdfSearchTableViewCell.swift */; };
+		0CF79D1E2553C96D004A9D20 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF79D1D2553C96D004A9D20 /* UIColor+Hex.swift */; };
+		0CFAF4F2255931C100CA475C /* TTTAttributedLabel+More.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFAF4F1255931C100CA475C /* TTTAttributedLabel+More.swift */; };
 		2E345A22252DF00A00DD5FD8 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E345A21252DF00A00DD5FD8 /* UIApplication.swift */; };
+		2EDA9B7C2594AAA400BE5C0B /* credential.json in Resources */ = {isa = PBXBuildFile; fileRef = 2EDA9B7B2594AAA400BE5C0B /* credential.json */; };
 		7CE201AF1FEE885DC6B88B08 /* Pods_EbookReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C000DF82553982E006C36B9 /* block-ads.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-ads.json"; sourceTree = SOURCE_ROOT; };
+		0C1AB9B6256DFBEF0089B481 /* BookStatistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStatistic.swift; sourceTree = "<group>"; };
+		0C1AB9B9256DFC840089B481 /* BaseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDTO.swift; sourceTree = "<group>"; };
+		0C1AB9BC256DFDCB0089B481 /* PageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDTO.swift; sourceTree = "<group>"; };
+		0C48141D2570943C00964E83 /* CountDownLatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownLatch.swift; sourceTree = "<group>"; };
 		0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
 		0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
 		0C4ED06F2459736A00226AF5 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		0C4ED0712459766B00226AF5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		0C4ED077245986CB00226AF5 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
+		0C4ED077245986CB00226AF5 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfSearchViewController.swift; sourceTree = "<group>"; };
+		0C6DE00D25806CC700982982 /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bugly.framework; sourceTree = "<group>"; };
+		0C6DE01025806CDF00982982 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0C6DE01225806CE800982982 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		0C6DE01425806CF500982982 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		0C6DE01725806D0400982982 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBookViewController.swift; sourceTree = "<group>"; };
 		0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
 		0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfReaderViewController.swift; sourceTree = "<group>"; };
 		0C7B4029243EE061009D6513 /* UIViewController+Present.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Present.swift"; sourceTree = "<group>"; };
 		0C7B402B243EE204009D6513 /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
-		0C7B402D243EE6F2009D6513 /* UIApplication+SelfAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+SelfAware.swift"; sourceTree = "<group>"; };
 		0C7B4031243EE9F5009D6513 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		0C95B2142575E5D700362F25 /* Application+Top.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Application+Top.swift"; sourceTree = "<group>"; };
 		0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfOutlineViewController.swift; sourceTree = "<group>"; };
+		0CAE3F9E256F4C9D00093B08 /* Int+DateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+DateString.swift"; sourceTree = "<group>"; };
+		0CAE3FA1256F4FBC00093B08 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		0CC4DDE0243C58A100FB792E /* EbookReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EbookReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CC4DDE3243C58A100FB792E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0CC4DDE5243C58A100FB792E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		0CC4DDE7243C58A100FB792E /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		0CC4DDE9243C58A100FB792E /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		0CC4DDE9243C58A100FB792E /* BookshelfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfViewController.swift; sourceTree = "<group>"; };
 		0CC4DDEC243C58A100FB792E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0CC4DDEE243C58A200FB792E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0CC4DDF1243C58A200FB792E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -65,10 +100,23 @@
 		0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0CCCDBFC24516266004B2C5A /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		0CCCDC002451974F004B2C5A /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
+		0CE636C225539F9B00997057 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		0CE636C52553A02700997057 /* BookGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookGalleryView.swift; sourceTree = "<group>"; };
+		0CEE12B62554DE9B0018F1C6 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		0CEE12BA2554E02D0018F1C6 /* ReviewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsView.swift; sourceTree = "<group>"; };
+		0CEE12BD2554E9800018F1C6 /* ReadingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListViewController.swift; sourceTree = "<group>"; };
+		0CEE13022554F7590018F1C6 /* NavigationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItemView.swift; sourceTree = "<group>"; };
+		0CEE1305255527880018F1C6 /* WriteReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteReviewView.swift; sourceTree = "<group>"; };
+		0CEE130825552DC40018F1C6 /* CiteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CiteView.swift; sourceTree = "<group>"; };
+		0CEE130B255531F40018F1C6 /* Citation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Citation.swift; sourceTree = "<group>"; };
+		0CEECCA6255E1BC400AA9F24 /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Name.swift"; sourceTree = "<group>"; };
 		0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewViewController.swift; sourceTree = "<group>"; };
 		0CF67A0E24696CAF006A9AFD /* UIImage+Draw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Draw.swift"; sourceTree = "<group>"; };
 		0CF67A1024698A9D006A9AFD /* PdfSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfSearchTableViewCell.swift; sourceTree = "<group>"; };
+		0CF79D1D2553C96D004A9D20 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		0CFAF4F1255931C100CA475C /* TTTAttributedLabel+More.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TTTAttributedLabel+More.swift"; sourceTree = "<group>"; };
 		2E345A21252DF00A00DD5FD8 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		2EDA9B7B2594AAA400BE5C0B /* credential.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = credential.json; sourceTree = SOURCE_ROOT; };
 		35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EbookReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B92D47838628A7C53AE35DA /* Pods-EbookReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbookReader.release.xcconfig"; path = "Target Support Files/Pods-EbookReader/Pods-EbookReader.release.xcconfig"; sourceTree = "<group>"; };
 		C14047676556C2FD068D2F2B /* Pods-EbookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbookReader.debug.xcconfig"; path = "Target Support Files/Pods-EbookReader/Pods-EbookReader.debug.xcconfig"; sourceTree = "<group>"; };
@@ -79,6 +127,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C6DE01825806D0400982982 /* libc++.tbd in Frameworks */,
+				0C6DE01525806CF500982982 /* libz.tbd in Frameworks */,
+				0C6DE01325806CE800982982 /* Security.framework in Frameworks */,
+				0C6DE01125806CDF00982982 /* SystemConfiguration.framework in Frameworks */,
+				0C6DE00E25806CC700982982 /* Bugly.framework in Frameworks */,
 				7CE201AF1FEE885DC6B88B08 /* Pods_EbookReader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,9 +139,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C1AB9B1256DFAE60089B481 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0CCCDBFC24516266004B2C5A /* Book.swift */,
+				0C4ED06F2459736A00226AF5 /* Queue.swift */,
+				0CEE12B62554DE9B0018F1C6 /* Review.swift */,
+				0CEE130B255531F40018F1C6 /* Citation.swift */,
+				0C1AB9B6256DFBEF0089B481 /* BookStatistic.swift */,
+				0C1AB9B9256DFC840089B481 /* BaseDTO.swift */,
+				0C1AB9BC256DFDCB0089B481 /* PageDTO.swift */,
+				0CAE3FA1256F4FBC00093B08 /* File.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		0C1AD32EF8FBDDD647526411 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0C6DE01725806D0400982982 /* libc++.tbd */,
+				0C6DE01425806CF500982982 /* libz.tbd */,
+				0C6DE01225806CE800982982 /* Security.framework */,
+				0C6DE01025806CDF00982982 /* SystemConfiguration.framework */,
+				0C6DE00D25806CC700982982 /* Bugly.framework */,
 				35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */,
 			);
 			name = Frameworks;
@@ -97,10 +170,10 @@
 		0C4ED07324597AE400226AF5 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				0CC4DDE7243C58A100FB792E /* FirstViewController.swift */,
 				0C7B4023243EB8AB009D6513 /* SearchBookViewController.swift */,
 				0C4ED06A245953D100226AF5 /* BookTableViewCell.swift */,
 				0C7B4025243EBB4F009D6513 /* DownloadViewController.swift */,
+				0CEE12BA2554E02D0018F1C6 /* ReviewsView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -108,12 +181,15 @@
 		0C4ED07424597B1900226AF5 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
-				0CC4DDE9243C58A100FB792E /* SecondViewController.swift */,
+				0CC4DDE9243C58A100FB792E /* BookshelfViewController.swift */,
 				0C7B4027243ED120009D6513 /* PdfReaderViewController.swift */,
 				0C4ED06D2459671E00226AF5 /* BookCollectionViewCell.swift */,
 				0C9C224E244FE5DD009A403B /* PdfOutlineViewController.swift */,
 				0C60B370244FF43A00383E94 /* PdfSearchViewController.swift */,
 				0CF67A1024698A9D006A9AFD /* PdfSearchTableViewCell.swift */,
+				0CEE13022554F7590018F1C6 /* NavigationItemView.swift */,
+				0CEE1305255527880018F1C6 /* WriteReviewView.swift */,
+				0CEE130825552DC40018F1C6 /* CiteView.swift */,
 			);
 			path = Bookshelf;
 			sourceTree = "<group>";
@@ -121,16 +197,16 @@
 		0C4ED07524597B7500226AF5 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				0C1AB9B1256DFAE60089B481 /* Model */,
 				0C7B402F243EE9BF009D6513 /* Extension */,
 				0CCCDC002451974F004B2C5A /* PopupView.swift */,
 				0CCCDBFA24514E33004B2C5A /* NetworkManager.swift */,
-				0CCCDBFC24516266004B2C5A /* Book.swift */,
-				0C4ED06F2459736A00226AF5 /* Queue.swift */,
 				0C4ED0712459766B00226AF5 /* Constants.swift */,
 				0CC4DDE3243C58A100FB792E /* AppDelegate.swift */,
 				0CC4DDE5243C58A100FB792E /* SceneDelegate.swift */,
 				0CC4DDEB243C58A100FB792E /* Main.storyboard */,
 				0CC4DDF0243C58A200FB792E /* LaunchScreen.storyboard */,
+				0C48141D2570943C00964E83 /* CountDownLatch.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -138,8 +214,9 @@
 		0C4ED076245986B500226AF5 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				0C4ED077245986CB00226AF5 /* ThirdViewController.swift */,
+				0C4ED077245986CB00226AF5 /* ProfileViewController.swift */,
 				0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */,
+				0CEE12BD2554E9800018F1C6 /* ReadingListViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -149,9 +226,13 @@
 			children = (
 				0C7B4029243EE061009D6513 /* UIViewController+Present.swift */,
 				0C7B402B243EE204009D6513 /* DispatchQueue.swift */,
-				0C7B402D243EE6F2009D6513 /* UIApplication+SelfAware.swift */,
 				0CF67A0E24696CAF006A9AFD /* UIImage+Draw.swift */,
 				2E345A21252DF00A00DD5FD8 /* UIApplication.swift */,
+				0CF79D1D2553C96D004A9D20 /* UIColor+Hex.swift */,
+				0CFAF4F1255931C100CA475C /* TTTAttributedLabel+More.swift */,
+				0CEECCA6255E1BC400AA9F24 /* Notification+Name.swift */,
+				0CAE3F9E256F4C9D00093B08 /* Int+DateString.swift */,
+				0C95B2142575E5D700362F25 /* Application+Top.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -160,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				0C4ED07524597B7500226AF5 /* Others */,
+				0CE636C125539F6B00997057 /* Home */,
 				0C4ED07324597AE400226AF5 /* Search */,
 				0C4ED07424597B1900226AF5 /* Bookshelf */,
 				0C4ED076245986B500226AF5 /* Profile */,
@@ -191,9 +273,20 @@
 		0CC4DDE2243C58A100FB792E /* EbookReader */ = {
 			isa = PBXGroup;
 			children = (
+				2EDA9B7B2594AAA400BE5C0B /* credential.json */,
+				0C000DF82553982E006C36B9 /* block-ads.json */,
 				0C7B4030243EE9D4009D6513 /* Entry Point */,
 			);
 			path = EbookReader;
+			sourceTree = "<group>";
+		};
+		0CE636C125539F6B00997057 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				0CE636C225539F9B00997057 /* HomeViewController.swift */,
+				0CE636C52553A02700997057 /* BookGalleryView.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		723F1E603091B85B1BA7F9AB /* Pods */ = {
@@ -217,6 +310,7 @@
 				0CC4DDDD243C58A100FB792E /* Frameworks */,
 				0CC4DDDE243C58A100FB792E /* Resources */,
 				31402CCCAAE3AE0876F45655 /* [CP] Embed Pods Frameworks */,
+				0C6DE0532580CAE800982982 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -234,7 +328,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = CN;
 				TargetAttributes = {
 					0CC4DDDF243C58A100FB792E = {
@@ -265,9 +359,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C000DF92553982E006C36B9 /* block-ads.json in Resources */,
 				0CC4DDF2243C58A200FB792E /* LaunchScreen.storyboard in Resources */,
 				0C7B4032243EE9F5009D6513 /* Default-568h@2x.png in Resources */,
 				0CC4DDEF243C58A200FB792E /* Assets.xcassets in Resources */,
+				2EDA9B7C2594AAA400BE5C0B /* credential.json in Resources */,
 				0CC4DDED243C58A100FB792E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,6 +371,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0C6DE0532580CAE800982982 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n#\n# Copyright 2016 Bugly, Tencent. All rights reserved.\n#\n# V1.4.0\n#\n# 2016.08.03\n#\n#\n#\n######################################################\n# 1. 脚本集成到Xcode工程的Target\n######################################################\n#\n# --- Copy the SCRIPT to the Run Script of Build Phases in the Xcode project ---\n#\n# #\nBUGLY_APP_ID=\"497035eca0\"\n# #\nBUGLY_APP_KEY=\"e89571da-8b17-4bcd-815a-c8be05c3eaef\"\n# #\nBUNDLE_IDENTIFIER=\"de.mpg.mpdl.qa.reader\"\n# #\nUPLOAD_DSYM_ONLY=1\n#\n# # 脚本默认配置的版本格式为CFBundleShortVersionString(CFBundleVersion),  如果你修改默认的版本格式, 请设置此变量, 如果不想修改, 请忽略此设置\n# CUSTOMIZED_APP_VERSION=\"\"\n#\n# # Debug模式编译是否上传，1＝上传 0＝不上传，默认不上传\nUPLOAD_DEBUG_SYMBOLS=1\n#\n# # 模拟器编译是否上传，1=上传 0=不上传，默认不上传\n# UPLOAD_SIMULATOR_SYMBOLS=0\n#\n# #只有Archive操作时上传, 1=支持Archive上传 0=所有Release模式编译都上传\n# UPLOAD_ARCHIVE_ONLY=0\n#\n# #\n# source dSYMUpload.sh\n#\n# --- END OF SCRIPT ---\n#\n#\n#\n#\n#######################################################\n# 2. 脚本根据输入参数处理\n#######################################################\n#\n# #命令行下输入应用基本信息, .dSYM文件的父目录路径, 输出文件目录即可\n#\n# sh dSYMUpload.sh <bugly_app_id> <bugly_app_key> <app_bundle_identifier> <app_version> <dSYM_src_dir> <bSYMBOL_dest_dir>\n#\n# #\n#\n# #注意:\n# # 1. dSYMUpload.sh会调用buglySymboliOS.jar进行.dSYM解析，所以依赖Java运行时环境\n# # 2. dSYMUpload.sh和buglySymboliOS.jar的文件路径需一致\n#\n#\n\n#\n# --- CONTENT OF SCRIPT ---\n#\n\n# Bugly服务域名\nBUGLY_DSYM_UPLOAD_DOMAIN=\"api.bugly.qq.com\"\n\n# 注意jar工具的路径跟dSYMUpload.sh脚本路径一致, 请务必保证jar路径的正确性\nBUGLY_SYMBOL_JAR_PATH=\"dsymtool/buglySymboliOS.jar\"\n# 查找添加到系统目录的jar工具\nif [ ! -f \"${BUGLY_SYMBOL_JAR_PATH}\" ]; then\n    BUGLY_SYMBOL_JAR_PATH=\"$HOME/bin/buglySymboliOS.jar\"\nfi\n\n# 打印错误信息\nfunction exitWithMessage(){\n    echo \"--------------------------------\"\n    echo \"${1}\"\n    echo \"--------------------------------\"\n    exit ${2}\n}\n\n# 上传bSYMBOL文件\nfunction dSYMUpload() {\n    P_APP_ID=\"$1\"\n    P_APP_KEY=\"$2\"\n    P_APP_BUNDLE_ID=\"$3\"\n    P_APP_VERSION=\"$4\"\n    P_BSYMBOL_ZIP_FILE=\"$5\"\n\n    #\n    P_BSYMBOL_ZIP_FILE_NAME=${P_BSYMBOL_ZIP_FILE##*/}\n    P_BSYMBOL_ZIP_FILE_NAME=${P_BSYMBOL_ZIP_FILE_NAME//&/_}\n    P_BSYMBOL_ZIP_FILE_NAME=\"${P_BSYMBOL_ZIP_FILE_NAME// /_}\"\n\n    DSYM_UPLOAD_URL=\"https://${BUGLY_DSYM_UPLOAD_DOMAIN}/openapi/file/upload/symbol?app_id=${P_APP_ID}&app_key=${P_APP_KEY}\"\n    echo \"dSYM upload url: ${DSYM_UPLOAD_URL}\"\n\n    echo \"-----------------------------\"\n    STATUS=$(/usr/bin/curl -k \"${DSYM_UPLOAD_URL}\" --form \"api_version=1\" --form \"app_id=${P_APP_ID}\" --form \"app_key=${P_APP_KEY}\" --form \"symbolType=2\"  --form \"bundleId=${BUNDLE_IDENTIFIER}\" --form \"productVersion=${BUGLY_APP_VERSION}\" --form \"fileName=${P_BSYMBOL_ZIP_FILE_NAME}\" --form \"file=@${P_BSYMBOL_ZIP_FILE}\" --verbose)\n    echo \"-----------------------------\"\n\n    UPLOAD_RESULT=\"FAILTURE\"\n    echo \"Bugly server response: ${STATUS}\"\n    if [ ! \"${STATUS}\" ]; then\n        echo \"Error: Failed to upload the zip archive file.\"\n    elif [[ \"${STATUS}\" == *\"{\\\"reponseCode\\\":\\\"0\\\"}\"* ]]; then\n        echo \"Success to upload the dSYM for the app [${BUNDLE_IDENTIFIER} ${BUGLY_APP_VERSION}]\"\n        UPLOAD_RESULT=\"SUCCESS\"\n    else\n        echo \"Error: Failed to upload the zip archive file to Bugly.\"\n    fi\n\n    #Remove temp dSYM archive\n    #echo \"Remove temporary zip archive: ${DSYM_ZIP_FPATH}\"\n    #/bin/rm -f \"${DSYM_ZIP_FPATH}\"\n\n    if [ \"$?\" -ne 0 ]; then\n        exitWithMessage \"Error: Failed to remove temporary zip archive.\" 0\n    fi\n\n    echo \"--------------------------------\"\n    echo \"${UPLOAD_RESULT} - dSYM upload complete.\"\n\n    if [[ \"${UPLOAD_RESULT}\" == \"FAILTURE\" ]]; then\n        echo \"--------------------------------\"\n        echo \"Failed to upload the dSYM\"\n        echo \"Please check the script and try it again.\"\n    fi\n}\n\n# .dSYM解析为bSYMBOL文件\nfunction dSYMParse() {\n    DSYM_FILE=\"$1\"\n    DSYM_SYMBOL_FILE=\"$2\"\n\n    echo \"--------------------------------\"\n    echo \"Extract symbol info from .dSYM file. to ${DSYM_SYMBOL_FILE}\"\n    (/usr/bin/java -Xms512m -Xmx1024m -Dfile.encoding=UTF8 -jar \"${BUGLY_SYMBOL_JAR_PATH}\" -i \"${DSYM_FILE}\" -o \"${DSYM_SYMBOL_FILE}\" ) || exitWithMessage \"Error: Failed to extract symbols.\" 1\n    echo \"--------------------------------\"\n\n}\n\n# 执行\nfunction run() {\n\n    CONFIG_BUGLY_APP_ID=\"$1\"\n    CONFIG_BUGLY_APP_KEY=\"$2\"\n\n    CONFIG_BUGLY_APP_BUNDLE_IDENTIFIER=\"$3\"\n    CONFIG_BUGLY_APP_VERSION=\"$4\"\n    CONFIG_DSYM_SOURCE_DIR=\"$5\"\n    CONFIG_DSYM_DEST_DIR=\"$6\"\n    CONFIG_UPLOAD_DSYM_ONLY=\"$7\"\n\n    # 检查必须参数是否设置\n    if [ ! \"${CONFIG_BUGLY_APP_ID}\" ]; then\n        exitWithMessage \"Error: Bugly App ID not defined. Please set 'BUGLY_APP_ID' \" 0\n    fi\n\n    if [[ \"${CONFIG_BUGLY_APP_ID}\" == *\"App ID\"* ]]; then\n        exitWithMessage \"Error: Bugly App ID not defined.\" 0\n    fi\n\n    if [ ! \"${CONFIG_BUGLY_APP_KEY}\" ]; then\n        exitWithMessage \"Error: Bugly App Key not defined.\" 0\n    fi\n\n    if [ ! \"${CONFIG_BUGLY_APP_BUNDLE_IDENTIFIER}\" ]; then\n        exitWithMessage \"Error: Bundle Identifier not defined.\" 0\n    fi\n\n    if [ ! \"${CONFIG_BUGLY_APP_VERSION}\" ]; then\n        exitWithMessage \"Error: App Version not defined.\" 0\n    fi\n\n    if [ ! -e \"${CONFIG_DSYM_SOURCE_DIR}\" ]; then\n        exitWithMessage \"Error: Invalid dir ${CONFIG_DSYM_SOURCE_DIR}\" 0\n    fi\n\n    if [ ! \"${CONFIG_DSYM_DEST_DIR}\" ]; then\n        exitWithMessage \"Error: Invalid dir ${CONFIG_DSYM_DEST_DIR}\" 0\n    fi\n\n    if [ ! -e \"${CONFIG_DSYM_DEST_DIR}\" ]; then\n        mkdir ${CONFIG_DSYM_DEST_DIR}\n    fi\n\n    DSYM_FOLDER=\"${CONFIG_DSYM_SOURCE_DIR}\"\n    IFS=$'\\n'\n\n    echo \"Scaning dSYM FOLDER: ${DSYM_FOLDER} ...\"\n    RET=\"F\"\n    \n    #\n    for dsymFile in $(find \"$DSYM_FOLDER\" -name '*.dSYM'); do\n        RET=\"T\"\n        echo \"Found dSYM file: $dsymFile\"\n\n        DSYM_FILE_NAME=${dsymFile##*/}\n        DSYM_SYMBOL_ZIP_FILE_NAME=\"${DSYM_FILE_NAME}.zip\"\n        DSYM_SYMBOL_ZIP_FILE_NAME=\"${DSYM_SYMBOL_ZIP_FILE_NAME// /_}\"\n        DSYM_SYMBOL_ZIP_FILE=${CONFIG_DSYM_DEST_DIR}/${DSYM_SYMBOL_ZIP_FILE_NAME}\n\n        if [ $CONFIG_UPLOAD_DSYM_ONLY -eq 1 ]; then\n        \tif [ -e $DSYM_SYMBOL_ZIP_FILE ]; then\n        \t\trm -f $DSYM_SYMBOL_ZIP_FILE\n        \tfi\n            # 如果只上传dSYM，直接压缩dSYM目录\n            zip -r -j $DSYM_SYMBOL_ZIP_FILE $dsymFile -x *.plist\n        else\n            # 使用符号表工具来生成Symbol文件\n            dSYMParse $dsymFile $DSYM_SYMBOL_ZIP_FILE\n        fi\n        \n        # 上传\n        dSYMUpload $CONFIG_BUGLY_APP_ID $CONFIG_BUGLY_APP_KEY $CONFIG_BUGLY_APP_BUNDLE_IDENTIFIER $CONFIG_BUGLY_APP_VERSION $DSYM_SYMBOL_ZIP_FILE\n    done\n\n    if [ $RET = \"F\" ]; then\n        exitWithMessage \"No .dSYM found in ${DSYM_FOLDER}\" 0\n    fi\n}\n\n# 在Xcode工程中执行\nfunction runInXcode(){\n    echo \"Uploading dSYM to Bugly in Xcode ...\"\n\n    echo \"Info.Plist : ${INFOPLIST_FILE}\"\n\n    BUNDLE_VERSION=$(/usr/libexec/PlistBuddy -c 'Print CFBundleVersion' \"${INFOPLIST_FILE}\")\n    BUNDLE_SHORT_VERSION=$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' \"${INFOPLIST_FILE}\")\n\n    # 组装Bugly默认识别的版本信息(格式为CFBundleShortVersionString(CFBundleVersion), 例如: 1.0(1))\n    if [ ! \"${CUSTOMIZED_APP_VERSION}\" ]; then\n        BUGLY_APP_VERSION=\"${BUNDLE_SHORT_VERSION}(${BUNDLE_VERSION})\"\n    else\n        BUGLY_APP_VERSION=\"${CUSTOMIZED_APP_VERSION}\"\n    fi\n\n    echo \"--------------------------------\"\n    echo \"Prepare application information.\"\n    echo \"--------------------------------\"\n\n    echo \"Product Name: ${PRODUCT_NAME}\"\n    echo \"Bundle Identifier: ${BUNDLE_IDENTIFIER}\"\n    echo \"Version: ${BUNDLE_SHORT_VERSION}\"\n    echo \"Build: ${BUNDLE_VERSION}\"\n\n    echo \"Bugly App ID: ${BUGLY_APP_ID}\"\n    echo \"Bugly App key: ${BUGLY_APP_KEY}\"\n    echo \"Bugly App Version: ${BUGLY_APP_VERSION}\"\n\n    echo \"--------------------------------\"\n    echo \"Check the arguments ...\"\n\n    ##检查模拟器编译是否允许上传符号\n    if [ \"$EFFECTIVE_PLATFORM_NAME\" == \"-iphonesimulator\" ]; then\n    if [ $UPLOAD_SIMULATOR_SYMBOLS -eq 0 ]; then\n        exitWithMessage \"Warning: Build for simulator and skipping to upload. \\nYou can modify 'UPLOAD_SIMULATOR_SYMBOLS' to 1 in the script.\" 0\n    fi\n    fi\n\n    ##检查是否是Release模式编译\n    if [ \"${CONFIGURATION=}\" == \"Debug\" ]; then\n    if [ $UPLOAD_DEBUG_SYMBOLS -eq 0 ]; then\n        exitWithMessage \"Warning: Build for debug mode and skipping to upload. \\nYou can modify 'UPLOAD_DEBUG_SYMBOLS' to 1 in the script.\" 0\n    fi\n    fi\n\n    ##检查是否Archive操作\n    if [ $UPLOAD_ARCHIVE_ONLY -eq 1 ]; then\n    if [[ \"$TARGET_BUILD_DIR\" == *\"/Archive\"* ]]; then\n        echo \"Archive the package\"\n    else\n        exitWithMessage \"Warning: Build for NOT Archive mode and skipping to upload. \\nYou can modify 'UPLOAD_ARCHIVE_ONLY' to 0 in the script.\" 0\n    fi\n    fi\n\n    #\n    run ${BUGLY_APP_ID} ${BUGLY_APP_KEY} ${BUNDLE_IDENTIFIER} ${BUGLY_APP_VERSION} ${DWARF_DSYM_FOLDER_PATH} ${BUILD_DIR}/BuglySymbolTemp ${UPLOAD_DSYM_ONLY}\n}\n\n# 根据Xcode的环境变量判断是否处于Xcode环境\nINFO_PLIST_FILE=\"${INFOPLIST_FILE}\"\n\nBuildInXcode=\"F\"\nif [ -f \"${INFO_PLIST_FILE}\" ]; then\n    BuildInXcode=\"T\"\nfi\n\nif [ $BuildInXcode = \"T\" ]; then\n    runInXcode\nelse\n    echo \"\\nUsage: dSYMUpload.sh <bugly_app_id> <bugly_app_key> <app_bundle_identifier> <app_version> <dSYM_src_dir> <bSYMBOL_dest_dir> [upload_dsym_only]\\n\"\n    # 你可以在此处直接设置BuglyAppID和BuglyAppKey，排除不常变参数的输入\n    BUGLY_APP_ID=\"$1\"\n    BUGLY_APP_KEY=\"$2\"\n    BUNDLE_IDENTIFIER=\"$3\"\n    BUGLY_APP_VERSION=\"$4\"\n    DWARF_DSYM_FOLDER_PATH=\"$5\"\n    SYMBOL_OUTPUT_PATH=\"$6\"\n    UPLOAD_DSYM_ONLY=$7\n    run ${BUGLY_APP_ID} ${BUGLY_APP_KEY} ${BUNDLE_IDENTIFIER} ${BUGLY_APP_VERSION} ${DWARF_DSYM_FOLDER_PATH} ${SYMBOL_OUTPUT_PATH} ${UPLOAD_DSYM_ONLY}\nfi\n";
+		};
 		31402CCCAAE3AE0876F45655 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -322,29 +435,46 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E345A22252DF00A00DD5FD8 /* UIApplication.swift in Sources */,
+				0C48141E2570943C00964E83 /* CountDownLatch.swift in Sources */,
 				0C4ED06B245953D100226AF5 /* BookTableViewCell.swift in Sources */,
 				0C4ED0722459766B00226AF5 /* Constants.swift in Sources */,
-				0C4ED078245986CB00226AF5 /* ThirdViewController.swift in Sources */,
+				0C95B2152575E5D700362F25 /* Application+Top.swift in Sources */,
+				0C4ED078245986CB00226AF5 /* ProfileViewController.swift in Sources */,
 				0CF67A0F24696CAF006A9AFD /* UIImage+Draw.swift in Sources */,
+				0CAE3FA2256F4FBC00093B08 /* File.swift in Sources */,
 				0C7B4024243EB8AB009D6513 /* SearchBookViewController.swift in Sources */,
-				0CC4DDEA243C58A100FB792E /* SecondViewController.swift in Sources */,
+				0CEE130C255531F40018F1C6 /* Citation.swift in Sources */,
+				0CC4DDEA243C58A100FB792E /* BookshelfViewController.swift in Sources */,
+				0CE636C62553A02800997057 /* BookGalleryView.swift in Sources */,
+				0CEE12B72554DE9B0018F1C6 /* Review.swift in Sources */,
+				0CEE130925552DC40018F1C6 /* CiteView.swift in Sources */,
 				0CCCDBFD24516266004B2C5A /* Book.swift in Sources */,
+				0CF79D1E2553C96D004A9D20 /* UIColor+Hex.swift in Sources */,
+				0C1AB9B7256DFBEF0089B481 /* BookStatistic.swift in Sources */,
 				0CCCDC012451974F004B2C5A /* PopupView.swift in Sources */,
 				0C7B402A243EE061009D6513 /* UIViewController+Present.swift in Sources */,
+				0CEE12BE2554E9800018F1C6 /* ReadingListViewController.swift in Sources */,
 				0CF67A1124698A9D006A9AFD /* PdfSearchTableViewCell.swift in Sources */,
+				0CEECCA7255E1BC400AA9F24 /* Notification+Name.swift in Sources */,
+				0CE636C325539F9B00997057 /* HomeViewController.swift in Sources */,
 				0C4ED06E2459671E00226AF5 /* BookCollectionViewCell.swift in Sources */,
 				0C4ED0702459736A00226AF5 /* Queue.swift in Sources */,
 				0CCCDBFB24514E33004B2C5A /* NetworkManager.swift in Sources */,
 				0C60B371244FF43A00383E94 /* PdfSearchViewController.swift in Sources */,
 				0C9C224F244FE5DD009A403B /* PdfOutlineViewController.swift in Sources */,
-				0CC4DDE8243C58A100FB792E /* FirstViewController.swift in Sources */,
+				0CFAF4F2255931C100CA475C /* TTTAttributedLabel+More.swift in Sources */,
+				0CAE3F9F256F4C9D00093B08 /* Int+DateString.swift in Sources */,
 				0C7B4028243ED120009D6513 /* PdfReaderViewController.swift in Sources */,
 				0CC4DDE4243C58A100FB792E /* AppDelegate.swift in Sources */,
+				0C1AB9BA256DFC840089B481 /* BaseDTO.swift in Sources */,
 				0CF67A0D24693E1C006A9AFD /* WebviewViewController.swift in Sources */,
+				0CEE1306255527880018F1C6 /* WriteReviewView.swift in Sources */,
+				0CEE12BB2554E02D0018F1C6 /* ReviewsView.swift in Sources */,
 				0C7B4026243EBB4F009D6513 /* DownloadViewController.swift in Sources */,
-				0C7B402E243EE6F2009D6513 /* UIApplication+SelfAware.swift in Sources */,
 				0CC4DDE6243C58A100FB792E /* SceneDelegate.swift in Sources */,
 				0C7B402C243EE204009D6513 /* DispatchQueue.swift in Sources */,
+				0C1AB9BD256DFDCB0089B481 /* PageDTO.swift in Sources */,
+				0CEE13032554F7590018F1C6 /* NavigationItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +526,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -457,6 +588,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -492,15 +624,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = HU7SCWF2RM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 2.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.mpgreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -514,15 +650,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = HU7SCWF2RM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 2.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.mpgreader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

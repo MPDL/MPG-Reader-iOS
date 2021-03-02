@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import RealmSwift
 import ReactiveCocoa
+import MJRefresh
 
 class TitleSearchBar: UISearchBar {
     override public var intrinsicContentSize: CGSize {
@@ -24,33 +25,58 @@ class SearchBookViewController: UIViewController {
     fileprivate var historyContentView: UIView!
     fileprivate var historyTitleLabel: UILabel!
     fileprivate var trashImageView: UIImageView!
+    fileprivate var logoWrapper: UIView!
 
     fileprivate var dataSource: [Book] = []
     fileprivate var searchText: String = ""
     fileprivate var histories: [String] = []
+    fileprivate var pageSize = 10
+    fileprivate var pageNumber = 0
+    fileprivate var tableHeader: MJRefreshNormalHeader?
+    fileprivate var tableFooter: MJRefreshAutoNormalFooter?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.perform(#selector(setSearchBarFocus), with: nil, afterDelay: 0.5)
+        self.navigationController?.navigationBar.isHidden = true
+
+//        self.perform(#selector(setSearchBarFocus), with: nil, afterDelay: 0.5)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+        view.backgroundColor = UIColor.white
 
-        self.view.backgroundColor = UIColor.white
-
-        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 400, height: 40))
-        searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 400, height: 40))
-        titleView.addSubview(searchBar)
+        searchBar = UISearchBar()
+        searchBar.backgroundColor = UIColor.white
+        searchBar.placeholder = "SEARCH"
+        searchBar.layer.cornerRadius = 6
+        searchBar.layer.masksToBounds = true
+        searchBar.layer.borderWidth = 1
+        searchBar.layer.borderColor = UIColor(hex: 0xC9C9C9).cgColor
+        searchBar.backgroundImage = UIImage()
         searchBar.delegate = self
-        searchBar.showsCancelButton = true
-        searchBar.searchBarStyle = .minimal
-        self.navigationItem.titleView = titleView
+        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+            textField.backgroundColor = UIColor.white
+        }
+        view.addSubview(searchBar)
+        searchBar.snp.makeConstraints { (make) in
+            make.left.equalTo(68)
+            make.right.equalTo(-68)
+            make.height.equalTo(50)
+            make.top.equalTo(46)
+        }
 
         historyView = UIView()
-        self.view.addSubview(historyView)
+        historyView.clipsToBounds = true
+        view.addSubview(historyView)
         historyView.snp.makeConstraints { (make) in
-            make.top.equalTo(100)
+            make.top.equalTo(searchBar.snp.bottom).offset(22)
             make.left.equalTo(80)
             make.right.equalTo(-56)
         }
@@ -72,27 +98,88 @@ class SearchBookViewController: UIViewController {
             make.centerY.equalTo(historyTitleLabel)
         }
         historyContentView = UIView()
+        historyContentView.clipsToBounds = true
         historyView.addSubview(historyContentView)
         historyContentView.snp.makeConstraints { (make) in
             make.top.equalTo(historyTitleLabel.snp.bottom).offset(3)
             make.left.right.bottom.equalTo(0)
+            make.height.equalTo(84)
+        }
+
+        logoWrapper = UIView()
+        view.addSubview(logoWrapper)
+        logoWrapper.snp.makeConstraints { (make) in
+            make.centerX.equalTo(view)
+            make.centerY.equalTo(view).offset(50)
+            make.width.equalTo(676)
+        }
+        let logoImageView = UIImageView()
+        logoImageView.image = UIImage(named: "logo-search")
+        logoWrapper.addSubview(logoImageView)
+        logoImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(0)
+            make.centerX.equalTo(logoWrapper)
+        }
+        let nameLabel = UILabel()
+        nameLabel.text = "MPG.eBooks"
+        logoWrapper.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints { (make) in
+            make.centerX.equalTo(logoWrapper)
+            make.top.equalTo(logoImageView.snp.bottom).offset(60)
+        }
+        let para = NSMutableParagraphStyle()
+        para.lineSpacing = 4
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor(hex: 0x999999),
+                          NSAttributedString.Key.paragraphStyle: para]
+        let descriptionLabel = UILabel()
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textAlignment = .left
+        let text = "On this search platform, you can find all e-books that are accessible to all institutes of Max Planck Gesellschaft.\nCurrently, you have access to ca.120,000 publications from Springer eBooks. The contents are continuously extended and updated.\nClick here for an overview of the included e-books."
+        descriptionLabel.attributedText = NSAttributedString(string: text, attributes: attributes)
+        logoWrapper.addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints { (make) in
+            make.centerX.equalTo(logoWrapper)
+            make.top.equalTo(nameLabel.snp.bottom).offset(22)
+            make.width.equalTo(600)
+            make.bottom.equalTo(0)
         }
 
 
         tableView = UITableView()
+        tableHeader = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(reloadData))
+        tableFooter = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(loadMore))
+        tableView.mj_header = tableHeader
+        tableView.mj_footer = tableFooter
+        tableView.isHidden = true
         tableView.backgroundColor = UIColor.white
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
         tableView.tableFooterView = UIView()
         tableView.register(BookTableViewCell.self, forCellReuseIdentifier: String(describing: BookTableViewCell.self))
-        self.view.addSubview(tableView)
+        view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalTo(0)
-            make.top.equalTo(historyView.snp.bottom)
+            make.top.equalTo(searchBar.snp.bottom).offset(50)
         }
         
         loadHistories()
+    }
+
+    @objc fileprivate func reloadData() {
+        pageNumber = 0
+        searchBook()
+    }
+
+    @objc fileprivate func loadMore() {
+        pageNumber += 1
+        searchBook()
+    }
+
+    @objc func deviceRotated() {
+        DispatchQueue.main.async {
+            self.updateHistories()
+        }
     }
 
     @objc func setSearchBarFocus() {
@@ -155,15 +242,13 @@ class SearchBookViewController: UIViewController {
             let widthNeeded = recordView.bounds.width + 20
             if (leftOffset + widthNeeded) <= maxWidth {
                 recordView.snp.makeConstraints({ (make) in
+                    make.height.equalTo(24)
                     if let last = last {
                         make.left.equalTo(last.snp.right).offset(20)
                         make.centerY.equalTo(last)
                     } else {
                         make.left.equalTo(0)
                         make.top.equalTo(18)
-                    }
-                    if record == histories.last {
-                        make.bottom.equalTo(-18)
                     }
                 })
                 leftOffset = leftOffset + widthNeeded
@@ -175,9 +260,6 @@ class SearchBookViewController: UIViewController {
                 recordView.snp.makeConstraints({ (make) in
                     make.left.equalTo(0)
                     make.top.equalTo(lastView.snp.bottom).offset(18)
-                    if record == histories.last {
-                        make.bottom.equalTo(-18)
-                    }
                 })
                 leftOffset = recordView.bounds.width
                 last = recordView
@@ -196,18 +278,36 @@ class SearchBookViewController: UIViewController {
     }
 
     fileprivate func searchBook() {
+        guard let keyword = self.searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return
+        }
         PopupView.showLoading(true)
-        NetworkManager.sharedInstance().GET(path: "search",
-            parameters: ["lookfor": self.searchText],
-            modelClass: Book.self,
+        let parameters = [
+            "pageSize": pageSize,
+            "pageNumber": pageNumber
+        ]
+        NetworkManager.sharedInstance().POST(path: "rest/ebook/search?keyword=\(keyword)",
+            parameters: parameters,
+            modelClass: [Book].self,
             success: { (books) in
-                guard let books = books as? [Book]  else {
-                    self.dataSource = []
-                    self.tableView.reloadData()
-                    PopupView.showWithContent("No Results")
+                PopupView.showLoading(false)
+                self.tableHeader?.endRefreshing()
+                self.tableFooter?.endRefreshing()
+
+                guard let books = books, books.count > 0  else {
+                    if self.pageNumber > 0 {
+                        PopupView.showWithContent("No more results")
+                        self.pageNumber -= 1
+                    } else {
+                        self.dataSource = []
+                        self.tableView.reloadData()
+                        self.hideTableView()
+                        PopupView.showWithContent("No Results")
+                    }
                     return
                 }
-                // Caching last 3 items
+
+                // Caching last 10 items
                 var histories: [Book] = []
                 if let data = prefs.value(forKey: bookHistoryKey) as? Data {
                     do {
@@ -219,37 +319,55 @@ class SearchBookViewController: UIViewController {
                         print("unarchiving failure: \(error)")
                     }
                 }
-                for i in 0..<min(books.count, 3) {
+                for i in 0..<min(books.count, 10) {
                     histories.append(books[i])
                 }
-                while histories.count > 3 {
+                while histories.count > 10 {
                     _ = histories.remove(at: 0)
                 }
-
                 let archiver = NSKeyedArchiver(requiringSecureCoding: false)
                 try! archiver.encodeEncodable(histories, forKey: NSKeyedArchiveRootObjectKey)
                 archiver.finishEncoding()
                 prefs.set(archiver.encodedData, forKey: bookHistoryKey)
                 prefs.synchronize()
+                NotificationCenter.default.post(name: .searchResultsDidReturn, object: nil)
 
-
-                self.dataSource = books
+                if self.pageNumber == 0 {
+                    self.dataSource = books
+                } else {
+                    self.dataSource.append(contentsOf: books)
+                }
                 self.tableView.reloadData()
-
-                PopupView.showLoading(false)
+                self.showTableView()
             }, failure:  { (error) in
-                PopupView.showWithContent("No Results")
+                self.tableHeader?.endRefreshing()
+                self.tableFooter?.endRefreshing()
                 self.dataSource = []
                 self.tableView.reloadData()
-                PopupView.showLoading(false)
+                PopupView.showWithContent("No Results")
             })
+    }
+
+    fileprivate func showTableView() {
+        tableView.isHidden = false
+        historyView.isHidden = true
+        logoWrapper.isHidden = true
+    }
+
+    fileprivate func hideTableView() {
+        tableView.isHidden = true
+        historyView.isHidden = false
+        logoWrapper.isHidden = false
     }
 }
 
 extension SearchBookViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        hideTableView()
+    }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        searchBook()
+        reloadData()
 
         var histories: [String] = []
         if let data = prefs.value(forKey: inputKey) as? Data, let saved = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [String], !saved.isEmpty {
@@ -272,6 +390,7 @@ extension SearchBookViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count < 1 {
+            hideTableView()
             return
         }
         self.searchText = searchText
@@ -296,7 +415,7 @@ extension SearchBookViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let book = dataSource[indexPath.row]
-        let viewController = DownloadViewController(book: book)
+        let viewController = DownloadViewController(bookId: book.id)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 

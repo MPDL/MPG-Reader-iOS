@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import AFNetworking
+import Bugly
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,13 +22,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Update schemaVersion every time the schema is changed, +1
         let config = Realm.Configuration(
-             schemaVersion: 2,
+             schemaVersion: 3,
              migrationBlock: { migration, oldSchemaVersion in
-                     if (oldSchemaVersion < 2) {}
+                     if (oldSchemaVersion < 3) {
+                        migration.enumerateObjects(ofType: Book.className()) { (oldObject, newObject) in
+                            newObject?["pdf"] = oldObject?["isPdf"]
+                            newObject?["abstract"] = oldObject?["abs"]
+                        }
+                     }
              })
         Realm.Configuration.defaultConfiguration = config
+        Bugly.start(withAppId: "497035eca0")
 
-        AFNetworkReachabilityManager.shared().startMonitoring()
+        // AFNetworkReachabilityManager
+        manager.startMonitoring()
+
+        // initialize swizzle methods
+        UIViewController.initializeMethod()
 
         return true
     }
@@ -46,11 +57,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return true
+    }
+
     class func getTopView() -> UIView {
         let topView: UIView = AppDelegate.getTopViewController().view
         return topView
     }
 
+    // deprecated
     class func getTopViewController() -> UIViewController {
         let topWindow: UIWindow = UIApplication.shared.windows[0]
         var rootViewController: UIViewController = topWindow.rootViewController!

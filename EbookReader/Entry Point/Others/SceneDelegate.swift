@@ -18,6 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+
+        guard let url = connectionOptions.urlContexts.first?.url else {
+            return
+        }
+        loadBook(url: url)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -48,6 +53,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else {
+            return
+        }
+        loadBook(url: url)
+    }
 
+    fileprivate func loadBook(url: URL) {
+        let urlString = url.absoluteString
+        let queryArray = urlString.components(separatedBy: "/")
+        let bookId = queryArray[2]
+
+        let viewController = DownloadViewController(bookId: bookId)
+        DispatchQueue.main.async {
+            if let top = UIApplication.getTopViewController(), top.presentingViewController != nil {
+                top.dismiss(animated: false, completion: {
+                    UIApplication.getTopViewController()?.navigationController?.popToRootViewController(animated: false)
+                    UIApplication.getTopViewController()?.navigationController?.pushViewController(viewController, animated: true)
+                })
+            } else {
+                UIApplication.getTopViewController()?.navigationController?.popToRootViewController(animated: false)
+                UIApplication.getTopViewController()?.navigationController?.pushViewController(viewController, animated: true)
+            }
+        }
+    }
 }
 
