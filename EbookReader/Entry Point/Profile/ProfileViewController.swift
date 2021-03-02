@@ -339,21 +339,21 @@ class ProfileViewController: UIViewController {
     @objc func onTermsTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Terms of Use"
-        viewController.urlString = "https://mpgreader.mpdl.mpg.de/mpgReaderTerms.html"
+        viewController.urlString = "http://dev-mpgreader.mpdl.mpg.de/mpgReaderTerms.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func onPpTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Privacy Policy"
-        viewController.urlString = "https://mpgreader.mpdl.mpg.de/mpgReaderPrivacyPolicy.html"
+        viewController.urlString = "http://dev-mpgreader.mpdl.mpg.de/mpgReaderPrivacyPolicy.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     @objc func onDisTapped() {
         let viewController = WebviewViewController()
         viewController.titleLabel = "Disclaimer"
-        viewController.urlString = "https://mpgreader.mpdl.mpg.de/mpgReaderDisclaimer.html"
+        viewController.urlString = "http://dev-mpgreader.mpdl.mpg.de/mpgReaderDisclaimer.html"
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

@@ -18,7 +18,7 @@ class NetworkManager: AFHTTPSessionManager {
         } else {
             // TODO: 切换成正式的地址
             // networkManager = NetworkManager(baseURL: URL(string: "http://8.129.114.118:8089/"))
-            networkManager = NetworkManager(baseURL: URL(string: "https://mpgreader.mpdl.mpg.de/"))
+            networkManager = NetworkManager(baseURL: URL(string: "http://dev-mpgreader.mpdl.mpg.de/"))
             networkManager!.requestSerializer = AFJSONRequestSerializer()
             networkManager!.responseSerializer = AFHTTPResponseSerializer()
             if let path = Bundle.main.path(forResource: "credential", ofType: "json") {
