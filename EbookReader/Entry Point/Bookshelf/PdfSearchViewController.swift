@@ -36,10 +36,10 @@ class PdfSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = COLOR_background
 
         let headerView = UIView()
-        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+        headerView.backgroundColor = COLOR_pdfReaderHeader
         self.view.addSubview(headerView)
         headerView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(0)
@@ -56,10 +56,15 @@ class PdfSearchViewController: UIViewController {
         }
 
         searchBar = UISearchBar()
+        searchBar.setImage(UIImage(named: "icon-input-search"), for: .search, state: .normal)
         searchBar.tintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
         searchBar.delegate = self
         searchBar.showsCancelButton = true
         searchBar.searchBarStyle = .minimal
+        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+            textField.textColor = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
+            textField.backgroundColor = UIColor.white
+        }
         headerView.addSubview(searchBar)
         searchBar.snp.makeConstraints { (make) in
             make.centerX.equalTo(headerView)

@@ -16,6 +16,8 @@ class BookshelfViewController: UIViewController {
     fileprivate var collectionView: UICollectionView!
     fileprivate var countLabel: UILabel!
     fileprivate var deleteView: UIView!
+    fileprivate var bookDeleteView: UIView!
+    fileprivate var bookMoveView: UIView!
     fileprivate var overlayView: UIView!
     fileprivate var overlayContentView: UIView!
     fileprivate var emptyImageView: UIImageView!
@@ -29,6 +31,10 @@ class BookshelfViewController: UIViewController {
     fileprivate var selected: [Bool] = []
     fileprivate var folioReader: FolioReader!
     fileprivate var selectedBook: Book!
+    fileprivate var deleteTitleLabel: UILabel!
+    
+    fileprivate var bookFolderHandleView: BookFolderHandleView!
+    fileprivate var bookFolderHandleNameView: BookFolderHandleNameView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +44,11 @@ class BookshelfViewController: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.tintColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        self.navigationController?.navigationBar.tintColor = COLOR_navBar
 
         self.navigationItem.title = "My Bookshelf"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(onEditTapped))
-        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
-
+        self.view.backgroundColor = COLOR_bookshelfBackground
         searchView = UIView()
         self.view.addSubview(searchView)
         searchView.snp.makeConstraints { (make) in
@@ -51,6 +56,7 @@ class BookshelfViewController: UIViewController {
             make.top.equalTo(104)
         }
         let searchBar = UISearchBar()
+        searchBar.setImage(UIImage(named: "icon-input-search"), for: .search, state: .normal)
         searchBar.backgroundColor = UIColor.white
         searchBar.placeholder = "SEARCH"
         searchBar.layer.cornerRadius = 6
@@ -60,6 +66,7 @@ class BookshelfViewController: UIViewController {
         searchBar.backgroundImage = UIImage()
         if let textField = searchBar.value(forKey: "searchField") as? UITextField {
             textField.backgroundColor = UIColor.white
+            textField.textColor = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
         }
         searchBar.delegate = self
         searchView.addSubview(searchBar)
@@ -92,7 +99,7 @@ class BookshelfViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 40, left: CGFloat(50), bottom: 0, right: CGFloat(50))
         layout.itemSize = CGSize(width: 150, height: 265)
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        collectionView.backgroundColor = COLOR_bookshelfBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(BookCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: BookCollectionViewCell.self))
@@ -104,17 +111,16 @@ class BookshelfViewController: UIViewController {
 
         deleteView = UIView()
         deleteView.isHidden = true
-        deleteView.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        deleteView.backgroundColor = COLOR_bookshelfBackground
         self.view.addSubview(deleteView)
         deleteView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalTo(0)
             make.height.equalTo(160)
         }
         let deleteButton = UIView()
-        deleteButton.backgroundColor = UIColor.white
+        deleteButton.backgroundColor = COLOR_buttonBackground
         deleteButton.isUserInteractionEnabled = true
         deleteButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDeleteTapped)))
-        deleteButton.backgroundColor = UIColor.white
         deleteButton.layer.shadowColor = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 0.5).cgColor
         deleteButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         deleteButton.layer.shadowOpacity = 1
@@ -131,16 +137,90 @@ class BookshelfViewController: UIViewController {
         deleteButton.addSubview(deleteImageView)
         deleteImageView.snp.makeConstraints { (make) in
             make.centerY.equalTo(deleteButton)
-            make.centerX.equalTo(deleteButton).offset(-30)
+            make.centerX.equalTo(deleteButton).offset(-36)
         }
         let deleteLabel = UILabel()
-        deleteLabel.textColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+        deleteLabel.textColor = COLOR_buttonText
         deleteLabel.font = UIFont.systemFont(ofSize: 24)
-        deleteLabel.text = "Delete"
+        deleteLabel.text = "Remove"
         deleteButton.addSubview(deleteLabel)
         deleteLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(deleteButton)
             make.centerX.equalTo(deleteButton).offset(30)
+        }
+        
+        bookDeleteView = UIView()
+        bookDeleteView.isHidden = true
+        bookDeleteView.backgroundColor = COLOR_bookshelfBackground
+        self.view.addSubview(bookDeleteView)
+        bookDeleteView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalTo(0)
+            make.height.equalTo(160)
+        }
+        let bookDeleteButton = UIView()
+        bookDeleteButton.backgroundColor = UIColor.white
+        bookDeleteButton.isUserInteractionEnabled = true
+        bookDeleteButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDeleteTapped)))
+        bookDeleteButton.backgroundColor = COLOR_buttonBackground
+        bookDeleteButton.layer.shadowColor = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 0.5).cgColor
+        bookDeleteButton.layer.shadowOffset = CGSize(width: 0, height: 0)
+        bookDeleteButton.layer.shadowOpacity = 1
+        bookDeleteButton.layer.cornerRadius = 6
+        bookDeleteView.addSubview(bookDeleteButton)
+        bookDeleteButton.snp.makeConstraints { (make) in
+            make.top.equalTo(30)
+            make.width.equalTo(260)
+            make.height.equalTo(80)
+            make.centerX.equalTo(bookDeleteView).offset(-145)
+        }
+        let bookDeleteImageView = UIImageView()
+        bookDeleteImageView.image = UIImage(named: "icon-trash-green")
+        bookDeleteButton.addSubview(bookDeleteImageView)
+        bookDeleteImageView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(bookDeleteButton)
+            make.centerX.equalTo(bookDeleteButton).offset(-36)
+        }
+        let bookDeleteLabel = UILabel()
+        bookDeleteLabel.textColor = COLOR_buttonText
+        bookDeleteLabel.font = UIFont.systemFont(ofSize: 24)
+        bookDeleteLabel.text = "Remove"
+        bookDeleteButton.addSubview(bookDeleteLabel)
+        bookDeleteLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(bookDeleteButton)
+            make.centerX.equalTo(bookDeleteButton).offset(30)
+        }
+        
+        let bookMoveButton = UIView()
+        bookMoveButton.backgroundColor = UIColor.white
+        bookMoveButton.isUserInteractionEnabled = true
+        bookMoveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMoveTapped)))
+        bookMoveButton.backgroundColor = COLOR_buttonBackground
+        bookMoveButton.layer.shadowColor = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 0.5).cgColor
+        bookMoveButton.layer.shadowOffset = CGSize(width: 0, height: 0)
+        bookMoveButton.layer.shadowOpacity = 1
+        bookMoveButton.layer.cornerRadius = 6
+        bookDeleteView.addSubview(bookMoveButton)
+        bookMoveButton.snp.makeConstraints { (make) in
+            make.top.equalTo(30)
+            make.width.equalTo(260)
+            make.height.equalTo(80)
+            make.centerX.equalTo(bookDeleteView).offset(145)
+        }
+        let bookMoveImageView = UIImageView()
+        bookMoveImageView.image = UIImage(named: "move_in")
+        bookMoveButton.addSubview(bookMoveImageView)
+        bookMoveImageView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(bookMoveButton)
+            make.centerX.equalTo(bookMoveButton).offset(-70)
+        }
+        let bookMoveLabel = UILabel()
+        bookMoveLabel.textColor = COLOR_buttonText
+        bookMoveLabel.font = UIFont.systemFont(ofSize: 24)
+        bookMoveLabel.text = "Move to Folder"
+        bookMoveButton.addSubview(bookMoveLabel)
+        bookMoveLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(bookMoveButton)
+            make.centerX.equalTo(bookMoveButton).offset(30)
         }
 
         overlayView = UIView()
@@ -156,16 +236,18 @@ class BookshelfViewController: UIViewController {
         overlayContentView = UIView()
         overlayContentView.isHidden = true
         overlayContentView.layer.cornerRadius = 20
-        overlayContentView.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+        overlayContentView.backgroundColor = COLOR_overlayView
         AppDelegate.getTopView().addSubview(overlayContentView)
         overlayContentView.snp.makeConstraints { (make) in
             make.width.equalTo(overlayView)
             make.left.right.equalTo(0)
             make.bottom.equalTo(20)
         }
-        let deleteTitleLabel = UILabel()
-        deleteTitleLabel.text = "Are you sure to delete?"
-        deleteTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        deleteTitleLabel = UILabel()
+        deleteTitleLabel.text = "Are you sure you want to remove?"
+        deleteTitleLabel.textColor = COLOR_overlayText
+        deleteTitleLabel.numberOfLines = 0
+        deleteTitleLabel.textAlignment = .center
         deleteTitleLabel.font = UIFont.systemFont(ofSize: 28)
         overlayContentView.addSubview(deleteTitleLabel)
         deleteTitleLabel.snp.makeConstraints { (make) in
@@ -209,13 +291,50 @@ class BookshelfViewController: UIViewController {
         }
         let cancelLabel = UILabel()
         cancelLabel.text = "Cancel"
-        cancelLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        cancelLabel.textColor = COLOR_overlayText
         cancelLabel.font = UIFont.systemFont(ofSize: 24)
         cancelView.addSubview(cancelLabel)
         cancelLabel.snp.makeConstraints { (make) in
             make.center.equalTo(cancelView)
         }
-
+        
+        bookFolderHandleView = (Bundle.main.loadNibNamed("BookFolderHandleView", owner: self, options: nil)!.last as! BookFolderHandleView)
+        bookFolderHandleView.isHidden = true
+        self.view.addSubview(bookFolderHandleView)
+        bookFolderHandleView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.view)
+            make.centerY.equalTo(self.view)
+            make.width.equalTo(self.view)
+            make.height.equalTo(self.view)
+        }
+        bookFolderHandleView.addNameBlock = {[weak self]() in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.bookFolderHandleNameView.show()
+        }
+        bookFolderHandleView.doneBlock = {[weak self]() in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.bookFolderHandleView.hide()
+        }
+        
+        bookFolderHandleNameView = (Bundle.main.loadNibNamed("BookFolderHandleNameView", owner: self, options: nil)!.last as! BookFolderHandleNameView)
+        bookFolderHandleNameView.isHidden = true
+        self.view.addSubview(bookFolderHandleNameView)
+        bookFolderHandleNameView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.view)
+            make.centerY.equalTo(self.view)
+            make.width.equalTo(self.view)
+            make.height.equalTo(self.view)
+        }
+        bookFolderHandleNameView.doneBlock = {[weak self]() in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.bookFolderHandleNameView.hide()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -224,6 +343,7 @@ class BookshelfViewController: UIViewController {
 
         let realm = try! Realm()
         books = realm.objects(Book.self).sorted(byKeyPath: "modifyDate", ascending: false)
+       
         countLabel.text = "All Books (\(books.count))"
         if searchText != "" {
             let predicate = NSPredicate(format: "title CONTAINS[c] %@ OR abstract CONTAINS[c] %@", searchText, searchText)
@@ -286,7 +406,15 @@ class BookshelfViewController: UIViewController {
         self.overlayView.isHidden = false
         self.overlayContentView.isHidden = false
     }
-
+    
+    @objc func onMoveTapped() {
+        if !selected.contains(true) {
+            PopupView.showWithContent("No book selected")
+            return
+        }
+        bookFolderHandleView.show()
+    }
+    
     @objc func onSelectAllTapped() {
         if selected.contains(false) {
             for i in 0..<selected.count {
@@ -304,6 +432,7 @@ class BookshelfViewController: UIViewController {
     @objc func onCancelTapped() {
         self.tabBarController?.tabBar.isHidden = false
         self.deleteView.isHidden = true
+        self.bookDeleteView.isHidden = true
         self.searchView.snp.remakeConstraints { (make) in
             make.left.right.equalTo(0)
             make.top.equalTo(104)

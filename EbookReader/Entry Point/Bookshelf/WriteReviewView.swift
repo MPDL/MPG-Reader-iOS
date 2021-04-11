@@ -23,7 +23,7 @@ class WriteReviewView: UIView {
 
         let writeReviewView = UIView()
         writeReviewView.layer.cornerRadius = 10
-        writeReviewView.backgroundColor = UIColor.white
+        writeReviewView.backgroundColor = COLOR_citeBackground
         self.addSubview(writeReviewView)
         writeReviewView.snp.makeConstraints { (make) in
             make.centerX.equalTo(self)
@@ -50,7 +50,7 @@ class WriteReviewView: UIView {
         let titleLabel = UILabel()
         titleLabel.text = "Write a review"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        titleLabel.textColor = UIColor(hex: 0x333333)
+        titleLabel.textColor = COLOR_citeTitle
         writeReviewView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(writeReviewView)
@@ -75,7 +75,7 @@ class WriteReviewView: UIView {
         nameLabel.numberOfLines = 0
         nameLabel.text = book.title
         nameLabel.font = UIFont.systemFont(ofSize: 20)
-        nameLabel.textColor = UIColor(hex: 0x333333)
+        nameLabel.textColor = COLOR_citeTitle
         writeReviewView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { (make) in
             make.top.equalTo(bookImageView)
@@ -84,7 +84,7 @@ class WriteReviewView: UIView {
         }
         let question1Label = UILabel()
         question1Label.text = "1. How do you think of this book? "
-        question1Label.textColor = UIColor(hex: 0x333333)
+        question1Label.textColor = COLOR_citeTitle
         question1Label.font = UIFont.boldSystemFont(ofSize: 18)
         writeReviewView.addSubview(question1Label)
         question1Label.snp.makeConstraints { (make) in
@@ -99,7 +99,7 @@ class WriteReviewView: UIView {
         }
         let question2Label = UILabel()
         question2Label.text = "2. Share your thoughts with other users:"
-        question2Label.textColor = UIColor(hex: 0x333333)
+        question2Label.textColor = COLOR_citeTitle
         question2Label.font = UIFont.boldSystemFont(ofSize: 18)
         writeReviewView.addSubview(question2Label)
         question2Label.snp.makeConstraints { (make) in
@@ -109,8 +109,9 @@ class WriteReviewView: UIView {
         let textArea = UITextView()
         textArea.font = UIFont.systemFont(ofSize: 16)
         textArea.layer.borderWidth = 1
-        textArea.layer.borderColor = UIColor(hex: 0x333333).cgColor
+        textArea.layer.borderColor = COLOR_citeTitle.cgColor
         textArea.layer.cornerRadius = 4
+        textArea.backgroundColor = COLOR_citeBackground
         writeReviewView.addSubview(textArea)
         textArea.snp.makeConstraints { (make) in
             make.width.equalTo(502)
@@ -120,7 +121,7 @@ class WriteReviewView: UIView {
         }
         let question3Label = UILabel()
         question3Label.text = "3. What's your name?"
-        question3Label.textColor = UIColor(hex: 0x333333)
+        question3Label.textColor = COLOR_citeTitle
         question3Label.font = UIFont.boldSystemFont(ofSize: 18)
         writeReviewView.addSubview(question3Label)
         question3Label.snp.makeConstraints { (make) in
@@ -128,9 +129,10 @@ class WriteReviewView: UIView {
             make.left.equalTo(bookImageView)
         }
         let textField = UITextView()
+        textField.backgroundColor = COLOR_citeBackground
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor(hex: 0x333333).cgColor
+        textField.layer.borderColor = COLOR_citeTitle.cgColor
         textField.layer.cornerRadius = 4
         writeReviewView.addSubview(textField)
         textField.snp.makeConstraints { (make) in
@@ -141,7 +143,7 @@ class WriteReviewView: UIView {
         }
         let question4Label = UILabel()
         question4Label.text = "4. Display your organization in the review"
-        question4Label.textColor = UIColor(hex: 0x333333)
+        question4Label.textColor = COLOR_citeTitle
         question4Label.font = UIFont.boldSystemFont(ofSize: 18)
         writeReviewView.addSubview(question4Label)
         question4Label.snp.makeConstraints { (make) in

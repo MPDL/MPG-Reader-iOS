@@ -8,8 +8,13 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+let READERTHEMEKEY = "ReaderThemeIsDark"
 
+class ProfileViewController: UIViewController {
+    
+    fileprivate var colorTheme: UIUserInterfaceStyle = .light;
+    fileprivate var colorThemeView: UIControl!
+    fileprivate var colorThemeViewAllLabel: UILabel!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
@@ -22,9 +27,8 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
-        
+        self.view.backgroundColor = COLOR_background
+        colorTheme = UserDefaults.standard.bool(forKey: READERTHEMEKEY) ? .dark : .light
         // Do any additional setup after loading the view.
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -40,7 +44,7 @@ class ProfileViewController: UIViewController {
         }
 
         let headerView = UIView()
-        headerView.backgroundColor = UIColor.white
+        headerView.backgroundColor = COLOR_profileCell
         contentView.addSubview(headerView)
         headerView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(0)
@@ -54,7 +58,7 @@ class ProfileViewController: UIViewController {
         }
         let nameLabel = UILabel()
         nameLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        nameLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        nameLabel.textColor = COLOR_profileCellTitleText
         headerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(headerView)
@@ -63,7 +67,7 @@ class ProfileViewController: UIViewController {
         }
 
         let settingView = UIView()
-        settingView.backgroundColor = UIColor.white
+        settingView.backgroundColor = COLOR_profileCell
         contentView.addSubview(settingView)
         settingView.snp.makeConstraints { (make) in
             make.top.equalTo(headerView.snp.bottom).offset(16)
@@ -71,8 +75,8 @@ class ProfileViewController: UIViewController {
         }
         let settingTitleLabel = UILabel()
         settingTitleLabel.font = UIFont.boldSystemFont(ofSize: 22)
-        settingTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-        settingTitleLabel.text = "Setting"
+        settingTitleLabel.textColor = COLOR_profileCellTitleText
+        settingTitleLabel.text = "Settings"
         settingView.addSubview(settingTitleLabel)
         settingTitleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(23)
@@ -80,6 +84,7 @@ class ProfileViewController: UIViewController {
         }
         let wifiLabel = UILabel()
         wifiLabel.text = "Download on Wifi Only"
+        wifiLabel.textColor = COLOR_profileCellTitleText
         settingView.addSubview(wifiLabel)
         wifiLabel.snp.makeConstraints { (make) in
             make.top.equalTo(settingTitleLabel.snp.bottom).offset(43)
@@ -97,10 +102,10 @@ class ProfileViewController: UIViewController {
         let screenLabel = UILabel()
         screenLabel.text = "Keep Screen On While Reading"
         settingView.addSubview(screenLabel)
+        screenLabel.textColor = COLOR_profileCellTitleText
         screenLabel.snp.makeConstraints { (make) in
             make.top.equalTo(wifiLabel.snp.bottom).offset(32)
             make.left.equalTo(settingTitleLabel)
-            make.bottom.equalTo(-16)
         }
         let screenSwitch = UISwitch()
         screenSwitch.onTintColor = UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
@@ -111,13 +116,51 @@ class ProfileViewController: UIViewController {
             make.centerY.equalTo(screenLabel)
             make.right.equalTo(wifiSwitch)
         }
+        
+        
+        colorThemeView = UIControl()
+        colorThemeView.reactive.controlEvents(.touchUpInside).observeValues {[weak self] (control) in
+            self?.changeTheme()
+        }
+        colorThemeView.backgroundColor = COLOR_profileCell
+        settingView.addSubview(colorThemeView)
+        colorThemeView.snp.makeConstraints { (make) in
+            make.left.right.equalTo(0)
+            make.top.equalTo(screenSwitch.snp.bottom).offset(15)
+            make.height.equalTo(50)
+        }
+        let colorThemeLabel = UILabel()
+        colorThemeLabel.text = "Color Theme"
+        colorThemeLabel.textColor = COLOR_profileCellTitleText
+        settingView.addSubview(colorThemeLabel)
+        colorThemeLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(screenLabel.snp.bottom).offset(32)
+            make.left.equalTo(settingTitleLabel)
+            make.bottom.equalTo(-16)
+        }
+        let colorThemeNextImageView = UIImageView()
+        colorThemeNextImageView.image = UIImage(named: "arrow-next")
+        settingView.addSubview(colorThemeNextImageView)
+        colorThemeNextImageView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(colorThemeLabel)
+            make.right.equalTo(-24)
+        }
+        colorThemeViewAllLabel = UILabel()
+        colorThemeViewAllLabel.text = colorTheme != UIUserInterfaceStyle.dark ? "Light Mode" : "Drak Mode"
+        colorThemeViewAllLabel.textColor = UIColor(hex: 0x999999)
+        colorThemeViewAllLabel.font = UIFont.systemFont(ofSize: 18)
+        settingView.addSubview(colorThemeViewAllLabel)
+        colorThemeViewAllLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(colorThemeLabel)
+            make.right.equalTo(colorThemeNextImageView.snp.left).offset(-15)
+        }
 
         let readingListView = UIControl()
         readingListView.reactive.controlEvents(.touchUpInside).observeValues {[weak self] (control) in
             let viewController = ReadingListViewController()
             self?.navigationController?.pushViewController(viewController, animated: true)
         }
-        readingListView.backgroundColor = UIColor.white
+        readingListView.backgroundColor = COLOR_profileCell
         contentView.addSubview(readingListView)
         readingListView.snp.makeConstraints { (make) in
             make.left.right.equalTo(0)
@@ -126,7 +169,7 @@ class ProfileViewController: UIViewController {
         }
         let readingListLabel = UILabel()
         readingListLabel.text = "My Reading List"
-        readingListLabel.textColor = UIColor(hex: 0x333333)
+        readingListLabel.textColor = COLOR_profileCellTitleText
         readingListLabel.font = UIFont.boldSystemFont(ofSize: 22)
         readingListView.addSubview(readingListLabel)
         readingListLabel.snp.makeConstraints { (make) in
@@ -151,7 +194,7 @@ class ProfileViewController: UIViewController {
         }
 
         let aboutUsView = UIView()
-        aboutUsView.backgroundColor = UIColor.white
+        aboutUsView.backgroundColor = COLOR_profileCell
         contentView.addSubview(aboutUsView)
         aboutUsView.snp.makeConstraints { (make) in
             make.top.equalTo(readingListView.snp.bottom).offset(15)
@@ -159,7 +202,7 @@ class ProfileViewController: UIViewController {
         }
         let aboutUsTitleLabel = UILabel()
         aboutUsTitleLabel.font = UIFont.boldSystemFont(ofSize: 22)
-        aboutUsTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        aboutUsTitleLabel.textColor = COLOR_profileCellTitleText
         aboutUsTitleLabel.text = "About Us"
         aboutUsView.addSubview(aboutUsTitleLabel)
         aboutUsTitleLabel.snp.makeConstraints { (make) in
@@ -175,6 +218,7 @@ class ProfileViewController: UIViewController {
         }
         let versionTitleLabel = UILabel()
         versionTitleLabel.text = "Version"
+        versionTitleLabel.textColor = COLOR_profileCellTitleText
         versionView.addSubview(versionTitleLabel)
         versionTitleLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(versionView)
@@ -198,6 +242,7 @@ class ProfileViewController: UIViewController {
         }
         let termsTitleLabel = UILabel()
         termsTitleLabel.text = "Terms of Use"
+        termsTitleLabel.textColor = COLOR_profileCellTitleText
         termsView.addSubview(termsTitleLabel)
         termsTitleLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(termsView)
@@ -221,6 +266,7 @@ class ProfileViewController: UIViewController {
         }
         let ppTitleLabel = UILabel()
         ppTitleLabel.text = "Privacy Policy"
+        ppTitleLabel.textColor = COLOR_profileCellTitleText
         ppView.addSubview(ppTitleLabel)
         ppTitleLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(ppView)
@@ -244,6 +290,7 @@ class ProfileViewController: UIViewController {
         }
         let disTitleLabel = UILabel()
         disTitleLabel.text = "Disclaimer"
+        disTitleLabel.textColor = COLOR_profileCellTitleText
         disView.addSubview(disTitleLabel)
         disTitleLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(disView)
@@ -258,7 +305,7 @@ class ProfileViewController: UIViewController {
         }
 
         let contactUsView = UIView()
-        contactUsView.backgroundColor = UIColor.white
+        contactUsView.backgroundColor = COLOR_profileCell
         contentView.addSubview(contactUsView)
         contactUsView.snp.makeConstraints { (make) in
             make.top.equalTo(aboutUsView.snp.bottom).offset(16)
@@ -266,7 +313,7 @@ class ProfileViewController: UIViewController {
         }
         let contactTitleLabel = UILabel()
         contactTitleLabel.font = UIFont.boldSystemFont(ofSize: 22)
-        contactTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        contactTitleLabel.textColor = COLOR_profileCellTitleText
         contactTitleLabel.text = "Contact Us"
         contactUsView.addSubview(contactTitleLabel)
         contactTitleLabel.snp.makeConstraints { (make) in
@@ -282,6 +329,7 @@ class ProfileViewController: UIViewController {
         }
         let emailTitleLabel = UILabel()
         emailTitleLabel.text = "Email Address"
+        emailTitleLabel.textColor = COLOR_profileCellTitleText
         emailView.addSubview(emailTitleLabel)
         emailTitleLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(emailView)
@@ -357,6 +405,28 @@ class ProfileViewController: UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    fileprivate func changeTheme() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let light = UIAlertAction(title: "Light Mode", style: .default) { (_) in
+            UserDefaults.standard.setValue(false, forKey: READERTHEMEKEY)
+            UIApplication.shared.windows[0].overrideUserInterfaceStyle = .light
+            self.colorTheme = .light
+            self.colorThemeViewAllLabel.text = "Light Mode"
+        }
+        let dark = UIAlertAction(title: "Dark Mode", style: .default) { (_) in
+            UserDefaults.standard.setValue(true, forKey: READERTHEMEKEY)
+            UIApplication.shared.windows[0].overrideUserInterfaceStyle = .dark
+            self.colorTheme = .dark
+            self.colorThemeViewAllLabel.text = "Drak Mode"
+        }
+        let popover = alert.popoverPresentationController
+        popover?.sourceView = colorThemeView
+        popover?.sourceRect = colorThemeView.bounds
+        popover?.permittedArrowDirections  = .any
+        alert.addAction(light)
+        alert.addAction(dark)
+        self.present(alert, animated: true, completion: nil)
+    }
 
     /*
     // MARK: - Navigation

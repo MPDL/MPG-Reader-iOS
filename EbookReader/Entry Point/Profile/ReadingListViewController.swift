@@ -32,14 +32,14 @@ class ReadingListViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.navigationItem.title = "My Reading List"
         self.navigationController?.navigationBar.tintColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-        self.view.backgroundColor = UIColor(hex: 0xF9F9F9)
+        self.view.backgroundColor = COLOR_background
 
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = CGFloat(50)
         layout.sectionInset = UIEdgeInsets(top: 40, left: CGFloat(50), bottom: 0, right: CGFloat(50))
         layout.itemSize = CGSize(width: 150, height: 265)
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        collectionView.backgroundColor = COLOR_background
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.isHidden = true

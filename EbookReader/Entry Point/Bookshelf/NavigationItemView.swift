@@ -37,7 +37,7 @@ class NavigationItemView: UIView {
         self.addGestureRecognizer(tap)
 
         contentView = UIView()
-        contentView.backgroundColor = UIColor.white
+        contentView.backgroundColor = COLOR_navItem
         contentView.layer.shadowOffset = CGSize(width: 0, height: 8)
         contentView.layer.shadowRadius = 25
         contentView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -68,7 +68,7 @@ class NavigationItemView: UIView {
         }
         let infoLabel = UILabel()
         infoLabel.text = "Go to Info-Page"
-        infoLabel.textColor = UIColor(hex: 0x333333)
+        infoLabel.textColor = COLOR_navItemText
         infoLabel.font = UIFont.boldSystemFont(ofSize: 18)
         infoView.addSubview(infoLabel)
         infoLabel.snp.makeConstraints { (make) in
@@ -96,7 +96,7 @@ class NavigationItemView: UIView {
         }
         let reviewLabel = UILabel()
         reviewLabel.text = "Review this book"
-        reviewLabel.textColor = UIColor(hex: 0x333333)
+        reviewLabel.textColor = COLOR_navItemText
         reviewLabel.font = UIFont.boldSystemFont(ofSize: 18)
         reviewView.addSubview(reviewLabel)
         reviewLabel.snp.makeConstraints { (make) in
@@ -124,7 +124,7 @@ class NavigationItemView: UIView {
         }
         let citeLabel = UILabel()
         citeLabel.text = "Cite this item"
-        citeLabel.textColor = UIColor(hex: 0x333333)
+        citeLabel.textColor = COLOR_navItemText
         citeLabel.font = UIFont.boldSystemFont(ofSize: 18)
         citeView.addSubview(citeLabel)
         citeLabel.snp.makeConstraints { (make) in

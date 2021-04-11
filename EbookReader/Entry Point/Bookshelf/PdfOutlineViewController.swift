@@ -36,10 +36,10 @@ class PdfOutlineViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = COLOR_background
 
         let headerView = UIView()
-        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+        headerView.backgroundColor = COLOR_pdfReaderHeader
         self.view.addSubview(headerView)
         headerView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(0)
@@ -108,10 +108,10 @@ extension PdfOutlineViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = UITableViewCell()
         if let oneOutline = dataSource[indexPath.row] as? PDFOutline {
             if let _ = oneOutline.parent?.parent {
-                cell.textLabel?.textColor = UIColor.gray
+                cell.textLabel?.textColor = COLOR_pdfReaderOutlineSubTitle
                 cell.textLabel?.text = "\t" + oneOutline.label!
             } else {
-                cell.textLabel?.textColor = UIColor.black
+                cell.textLabel?.textColor = COLOR_pdfReaderOutlineTitle
                 cell.textLabel?.text = oneOutline.label
             }
         }

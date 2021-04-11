@@ -43,6 +43,7 @@ class HomeViewController: UIViewController {
         }
 
         checkVersion()
+        UIApplication.shared.windows[0].overrideUserInterfaceStyle = UserDefaults.standard.bool(forKey: READERTHEMEKEY) ? .dark : .light
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -125,7 +126,7 @@ class HomeViewController: UIViewController {
         }
         let emptyTitleLabel = UILabel()
         emptyTitleLabel.text = "You are offline!"
-        emptyTitleLabel.textColor = UIColor(hex: 0x333333)
+        emptyTitleLabel.textColor = COLOR_text
         emptyTitleLabel.font = UIFont.boldSystemFont(ofSize: 30)
         emptyView.addSubview(emptyTitleLabel)
         emptyTitleLabel.snp.makeConstraints { (make) in

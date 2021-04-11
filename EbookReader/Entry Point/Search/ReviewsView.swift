@@ -81,16 +81,18 @@ class ReviewsView: UIScrollView {
             make.left.equalTo(profileImageView.snp.right).offset(16)
             make.top.equalTo(nameLabel.snp.bottom).offset(7)
         }
-        let commentsLabel = TTTAttributedLabel(frame: .zero)
+        var commentsLabel: UILabel!
         if let count = review.comment?.count, count < kCharacterBeforReadMore {
+            commentsLabel = UILabel()
             commentsLabel.text = review.comment!
-            commentsLabel.textColor = UIColor(hex: 0x333333)
+            commentsLabel.textColor = COLOR_downloadViewReviewComment
             commentsLabel.font = UIFont.systemFont(ofSize: 16)
         } else {
-            commentsLabel.showTextOnTTTAttributeLabel(originText: review.comment!, charatersBeforeReadMore: kCharacterBeforReadMore, isReadMoreTapped: false, isReadLessTapped: false)
+            commentsLabel = TTTAttributedLabel(frame: .zero)
+            (commentsLabel as! TTTAttributedLabel).showTextOnTTTAttributeLabel(originText: review.comment!, charatersBeforeReadMore: kCharacterBeforReadMore, isReadMoreTapped: false, isReadLessTapped: false)
+            (commentsLabel as! TTTAttributedLabel).delegate = self
         }
         commentsLabel.tag = index
-        commentsLabel.delegate = self
         view.addSubview(commentsLabel)
         commentsLabel.snp.makeConstraints { (make) in
             make.top.equalTo(profileImageView.snp.bottom).offset(22)

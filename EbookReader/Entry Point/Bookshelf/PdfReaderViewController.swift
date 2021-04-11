@@ -88,7 +88,7 @@ class PdfReaderViewController: UIViewController, PdfOutlineViewControllerDelegat
 
         headerView = UIView()
         headerView.isHidden = isStatusBarHidden
-        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+        headerView.backgroundColor = COLOR_pdfReaderHeader
         self.view.addSubview(headerView)
         headerView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(0)
