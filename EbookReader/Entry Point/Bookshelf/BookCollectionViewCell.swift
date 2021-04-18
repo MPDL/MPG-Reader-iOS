@@ -50,7 +50,7 @@ class BookCollectionViewCell: UICollectionViewCell {
     }
 
     func setObject(book: Book) {
-        if (book.folder) {
+        if (book.isFolder) {
             bookImageView.image = UIImage(named: "folder")
         } else if let thumbnail = book.thumbnail {
             bookImageView.kf.setImage(with: URL(string: thumbnail))

@@ -22,6 +22,7 @@ class BookshelfViewController: UIViewController {
     fileprivate var overlayContentView: UIView!
     fileprivate var emptyImageView: UIImageView!
     fileprivate var navigationItemView: NavigationItemView!
+    fileprivate var folderNavigationItemView: FolderNavigationItemView!
     fileprivate var writeReviewView: WriteReviewView?
     fileprivate var citeView: CiteView?
     fileprivate var shareBarButton: UIBarButtonItem!
@@ -36,6 +37,9 @@ class BookshelfViewController: UIViewController {
     fileprivate var bookFolderHandleView: BookFolderHandleView!
     fileprivate var bookFolderHandleNameView: BookFolderHandleNameView!
 
+    public var folderName: String = ""
+    fileprivate var folderApiBooks: [Book] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -299,6 +303,7 @@ class BookshelfViewController: UIViewController {
         }
         
         bookFolderHandleView = (Bundle.main.loadNibNamed("BookFolderHandleView", owner: self, options: nil)!.last as! BookFolderHandleView)
+        bookFolderHandleView.isFileInFolder = self.folderName != ""
         bookFolderHandleView.isHidden = true
         self.view.addSubview(bookFolderHandleView)
         bookFolderHandleView.snp.makeConstraints { (make) in
@@ -307,17 +312,63 @@ class BookshelfViewController: UIViewController {
             make.width.equalTo(self.view)
             make.height.equalTo(self.view)
         }
+        bookFolderHandleView.moveOutBlock = {[weak self]() in
+            guard let weakSelf = self else {
+                return
+            }
+            var ids: [String] = []
+            for i in 0..<weakSelf.selected.count {
+                if weakSelf.selected[i] == true {
+                    ids.append(weakSelf.books[i].id)
+                }
+            }
+            FolderApi.moveOut(srcFolderName: weakSelf.folderName, bookIds: ids) { (_) in
+                PopupView.showLoading(false)
+                weakSelf.reloadData()
+                weakSelf.bookFolderHandleView.hide()
+                weakSelf.onCancelTapped()
+            } failure: { (_) in
+                //
+            }
+        }
         bookFolderHandleView.addNameBlock = {[weak self]() in
             guard let weakSelf = self else {
                 return
             }
+            weakSelf.bookFolderHandleNameView.isAddFolder = true
+            weakSelf.bookFolderHandleNameView.nameTextField.placeholder = "Folder Name"
+            weakSelf.bookFolderHandleView.hide()
             weakSelf.bookFolderHandleNameView.show()
         }
-        bookFolderHandleView.doneBlock = {[weak self]() in
+        bookFolderHandleView.doneBlock = {[weak self](name) in
             guard let weakSelf = self else {
                 return
             }
-            weakSelf.bookFolderHandleView.hide()
+            if name != "" {
+                var ids: [String] = []
+                for i in 0..<weakSelf.selected.count {
+                    if weakSelf.selected[i] == true {
+                        ids.append(weakSelf.books[i].id)
+                    }
+                }
+                if weakSelf.folderName != "" {
+                    FolderApi.moveBetween(srcFolderName: weakSelf.folderName, destFolderName: name, bookIds: ids) { (_) in
+                        PopupView.showLoading(false)
+                        weakSelf.reloadData()
+                        weakSelf.bookFolderHandleView.hide()
+                        weakSelf.onCancelTapped()
+                    } failure: { (_) in
+                    }
+                } else {
+                    FolderApi.moveIn(destFolderName: name, bookIds: ids) { (_) in
+                        PopupView.showLoading(false)
+                        weakSelf.reloadData()
+                        weakSelf.bookFolderHandleView.hide()
+                        weakSelf.onCancelTapped()
+                    } failure: { (_) in
+                    }
+                }
+            }
         }
         
         bookFolderHandleNameView = (Bundle.main.loadNibNamed("BookFolderHandleNameView", owner: self, options: nil)!.last as! BookFolderHandleNameView)
@@ -329,47 +380,258 @@ class BookshelfViewController: UIViewController {
             make.width.equalTo(self.view)
             make.height.equalTo(self.view)
         }
-        bookFolderHandleNameView.doneBlock = {[weak self]() in
+        bookFolderHandleNameView.doneBlock = {[weak self](name, isAddFolder) in
             guard let weakSelf = self else {
                 return
             }
-            weakSelf.bookFolderHandleNameView.hide()
+            if (name != "") {
+                if isAddFolder {
+                    FolderApi.createFolder(folderName: name) { (_) in
+                        var ids: [String] = []
+                        for i in 0..<weakSelf.selected.count {
+                            if weakSelf.selected[i] == true {
+                                ids.append(weakSelf.books[i].id)
+                            }
+                        }
+                        FolderApi.moveIn(destFolderName: name, bookIds: ids) { (_) in
+                            PopupView.showLoading(false)
+                            weakSelf.reloadData()
+                            weakSelf.bookFolderHandleNameView.hide()
+                            weakSelf.onCancelTapped()
+                        } failure: { (_) in
+                        }
+                    } failure: { (_) in
+                    }
+                } else {
+                    FolderApi.rename(folderName: weakSelf.folderName, folderNameNew: name) { (_) in
+                        PopupView.showLoading(false)
+                        weakSelf.bookFolderHandleNameView.hide()
+                        weakSelf.title = name
+                    } failure: { (_) in
+                    }
+                }
+            }
         }
+        
+        folderNavigationItemView = FolderNavigationItemView(delegate: self)
+        AppDelegate.getTopView().addSubview(folderNavigationItemView)
+        folderNavigationItemView.snp.makeConstraints { (make) in
+            make.top.equalTo(70)
+            make.left.right.bottom.equalTo(0)
+            make.height.equalTo(300)
+        }
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIApplication.shared.isIdleTimerDisabled = false
-
+        reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        folderNavigationItemView.dismiss()
+    }
+    
+    fileprivate func reloadData() {
+        fetchAllBooks {[weak self] () in
+            self?.reloadBooks()
+        }
+    }
+    
+    fileprivate func fetchAllBooks(finish: (()->())?) {
+        self.title = self.folderName == "" ? "My Bookshelf" : self.folderName
         let realm = try! Realm()
-        books = realm.objects(Book.self).sorted(byKeyPath: "modifyDate", ascending: false)
-       
-        countLabel.text = "All Books (\(books.count))"
+        FolderApi.bookshelf(success: {[weak self] (baseDTOContent) in
+            PopupView.showLoading(false)
+            guard let weakSelf = self, let baseDTOContent = baseDTOContent else {
+                self?.folderApiBooks = []
+                finish?()
+                return
+            }
+            weakSelf.folderApiBooks = []
+            (baseDTOContent.bookIds ?? []).forEach { (str) in
+                let book = Book()
+                book.id = str
+                weakSelf.folderApiBooks.append(book)
+            }
+            let folderNames = baseDTOContent.folderNames ?? []
+            let dbbooks = realm.objects(Book.self)
+            if (dbbooks.count == 0) {
+                finish?()
+                // remove folder/file
+                folderNames.forEach { (name) in
+                    FolderApi.remove(folderName: name, success: nil, failure: nil)
+                }
+            } else {
+                var count = 0
+                if (folderNames.count == 0) {
+                    finish?()
+                } else {
+                    folderNames.forEach { (name) in
+                        let book = Book()
+                        book.id = name
+                        book.isFolder = true
+                        weakSelf.folderApiBooks.append(book)
+                        
+                        if realm.objects(Book.self).filter(NSPredicate(format: "id == %@", name)).count == 0 {
+                            let book_folder = Book()
+                            book_folder.id = name
+                            book_folder.title = name
+                            book_folder.isFolder = true
+                            book_folder.modifyDate = Date()
+                            try! realm.write {
+                                realm.add(book_folder)
+                            }
+                        }
+                        FolderApi.books(folderName: name, success: { (baseDTOContent2) in
+                            PopupView.showLoading(false)
+                            (baseDTOContent2?.books ?? []).forEach { (b) in
+                                let book = Book()
+                                book.id = b.bookId ?? ""
+                                book.parentFolderName = name
+                                weakSelf.folderApiBooks.append(book)
+                                let books = realm.objects(Book.self).filter(NSPredicate(format: "id == %@", b.bookId ?? ""))
+                                if books.count > 0 && (books[0].parentFolderName == "" || books[0].parentFolderName != name) {
+                                    try! realm.write {
+                                        books[0].modifyDate = Date()
+                                        books[0].parentFolderName = name
+                                        realm.add(books[0])
+                                    }
+                                }
+                            }
+                            count = count + 1
+                            if (count == folderNames.count) {
+                                finish?()
+                            }
+                        }) { (_) in
+                            count = count + 1
+                            if (count == folderNames.count) {
+                                finish?()
+                            }
+                        }
+                    }
+                }
+            }
+        }) { (_) in
+            finish?()
+        }
+    }
+    
+    fileprivate func reloadBooks() {
+        let realm = try! Realm()
+        
+        let allApiBookIds = self.folderApiBooks.filter({ (book) -> Bool in
+            return !book.isFolder
+        }).map { (book) -> String in
+            return book.id
+        }
+        realm.objects(Book.self).forEach { (book) in
+            if !allApiBookIds.contains(book.id) && book.id != "" && !book.isFolder {
+                // add book with api
+                FolderApi.addBook(bookId: book.id) { (_) in
+                    PopupView.showLoading(false)
+                } failure: { (_) in
+                    //
+                }
+            }
+        }
+        let idsNotInApi: [String] = realm.objects(Book.self).filter { (book) -> Bool in
+            return !allApiBookIds.contains(book.id) && book.id != "" && !book.isFolder
+        }.map { (book) -> String in
+            return book.id
+        }
+        
+        let ids = self.folderApiBooks.filter({ (book) -> Bool in
+            if self.folderName != "" {
+                return !book.isFolder && book.parentFolderName == self.folderName
+            } else {
+                return book.parentFolderName == ""
+            }
+        }).map { (book) -> String in
+            return book.id
+        }
+        
+        let predicate = NSPredicate(format: "id IN %@ OR id IN %@", ids, idsNotInApi)
+        books = realm.objects(Book.self).filter(predicate).sorted(byKeyPath: "modifyDate", ascending: false)
+        
+        let booksCount = books.filter { (book) -> Bool in
+            return !book.isFolder
+        }.count
+        countLabel.text = "All Books (\(booksCount))"
+        
         if searchText != "" {
-            let predicate = NSPredicate(format: "title CONTAINS[c] %@ OR abstract CONTAINS[c] %@", searchText, searchText)
+            let predicate = NSPredicate(format: "(title CONTAINS[c] %@ OR abstract CONTAINS[c] %@) AND (id IN %@ OR id IN %@)", searchText, searchText, ids, idsNotInApi)
             books = realm.objects(Book.self).filter(predicate).sorted(byKeyPath: "modifyDate", ascending: false)
         }
         collectionView.reloadData()
     }
 
     @objc func onConfirmDeleteTapped() {
-        let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
-        let fileManager = FileManager.default
-        var ids = [String]()
-        var allDeletedSuccessfully = true
+        var bookIds = [String]()
         for i in 0..<selected.count {
             if selected[i] == true {
-                // Delete book file
-                let path = paths[0] + "/" + books[i].id
-                if fileManager.fileExists(atPath: path) {
-                    do {
-                        try fileManager.removeItem(atPath: path)
-                        ids.append(books[i].id)
-                    } catch {
-                        allDeletedSuccessfully = false
+                if books[i].isFolder {
+                    FolderApi.remove(folderName: books[i].id) {[weak self] (_) in
+                        PopupView.showLoading(false)
+                        self?.reloadData()
+                    } failure: { (_) in
                     }
                 } else {
-                    allDeletedSuccessfully = false
+                    bookIds.append(books[i].id)
+                }
+            }
+        }
+        if bookIds.count > 0 {
+            if self.folderName != "" {
+                FolderApi.removeBooks(folderName: self.folderName, bookIds: bookIds) { (_) in
+                    PopupView.showLoading(false)
+                } failure: { (_) in
+                }
+            } else {
+                // remove books in folderName == ""
+            }
+        }
+        
+        let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
+        let fileManager = FileManager.default
+        var allDeletedSuccessfully = true
+        var ids = [String]()
+        for i in 0..<selected.count {
+            if selected[i] == true {
+                if books[i].isFolder {
+                    // delete folder
+                    ids.append(books[i].id)
+                    for j in 0..<selected.count {
+                        if books[j].parentFolderName == books[i].id {
+                            // Delete book file
+                            let path = paths[0] + "/" + books[j].id
+                            if fileManager.fileExists(atPath: path) {
+                                do {
+                                    try fileManager.removeItem(atPath: path)
+                                    ids.append(books[j].id)
+                                } catch {
+                                    allDeletedSuccessfully = false
+                                }
+                            } else {
+                                allDeletedSuccessfully = false
+                            }
+                        }
+                    }
+                } else {
+                    // Delete book file
+                    let path = paths[0] + "/" + books[i].id
+                    if fileManager.fileExists(atPath: path) {
+                        do {
+                            try fileManager.removeItem(atPath: path)
+                            ids.append(books[i].id)
+                        } catch {
+                            allDeletedSuccessfully = false
+                        }
+                    } else {
+                        allDeletedSuccessfully = false
+                    }
                 }
             }
         }
@@ -381,9 +643,8 @@ class BookshelfViewController: UIViewController {
         try! realm.write {
             realm.delete(booksToDelete)
         }
-
-        books = realm.objects(Book.self).sorted(byKeyPath: "modifyDate", ascending: false)
-        countLabel.text = "All Books (\(books.count))"
+        
+        self.reloadBooks()
 
         onOverlayTapped()
         onCancelTapped()
@@ -403,6 +664,16 @@ class BookshelfViewController: UIViewController {
             PopupView.showWithContent("No book selected")
             return
         }
+        var isFolderSelected = false
+        for i in 0..<selected.count {
+            if selected[i] == true {
+                if books[i].isFolder {
+                    isFolderSelected = true
+                    break
+                }
+            }
+        }
+        deleteTitleLabel.text = isFolderSelected ? "Are you sure you want to remove?\nAll items in your folder will be deleted." : "Are you sure you want to remove?"
         self.overlayView.isHidden = false
         self.overlayContentView.isHidden = false
     }
@@ -412,6 +683,7 @@ class BookshelfViewController: UIViewController {
             PopupView.showWithContent("No book selected")
             return
         }
+        bookFolderHandleView.selectedFolderName = self.folderName
         bookFolderHandleView.show()
     }
     
@@ -425,6 +697,17 @@ class BookshelfViewController: UIViewController {
                 selected[i] = false
             }
         }
+        var isFolderSelected = false
+        for i in 0..<selected.count {
+            if selected[i] == true {
+                if books[i].isFolder {
+                    isFolderSelected = true
+                    break
+                }
+            }
+        }
+        self.bookDeleteView.isHidden = isFolderSelected
+        self.deleteView.isHidden = !isFolderSelected
         checkAllSelected()
         self.collectionView.reloadData()
     }
@@ -446,8 +729,12 @@ class BookshelfViewController: UIViewController {
     }
 
     @objc func onEditTapped() {
+        if self.folderName != "" {
+            folderNavigationItemView.display()
+            return
+        }
         self.tabBarController?.tabBar.isHidden = true
-        self.deleteView.isHidden = false
+        self.bookDeleteView.isHidden = false
         self.searchView.snp.remakeConstraints { (make) in
             make.left.right.equalTo(0)
             make.top.equalTo(104)
@@ -497,21 +784,14 @@ class BookshelfViewController: UIViewController {
 extension BookshelfViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-
-        let realm = try! Realm()
-        let predicate = NSPredicate(format: "title CONTAINS[c] %@ OR abstract CONTAINS[c] %@", searchText, searchText)
-        books = realm.objects(Book.self).filter(predicate).sorted(byKeyPath: "modifyDate", ascending: false)
-
-        collectionView.reloadData()
+        self.reloadBooks()
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchText = searchText
         if searchText.count < 1 {
             searchBar.resignFirstResponder()
-            let realm = try! Realm()
-            books = realm.objects(Book.self).sorted(byKeyPath: "modifyDate", ascending: false)
-            collectionView.reloadData()
+            self.reloadBooks()
             return
         }
     }
@@ -520,6 +800,9 @@ extension BookshelfViewController: UISearchBarDelegate {
 
 extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if books == nil {
+            return 0
+        }
         if books.count == 0 {
             collectionView.isHidden = true
             emptyImageView.isHidden = false
@@ -544,17 +827,35 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let book = books[indexPath.row]
         if selected.count > 0 {
             // editing mode
             if let cell = collectionView.cellForItem(at: indexPath) as? BookCollectionViewCell {
                 selected[indexPath.row] = !selected[indexPath.row]
                 cell.checkButton.isSelected = selected[indexPath.row]
             }
+            var isFolderSelected = false
+            for i in 0..<selected.count {
+                if selected[i] == true {
+                    if books[i].isFolder {
+                        isFolderSelected = true
+                        break
+                    }
+                }
+            }
+            self.bookDeleteView.isHidden = isFolderSelected
+            self.deleteView.isHidden = !isFolderSelected
             checkAllSelected()
             return
         }
+        
 
-        let book = books[indexPath.row]
+        if book.isFolder {
+            let vc = BookshelfViewController()
+            vc.folderName = book.id
+            self.navigationController?.pushViewController(vc, animated: true)
+            return
+        }
         selectedBook = book
         let paths = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)
         let path = paths[0] + "/" + book.id
@@ -649,6 +950,35 @@ extension BookshelfViewController: NavigationItemDelegate {
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
                 self.folioReader.close()
+                break
+        }
+    }
+}
+
+
+
+extension BookshelfViewController: FolderNavigationItemDelegate {
+    func onOneActionTapped(action: FolderNaviAction) {
+        switch action {
+        case .rename:
+            bookFolderHandleNameView.isAddFolder = false
+            bookFolderHandleNameView.nameTextField.placeholder = "Folder New Name"
+            bookFolderHandleNameView.show()
+                break
+            case .select:
+                self.tabBarController?.tabBar.isHidden = true
+                self.bookDeleteView.isHidden = false
+                self.searchView.snp.remakeConstraints { (make) in
+                    make.left.right.equalTo(0)
+                    make.top.equalTo(104)
+                    make.height.equalTo(0)
+                }
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Select All", style: .plain, target: self, action: #selector(onSelectAllTapped))
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancelTapped))
+                for _ in 0..<books.count {
+                    selected.append(false)
+                }
+                self.collectionView.reloadData()
                 break
         }
     }

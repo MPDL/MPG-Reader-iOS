@@ -17,6 +17,9 @@ class BookFolderHandleTableViewCell: UITableViewCell {
     var isMoveOutCell = false
     var isFolderAddCell = false
     var isDefaultCell = true
+    var folderName = ""
+    var isFolderNameSelected = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backgroundColor = COLOR_overlayView
@@ -40,8 +43,9 @@ class BookFolderHandleTableViewCell: UITableViewCell {
         } else {
             self.rightSelectImageView.isHidden = false
             self.leftIconImageView.image = UIImage(named: "folder_mini")
-            self.centerTitleLabel.text = "ABC"
+            self.centerTitleLabel.text = folderName
             self.centerTitleLabel.textColor = COLOR_overlayText
+            self.rightSelectImageView.image = self.isFolderNameSelected ? UIImage(named: "folder_select") : UIImage(named: "folder_no_select")
         }
     }
     

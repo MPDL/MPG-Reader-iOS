@@ -9,11 +9,12 @@
 import UIKit
 
 class BookFolderHandleNameView: UIView {
+    var isAddFolder = false
     var cancelBlock: (()->())?
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var textFieldView: UIView!
-    var doneBlock: (()->())?
+    var doneBlock: ((String, Bool)->())?
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
@@ -39,7 +40,7 @@ class BookFolderHandleNameView: UIView {
         cancelBlock?()
     }
     @IBAction func clickOnDoneButton(_ sender: Any) {
-        doneBlock?()
+        doneBlock?(nameTextField.text ?? "", isAddFolder)
     }
     func show() {
         self.alpha = 0

@@ -524,17 +524,24 @@ class DownloadViewController: UIViewController {
     }
 
     fileprivate func saveBook() {
+        FolderApi.addBook(bookId: self.book.id) { (_) in
+            PopupView.showLoading(false)
+        } failure: { (_) in
+        }
         let realm = try! Realm()
-
-        let predicate = NSPredicate(format: "id == %@", book.id)
+        let predicate = NSPredicate(format: "id == %@", self.book.id)
         if !realm.objects(Book.self).filter(predicate).isEmpty {
             PopupView.showWithContent("Book already exists")
             return
         }
-
         try! realm.write {
-            realm.add(book)
+            realm.add(self.book)
         }
+    }
+    
+    fileprivate func saveDBBook() {
+        
+        
     }
 
     fileprivate func checkFileExisted(_ path: String) -> Bool {

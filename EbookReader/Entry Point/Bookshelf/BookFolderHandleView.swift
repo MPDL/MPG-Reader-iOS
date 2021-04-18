@@ -14,12 +14,15 @@ class BookFolderHandleView: UIView {
     var cancelBlock: (()->())?
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var footerView: UIView!
-    var doneBlock: (()->())?
+    var doneBlock: ((String)->())?
     @IBOutlet weak var contentView: UIView!
     var addNameBlock: (()->())?
+    var moveOutBlock: (()->())?
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
+    fileprivate var folderNames: [String] = []
+    var selectedFolderName = ""
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = COLOR_overlayView
@@ -31,7 +34,7 @@ class BookFolderHandleView: UIView {
         doneButton.setTitleColor(COLOR_overlayText, for: .normal)
         tableView.register(UINib(nibName: "BookFolderHandleTableViewCell", bundle: nil), forCellReuseIdentifier: "BookFolderHandleTableViewCell")
     }
-
+    
     @objc fileprivate func tapBackgroundView(_ sender: Any) {
         self.hide()
     }
@@ -40,9 +43,28 @@ class BookFolderHandleView: UIView {
         cancelBlock?()
     }
     @IBAction func clickOnDoneButton(_ sender: Any) {
-        doneBlock?()
+        doneBlock?(self.selectedFolderName)
     }
+    
+    public func fetchFolderNames() {
+        FolderApi.bookshelf(success: {[weak self] (baseDTOContent) in
+            PopupView.showLoading(false)
+            guard let weakSelf = self, let baseDTOContent = baseDTOContent else {
+                return
+            }
+            weakSelf.folderNames = baseDTOContent.folderNames ?? []
+            weakSelf.tableView.reloadData()
+        }) { [weak self] (_) in
+            guard let weakSelf = self else {
+                return
+            }
+            weakSelf.folderNames = []
+            weakSelf.tableView.reloadData()
+        }
+    }
+    
     func show() {
+        self.fetchFolderNames()
         self.alpha = 0
         self.isHidden = false
         UIView.animate(withDuration: 0.3) {
@@ -66,6 +88,9 @@ extension BookFolderHandleView: UITableViewDelegate,UITableViewDataSource {
         if (!isFileInFolder && section == 0) {
             return 0
         }
+        if (section == 2) {
+            return folderNames.count
+        }
         return 1
     }
     
@@ -74,6 +99,10 @@ extension BookFolderHandleView: UITableViewDelegate,UITableViewDataSource {
         cell.isMoveOutCell = indexPath.section == 0
         cell.isFolderAddCell = indexPath.section == 1
         cell.isDefaultCell = indexPath.section == 2
+        if indexPath.section == 2 {
+            cell.folderName = folderNames[indexPath.row]
+            cell.isFolderNameSelected = folderNames[indexPath.row] == self.selectedFolderName
+        }
         cell.setup()
         return cell
     }
@@ -81,6 +110,13 @@ extension BookFolderHandleView: UITableViewDelegate,UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         if (indexPath.section == 1) {
             addNameBlock?()
+        }
+        if (indexPath.section == 0) {
+            moveOutBlock?()
+        }
+        if (indexPath.section == 2) {
+            self.selectedFolderName = folderNames[indexPath.row]
+            self.tableView.reloadData()
         }
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
