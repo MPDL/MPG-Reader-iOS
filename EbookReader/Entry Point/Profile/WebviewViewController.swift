@@ -34,27 +34,32 @@ class WebviewViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         webview = WKWebView()
         view.addSubview(webview)
         webview.snp.makeConstraints { (make) in
-            make.left.right.top.equalTo(0)
+            make.left.right.top.bottom.equalTo(0)
             make.bottom.equalTo(50)
         }
         webview.navigationDelegate = self
         webview.uiDelegate = self
         webview.allowsBackForwardNavigationGestures = true
         
-        let toolBar = UIToolbar()
-        toolBar.backgroundColor = .white
-        view.addSubview(toolBar)
-        toolBar.snp.makeConstraints { (make) in
-            make.left.right.equalTo(0)
-            make.bottom.equalTo(0)
-            make.height.equalTo(50)
-        }
+//        let toolBar = UIToolbar()
+//        toolBar.backgroundColor = .white
+//        view.addSubview(toolBar)
+//        toolBar.snp.makeConstraints { (make) in
+//            make.left.right.equalTo(0)
+//            make.bottom.equalTo(0)
+//            make.height.equalTo(50)
+//        }
         
         goback = UIBarButtonItem(image: UIImage(named: "icon-left"), style: .plain, target: self, action: #selector(goBack))
         goback.isEnabled = false
         goforward = UIBarButtonItem(image: UIImage(named: "icon-right"), style: .plain, target: self, action: #selector(goForward))
         goforward.isEnabled = false
-        toolBar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), goback!,UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil), UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil), goforward,  UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)]
+        
+       
+        self.navigationItem.leftBarButtonItems = [goback, goforward]
+        
+        let closeImage = UIImage(named: "icon-navbar-close")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(goClose))
         
         if #available(iOS 11, *) {
             let group = DispatchGroup()
@@ -84,6 +89,9 @@ class WebviewViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         if (webview.canGoForward) {
             webview.goForward()
         }
+    }
+    @objc private func goClose() {
+        self.navigationController?.popViewController(animated: true)
     }
 
     private func startLoading() {

@@ -48,7 +48,7 @@ class ReviewsView: UIScrollView {
     }
     fileprivate func generateOneReviewView(review: Review, index: Int) -> UIView {
         let view = UIView()
-        view.backgroundColor = UIColor(hex: 0xF2F2F5)
+        view.backgroundColor = COLOR_reviewView
 
         let profileImageView = UIImageView()
         profileImageView.image = UIImage(named: "avatar")
@@ -65,7 +65,7 @@ class ReviewsView: UIScrollView {
         } else {
             nameLabel.text = "MPG Reader User"
         }
-        nameLabel.textColor = UIColor(hex: 0x333333)
+        nameLabel.textColor = COLOR_reviewText
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
         view.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { (make) in
@@ -85,7 +85,7 @@ class ReviewsView: UIScrollView {
         if let count = review.comment?.count, count < kCharacterBeforReadMore {
             commentsLabel = UILabel()
             commentsLabel.text = review.comment!
-            commentsLabel.textColor = COLOR_downloadViewReviewComment
+            commentsLabel.textColor = COLOR_reviewText
             commentsLabel.font = UIFont.systemFont(ofSize: 16)
         } else {
             commentsLabel = TTTAttributedLabel(frame: .zero)

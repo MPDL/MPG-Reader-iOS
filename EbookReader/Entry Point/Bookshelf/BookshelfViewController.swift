@@ -40,6 +40,16 @@ class BookshelfViewController: UIViewController {
     public var folderName: String = ""
     fileprivate var folderApiBooks: [Book] = []
     
+    fileprivate var bookDeleteImageView: UIImageView!
+    fileprivate var bookDeleteLabel: UILabel!
+    fileprivate var bookMoveImageView: UIImageView!
+    fileprivate var bookMoveLabel: UILabel!
+    fileprivate var deleteImageView: UIImageView!
+    fileprivate var deleteLabel: UILabel!
+    fileprivate var deleteButton: UIView!
+    fileprivate var bookDeleteButton: UIView!
+    fileprivate var bookMoveButton: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -121,7 +131,7 @@ class BookshelfViewController: UIViewController {
             make.left.right.bottom.equalTo(0)
             make.height.equalTo(160)
         }
-        let deleteButton = UIView()
+        deleteButton = UIView()
         deleteButton.backgroundColor = COLOR_buttonBackground
         deleteButton.isUserInteractionEnabled = true
         deleteButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDeleteTapped)))
@@ -129,6 +139,7 @@ class BookshelfViewController: UIViewController {
         deleteButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         deleteButton.layer.shadowOpacity = 1
         deleteButton.layer.cornerRadius = 6
+        deleteButton.layer.borderColor = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 0.5).cgColor
         deleteView.addSubview(deleteButton)
         deleteButton.snp.makeConstraints { (make) in
             make.top.equalTo(30)
@@ -136,14 +147,14 @@ class BookshelfViewController: UIViewController {
             make.height.equalTo(80)
             make.centerX.equalTo(deleteView)
         }
-        let deleteImageView = UIImageView()
+        deleteImageView = UIImageView()
         deleteImageView.image = UIImage(named: "icon-trash-green")
         deleteButton.addSubview(deleteImageView)
         deleteImageView.snp.makeConstraints { (make) in
             make.centerY.equalTo(deleteButton)
             make.centerX.equalTo(deleteButton).offset(-36)
         }
-        let deleteLabel = UILabel()
+        deleteLabel = UILabel()
         deleteLabel.textColor = COLOR_buttonText
         deleteLabel.font = UIFont.systemFont(ofSize: 24)
         deleteLabel.text = "Remove"
@@ -161,7 +172,7 @@ class BookshelfViewController: UIViewController {
             make.left.right.bottom.equalTo(0)
             make.height.equalTo(160)
         }
-        let bookDeleteButton = UIView()
+        bookDeleteButton = UIView()
         bookDeleteButton.backgroundColor = UIColor.white
         bookDeleteButton.isUserInteractionEnabled = true
         bookDeleteButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDeleteTapped)))
@@ -170,6 +181,7 @@ class BookshelfViewController: UIViewController {
         bookDeleteButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         bookDeleteButton.layer.shadowOpacity = 1
         bookDeleteButton.layer.cornerRadius = 6
+        bookDeleteButton.layer.borderColor = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 0.5).cgColor
         bookDeleteView.addSubview(bookDeleteButton)
         bookDeleteButton.snp.makeConstraints { (make) in
             make.top.equalTo(30)
@@ -177,14 +189,14 @@ class BookshelfViewController: UIViewController {
             make.height.equalTo(80)
             make.centerX.equalTo(bookDeleteView).offset(-145)
         }
-        let bookDeleteImageView = UIImageView()
+        bookDeleteImageView = UIImageView()
         bookDeleteImageView.image = UIImage(named: "icon-trash-green")
         bookDeleteButton.addSubview(bookDeleteImageView)
         bookDeleteImageView.snp.makeConstraints { (make) in
             make.centerY.equalTo(bookDeleteButton)
             make.centerX.equalTo(bookDeleteButton).offset(-36)
         }
-        let bookDeleteLabel = UILabel()
+        bookDeleteLabel = UILabel()
         bookDeleteLabel.textColor = COLOR_buttonText
         bookDeleteLabel.font = UIFont.systemFont(ofSize: 24)
         bookDeleteLabel.text = "Remove"
@@ -194,7 +206,7 @@ class BookshelfViewController: UIViewController {
             make.centerX.equalTo(bookDeleteButton).offset(30)
         }
         
-        let bookMoveButton = UIView()
+        bookMoveButton = UIView()
         bookMoveButton.backgroundColor = UIColor.white
         bookMoveButton.isUserInteractionEnabled = true
         bookMoveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMoveTapped)))
@@ -203,6 +215,7 @@ class BookshelfViewController: UIViewController {
         bookMoveButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         bookMoveButton.layer.shadowOpacity = 1
         bookMoveButton.layer.cornerRadius = 6
+        bookMoveButton.layer.borderColor = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 0.5).cgColor
         bookDeleteView.addSubview(bookMoveButton)
         bookMoveButton.snp.makeConstraints { (make) in
             make.top.equalTo(30)
@@ -210,14 +223,14 @@ class BookshelfViewController: UIViewController {
             make.height.equalTo(80)
             make.centerX.equalTo(bookDeleteView).offset(145)
         }
-        let bookMoveImageView = UIImageView()
+        bookMoveImageView = UIImageView()
         bookMoveImageView.image = UIImage(named: "move_in")
         bookMoveButton.addSubview(bookMoveImageView)
         bookMoveImageView.snp.makeConstraints { (make) in
             make.centerY.equalTo(bookMoveButton)
             make.centerX.equalTo(bookMoveButton).offset(-70)
         }
-        let bookMoveLabel = UILabel()
+        bookMoveLabel = UILabel()
         bookMoveLabel.textColor = COLOR_buttonText
         bookMoveLabel.font = UIFont.systemFont(ofSize: 24)
         bookMoveLabel.text = "Move to Folder"
@@ -337,6 +350,7 @@ class BookshelfViewController: UIViewController {
             }
             weakSelf.bookFolderHandleNameView.isAddFolder = true
             weakSelf.bookFolderHandleNameView.nameTextField.placeholder = "Folder Name"
+            weakSelf.bookFolderHandleNameView.titleLabel.text = "Move to New Folder"
             weakSelf.bookFolderHandleView.hide()
             weakSelf.bookFolderHandleNameView.show()
         }
@@ -748,6 +762,7 @@ class BookshelfViewController: UIViewController {
             selected.append(false)
         }
         self.collectionView.reloadData()
+        self.checkAllSelected()
     }
 
     fileprivate func checkAllSelected() {
@@ -755,6 +770,34 @@ class BookshelfViewController: UIViewController {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Select All", style: .plain, target: self, action: #selector(onSelectAllTapped))
         } else {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Deselect All", style: .plain, target: self, action: #selector(onSelectAllTapped))
+        }
+        if !selected.contains(true) {
+            bookDeleteLabel.textColor = UIColor(hex: 0x999999)
+            bookMoveLabel.textColor = UIColor(hex: 0x999999)
+            deleteLabel.textColor = UIColor(hex: 0x999999)
+            deleteButton.backgroundColor = COLOR_buttonBackground_disable
+            bookDeleteButton.backgroundColor = COLOR_buttonBackground_disable
+            bookMoveButton.backgroundColor = COLOR_buttonBackground_disable
+            let isDarkTheme = UserDefaults.standard.bool(forKey: READERTHEMEKEY) ? true : false
+            deleteButton.layer.borderWidth = isDarkTheme ? 1 : 0
+            bookDeleteButton.layer.borderWidth = isDarkTheme ? 1 : 0
+            bookMoveButton.layer.borderWidth = isDarkTheme ? 1 : 0
+            bookDeleteImageView.image = UIImage(named: "icon-trash-disable")
+            deleteImageView.image = UIImage(named: "icon-trash-disable")
+            bookMoveImageView.image = UIImage(named: "move_in_disable")
+        } else {
+            bookDeleteLabel.textColor = COLOR_buttonText
+            bookMoveLabel.textColor = COLOR_buttonText
+            deleteLabel.textColor = COLOR_buttonText
+            deleteButton.backgroundColor = COLOR_buttonBackground
+            bookDeleteButton.backgroundColor = COLOR_buttonBackground
+            bookMoveButton.backgroundColor = COLOR_buttonBackground
+            deleteButton.layer.borderWidth = 0
+            bookDeleteButton.layer.borderWidth = 0
+            bookMoveButton.layer.borderWidth = 0
+            bookDeleteImageView.image = UIImage(named: "icon-trash-green")
+            deleteImageView.image = UIImage(named: "icon-trash-green")
+            bookMoveImageView.image = UIImage(named: "move_in")
         }
     }
 
@@ -878,6 +921,11 @@ extension BookshelfViewController: UICollectionViewDataSource, UICollectionViewD
             config.enableTTS = false
             folioReader = FolioReader()
             folioReader.delegate = self
+            folioReader.openWebviewAction = {[weak self] url in
+                let webviewController = WebviewViewController()
+                webviewController.urlString = url.absoluteString
+                self?.folioReader.readerCenter?.navigationController?.pushViewController(webviewController, animated: true)
+            }
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
@@ -963,6 +1011,7 @@ extension BookshelfViewController: FolderNavigationItemDelegate {
         case .rename:
             bookFolderHandleNameView.isAddFolder = false
             bookFolderHandleNameView.nameTextField.placeholder = "Folder New Name"
+            bookFolderHandleNameView.titleLabel.text = "Rename"
             bookFolderHandleNameView.show()
                 break
             case .select:
@@ -979,6 +1028,7 @@ extension BookshelfViewController: FolderNavigationItemDelegate {
                     selected.append(false)
                 }
                 self.collectionView.reloadData()
+                self.checkAllSelected()
                 break
         }
     }

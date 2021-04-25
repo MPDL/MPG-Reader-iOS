@@ -107,6 +107,9 @@ let COLOR_navBar = UIColor { (tc) -> UIColor in
 let COLOR_buttonBackground = UIColor { (tc) -> UIColor in
     return tc.userInterfaceStyle == .light ? UIColor.white : UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
 }
+let COLOR_buttonBackground_disable = UIColor { (tc) -> UIColor in
+    return tc.userInterfaceStyle == .light ? UIColor.white : UIColor(red: 15/255.0, green: 15/255.0, blue: 15/255.0, alpha: 1)
+}
 let COLOR_buttonText = UIColor { (tc) -> UIColor in
     return tc.userInterfaceStyle == .light ? UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1) : UIColor.white
 }
@@ -118,3 +121,10 @@ let COLOR_overlayView = UIColor { (tc) -> UIColor in
     return tc.userInterfaceStyle == .light ? UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1) : UIColor(red: 64/255.0, green: 64/255.0, blue: 64/255.0, alpha: 1)
 }
 
+let COLOR_reviewView = UIColor { (tc) -> UIColor in
+    return tc.userInterfaceStyle == .light ? UIColor(hex: 0xF2F2F5) : UIColor(hex: 0x333333)
+}
+
+let COLOR_reviewText = UIColor { (tc) -> UIColor in
+    return tc.userInterfaceStyle == .light ? UIColor(hex: 0x333333) : UIColor(hex: 0xffffff)
+}

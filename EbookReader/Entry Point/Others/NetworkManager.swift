@@ -62,6 +62,7 @@ class NetworkManager: AFHTTPSessionManager {
             if model.code == 0 {
                 success?(model.content)
             } else {
+                PopupView.showLoading(false)
                 PopupView.showWithContent(model.message ?? "server error")
             }
         } catch {
