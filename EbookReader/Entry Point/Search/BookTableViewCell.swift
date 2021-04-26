@@ -27,7 +27,7 @@ class BookTableViewCell: UITableViewCell {
         self.selectionStyle = .none
 
         contentWrapper = UIView()
-        contentWrapper.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.88)
+        contentWrapper.backgroundColor = COLOR_background
         contentWrapper.layer.cornerRadius = 12
         contentWrapper.layer.masksToBounds = true
         self.contentView.addSubview(contentWrapper)
@@ -48,7 +48,7 @@ class BookTableViewCell: UITableViewCell {
         titleLabel = UILabel()
         titleLabel.numberOfLines = 2
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        titleLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
+        titleLabel.textColor = COLOR_bookTableViewCellTitle
         contentWrapper.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(10)
@@ -65,7 +65,7 @@ class BookTableViewCell: UITableViewCell {
 
         publicationDateLabel = UILabel()
         publicationDateLabel.font = UIFont.italicSystemFont(ofSize: 14)
-        publicationDateLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
+        publicationDateLabel.textColor = COLOR_bookTableViewCellDate
         contentWrapper.addSubview(publicationDateLabel)
         publicationDateLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(bookImageView)
@@ -74,7 +74,7 @@ class BookTableViewCell: UITableViewCell {
 
         publicationPressLabel = UILabel()
         publicationPressLabel.font = UIFont.italicSystemFont(ofSize: 14)
-        publicationPressLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        publicationPressLabel.textColor = COLOR_bookTableViewCellPress
         contentWrapper.addSubview(publicationPressLabel)
         publicationPressLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel)
@@ -84,7 +84,7 @@ class BookTableViewCell: UITableViewCell {
         authorLabel = UILabel()
         authorLabel.numberOfLines = 1
         authorLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        authorLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
+        authorLabel.textColor = COLOR_bookTableViewCellAuthor
         contentWrapper.addSubview(authorLabel)
         authorLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel.snp.top).offset(-10)

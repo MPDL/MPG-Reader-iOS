@@ -67,7 +67,7 @@ class DownloadViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(loadStatistic), name: .readingListDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadReviews), name: .reviewDidAdd, object: nil)
 
-        self.view.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        self.view.backgroundColor = COLOR_background
         self.setupUI()
         self.reloadData()
     }
@@ -186,7 +186,7 @@ class DownloadViewController: UIViewController {
         titleLabel = UILabel()
         titleLabel.numberOfLines = 2
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        titleLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
+        titleLabel.textColor = COLOR_downloadViewTitle
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(bookImageView)
@@ -205,7 +205,7 @@ class DownloadViewController: UIViewController {
 
         publicationDateLabel = UILabel()
         publicationDateLabel.font = UIFont.italicSystemFont(ofSize: 24)
-        publicationDateLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
+        publicationDateLabel.textColor = COLOR_downloadViewDate
         contentView.addSubview(publicationDateLabel)
         publicationDateLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(isbnLabel.snp.top).offset(-10)
@@ -214,7 +214,7 @@ class DownloadViewController: UIViewController {
 
         publicationPressLabel = UILabel()
         publicationPressLabel.font = UIFont.italicSystemFont(ofSize: 24)
-        publicationPressLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36, alpha: 1)
+        publicationPressLabel.textColor = COLOR_downloadViewPress
         contentView.addSubview(publicationPressLabel)
         publicationPressLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel)
@@ -224,7 +224,7 @@ class DownloadViewController: UIViewController {
         authorLabel = UILabel()
         authorLabel.numberOfLines = 2
         authorLabel.font = UIFont.boldSystemFont(ofSize: 26)
-        authorLabel.textColor = UIColor(red: 0.25, green: 0.31, blue: 0.36,alpha:1)
+        authorLabel.textColor = COLOR_downloadViewAuthor
         contentView.addSubview(authorLabel)
         authorLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(publicationDateLabel.snp.top).offset(-6)
@@ -336,7 +336,7 @@ class DownloadViewController: UIViewController {
 
         introductionTitleLabel = UILabel()
         introductionTitleLabel.font = UIFont.systemFont(ofSize: 24)
-        introductionTitleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        introductionTitleLabel.textColor = COLOR_downloadViewIntro
         contentView.addSubview(introductionTitleLabel)
         introductionTitleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(actionView.snp.bottom).offset(60)
@@ -344,7 +344,7 @@ class DownloadViewController: UIViewController {
         }
         introductionLabel = UILabel()
         introductionLabel.font = UIFont.systemFont(ofSize: 18)
-        introductionLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        introductionLabel.textColor = COLOR_downloadViewIntro
         introductionLabel.numberOfLines = 0
         contentView.addSubview(introductionLabel)
         introductionLabel.snp.makeConstraints { (make) in
@@ -366,7 +366,7 @@ class DownloadViewController: UIViewController {
     fileprivate func setReviews() {
         let reviewTitleLabel = UILabel()
         reviewTitleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        reviewTitleLabel.textColor = UIColor(hex: 0x333333)
+        reviewTitleLabel.textColor = COLOR_downloadViewReview
         reviewTitleLabel.text = "User Reviews:"
         reviewView.addSubview(reviewTitleLabel)
         reviewTitleLabel.snp.makeConstraints { (make) in
@@ -524,17 +524,24 @@ class DownloadViewController: UIViewController {
     }
 
     fileprivate func saveBook() {
+        FolderApi.addBook(bookId: self.book.id) { (_) in
+            PopupView.showLoading(false)
+        } failure: { (_) in
+        }
         let realm = try! Realm()
-
-        let predicate = NSPredicate(format: "id == %@", book.id)
+        let predicate = NSPredicate(format: "id == %@", self.book.id)
         if !realm.objects(Book.self).filter(predicate).isEmpty {
             PopupView.showWithContent("Book already exists")
             return
         }
-
         try! realm.write {
-            realm.add(book)
+            realm.add(self.book)
         }
+    }
+    
+    fileprivate func saveDBBook() {
+        
+        
     }
 
     fileprivate func checkFileExisted(_ path: String) -> Bool {

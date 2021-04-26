@@ -20,6 +20,8 @@ class Book: Object, Codable {
     @objc dynamic var thumbnail: String?
     @objc dynamic var rating = 0.0
     @objc dynamic var url = ""
+    @objc dynamic var isFolder = false
+    @objc dynamic var parentFolderName = ""
 
     let authorsPrimary = List<String>()
     let isbns = List<String>()
@@ -31,7 +33,7 @@ class Book: Object, Codable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case abstract, id, title, downloadUrl, modifyDate, pdf, thumbnail, rating, authorsPrimary, isbns, publicationDates, publishers, url
+        case abstract, id, title, downloadUrl, modifyDate, pdf, thumbnail, rating, authorsPrimary, isbns, publicationDates, publishers, url, isFolder, parentFolderName
     }
 
     required convenience public init(from decoder: Decoder) throws {
@@ -77,6 +79,11 @@ class Book: Object, Codable {
         if let arr = try container.decodeIfPresent(Array<String>.self, forKey: .publishers) {
             publishers.append(objectsIn: arr)
         }
-        
+        if let bool = try container.decodeIfPresent(Bool.self, forKey: .isFolder) {
+            isFolder = bool
+        }
+        if let str = try container.decodeIfPresent(String.self, forKey: .parentFolderName) {
+            parentFolderName = str
+        }
     }
 }

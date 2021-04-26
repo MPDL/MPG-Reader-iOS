@@ -21,7 +21,7 @@ class CiteView: UIView {
 
         let citeView = UIView()
         citeView.layer.cornerRadius = 10
-        citeView.backgroundColor = UIColor.white
+        citeView.backgroundColor = COLOR_citeBackground
         self.addSubview(citeView)
         citeView.snp.makeConstraints { (make) in
             make.centerX.equalTo(self)
@@ -30,7 +30,7 @@ class CiteView: UIView {
             make.height.equalTo(780)
         }
         let iconImageView = UIImageView()
-        iconImageView.image = UIImage(named: "icon-cite-item")
+        iconImageView.image = UserDefaults.standard.bool(forKey: READERTHEMEKEY) ? UIImage(named: "icon_city_item_dark") : UIImage(named: "icon-cite-item")
         citeView.addSubview(iconImageView)
         iconImageView.snp.makeConstraints { (make) in
             make.centerX.equalTo(citeView)
@@ -48,7 +48,7 @@ class CiteView: UIView {
         let titleLabel = UILabel()
         titleLabel.text = "Copy Citation"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        titleLabel.textColor = UIColor(hex: 0x333333)
+        titleLabel.textColor = COLOR_citeTitle
         citeView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(citeView)
@@ -111,7 +111,7 @@ class CiteView: UIView {
         let view = UIView()
         let titleLabel = UILabel()
         titleLabel.text = citation.type
-        titleLabel.textColor = UIColor(hex: 0x333333)
+        titleLabel.textColor = COLOR_citeTitle
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
@@ -128,6 +128,7 @@ class CiteView: UIView {
             make.bottom.equalTo(0)
         }
         let contentLabel = UILabel()
+        contentLabel.textColor = COLOR_citeContent
         contentLabel.numberOfLines = 0
         if let citationContent = citation.value {
             let title = book.title.replacingOccurrences(of: " : ", with: ": ")

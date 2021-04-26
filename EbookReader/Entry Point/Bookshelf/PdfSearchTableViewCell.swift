@@ -20,7 +20,7 @@ class PdfSearchTableViewCell: UITableViewCell {
         titleLabel = UILabel()
         titleLabel.numberOfLines = 1
         titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        titleLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        titleLabel.textColor = COLOR_pdfSearchText
         self.contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
             make.left.equalTo(16)
@@ -31,7 +31,7 @@ class PdfSearchTableViewCell: UITableViewCell {
         contentLabel = UILabel()
         contentLabel.numberOfLines = 2
         contentLabel.font = UIFont.systemFont(ofSize: 16)
-        contentLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        contentLabel.textColor = COLOR_pdfSearchText
         self.contentView.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { (make) in
             make.left.equalTo(16)

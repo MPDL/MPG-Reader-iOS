@@ -100,6 +100,8 @@ open class FolioReader: NSObject {
     deinit {
         removeObservers()
     }
+    
+    open var openWebviewAction: ((URL)->())?
 
     /// Custom unzip path
     open var unzipPath: String?

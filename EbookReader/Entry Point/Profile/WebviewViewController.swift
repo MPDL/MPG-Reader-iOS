@@ -17,7 +17,8 @@ class WebviewViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     var webview: WKWebView!
     var urlString: String?
     var titleLabel = ""
-
+    fileprivate var goback: UIBarButtonItem!
+    fileprivate var goforward: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = titleLabel
@@ -28,16 +29,38 @@ class WebviewViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
             ruleId2 : false
             ])
         UserDefaults.standard.synchronize()
-
+        
+      
         webview = WKWebView()
         view.addSubview(webview)
         webview.snp.makeConstraints { (make) in
             make.left.right.top.bottom.equalTo(0)
+            make.bottom.equalTo(50)
         }
         webview.navigationDelegate = self
         webview.uiDelegate = self
         webview.allowsBackForwardNavigationGestures = true
-
+        
+//        let toolBar = UIToolbar()
+//        toolBar.backgroundColor = .white
+//        view.addSubview(toolBar)
+//        toolBar.snp.makeConstraints { (make) in
+//            make.left.right.equalTo(0)
+//            make.bottom.equalTo(0)
+//            make.height.equalTo(50)
+//        }
+        
+        goback = UIBarButtonItem(image: UIImage(named: "icon-left"), style: .plain, target: self, action: #selector(goBack))
+        goback.isEnabled = false
+        goforward = UIBarButtonItem(image: UIImage(named: "icon-right"), style: .plain, target: self, action: #selector(goForward))
+        goforward.isEnabled = false
+        
+       
+        self.navigationItem.leftBarButtonItems = [goback, goforward]
+        
+        let closeImage = UIImage(named: "icon-navbar-close")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(goClose))
+        
         if #available(iOS 11, *) {
             let group = DispatchGroup()
             group.enter()
@@ -55,6 +78,20 @@ class WebviewViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
             alertToUseIOS11()
             startLoading()
         }
+    }
+    
+    @objc private func goBack() {
+        if (webview.canGoBack) {
+            webview.goBack()
+        }
+    }
+    @objc private func goForward() {
+        if (webview.canGoForward) {
+            webview.goForward()
+        }
+    }
+    @objc private func goClose() {
+        self.navigationController?.popViewController(animated: true)
     }
 
     private func startLoading() {
@@ -183,6 +220,17 @@ class WebviewViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
             break
         }
     }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        goback.isEnabled = webview.canGoBack
+        goforward.isEnabled = webview.canGoForward
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        goback.isEnabled = webview.canGoBack
+        goforward.isEnabled = webview.canGoForward
+    }
+    
 
     // Just for invalidating target="_blank"
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {

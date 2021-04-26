@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Update schemaVersion every time the schema is changed, +1
         let config = Realm.Configuration(
-             schemaVersion: 3,
+             schemaVersion: 5,
              migrationBlock: { migration, oldSchemaVersion in
                      if (oldSchemaVersion < 3) {
                         migration.enumerateObjects(ofType: Book.className()) { (oldObject, newObject) in

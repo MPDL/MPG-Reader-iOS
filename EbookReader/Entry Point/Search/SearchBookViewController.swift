@@ -50,7 +50,7 @@ class SearchBookViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = COLOR_background
 
         searchBar = UISearchBar()
         searchBar.backgroundColor = UIColor.white
@@ -60,9 +60,11 @@ class SearchBookViewController: UIViewController {
         searchBar.layer.borderWidth = 1
         searchBar.layer.borderColor = UIColor(hex: 0xC9C9C9).cgColor
         searchBar.backgroundImage = UIImage()
+        searchBar.setImage(UIImage(named: "icon-input-search"), for: .search, state: .normal)
         searchBar.delegate = self
         if let textField = searchBar.value(forKey: "searchField") as? UITextField {
             textField.backgroundColor = UIColor.white
+            textField.textColor = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
         }
         view.addSubview(searchBar)
         searchBar.snp.makeConstraints { (make) in
@@ -151,7 +153,7 @@ class SearchBookViewController: UIViewController {
         tableView.mj_header = tableHeader
         tableView.mj_footer = tableFooter
         tableView.isHidden = true
-        tableView.backgroundColor = UIColor.white
+        tableView.backgroundColor = COLOR_background
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
@@ -204,7 +206,7 @@ class SearchBookViewController: UIViewController {
         view.reactive.controlEvents(.touchUpInside).observeValues { [weak self] (control) in
             self?.onRecordTapped(searchString: record)
         }
-        view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
+        view.backgroundColor = COLOR_recordView
         view.layer.cornerRadius = 12
         view.layer.masksToBounds = true
         let maxWidth = UIScreen.main.bounds.width - 136
@@ -214,7 +216,7 @@ class SearchBookViewController: UIViewController {
 
         let recordLabel = UILabel()
         recordLabel.font = UIFont.systemFont(ofSize: 12)
-        recordLabel.textColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
+        recordLabel.textColor = COLOR_recordLabel
         recordLabel.text = record
         view.addSubview(recordLabel)
         recordLabel.snp.makeConstraints { (make) in

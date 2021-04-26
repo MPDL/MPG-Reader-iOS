@@ -48,7 +48,7 @@ class ReviewsView: UIScrollView {
     }
     fileprivate func generateOneReviewView(review: Review, index: Int) -> UIView {
         let view = UIView()
-        view.backgroundColor = UIColor(hex: 0xF2F2F5)
+        view.backgroundColor = COLOR_reviewView
 
         let profileImageView = UIImageView()
         profileImageView.image = UIImage(named: "avatar")
@@ -65,7 +65,7 @@ class ReviewsView: UIScrollView {
         } else {
             nameLabel.text = "MPG Reader User"
         }
-        nameLabel.textColor = UIColor(hex: 0x333333)
+        nameLabel.textColor = COLOR_reviewText
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
         view.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { (make) in
@@ -81,16 +81,18 @@ class ReviewsView: UIScrollView {
             make.left.equalTo(profileImageView.snp.right).offset(16)
             make.top.equalTo(nameLabel.snp.bottom).offset(7)
         }
-        let commentsLabel = TTTAttributedLabel(frame: .zero)
+        var commentsLabel: UILabel!
         if let count = review.comment?.count, count < kCharacterBeforReadMore {
+            commentsLabel = UILabel()
             commentsLabel.text = review.comment!
-            commentsLabel.textColor = UIColor(hex: 0x333333)
+            commentsLabel.textColor = COLOR_reviewText
             commentsLabel.font = UIFont.systemFont(ofSize: 16)
         } else {
-            commentsLabel.showTextOnTTTAttributeLabel(originText: review.comment!, charatersBeforeReadMore: kCharacterBeforReadMore, isReadMoreTapped: false, isReadLessTapped: false)
+            commentsLabel = TTTAttributedLabel(frame: .zero)
+            (commentsLabel as! TTTAttributedLabel).showTextOnTTTAttributeLabel(originText: review.comment!, charatersBeforeReadMore: kCharacterBeforReadMore, isReadMoreTapped: false, isReadLessTapped: false)
+            (commentsLabel as! TTTAttributedLabel).delegate = self
         }
         commentsLabel.tag = index
-        commentsLabel.delegate = self
         view.addSubview(commentsLabel)
         commentsLabel.snp.makeConstraints { (make) in
             make.top.equalTo(profileImageView.snp.bottom).offset(22)
