@@ -9,6 +9,12 @@
 import Foundation
 import UIKit
 
+func color(light: UIColor, dark: UIColor) -> UIColor {
+    return UIColor { (tc) -> UIColor in
+       return tc.userInterfaceStyle == .light ? light : dark
+    }
+}
+
 let COLOR_background = UIColor { (tc) -> UIColor in
     return tc.userInterfaceStyle == .light ? UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1) : UIColor(red: 15/255.0, green: 15/255.0, blue: 15/255.0, alpha: 1)
 }

@@ -67,6 +67,8 @@
 		1A22926F2622F88D00A2F3A8 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A22926E2622F88D00A2F3A8 /* Color.swift */; };
 		1A6D6053262C991B000155D3 /* FolderNavigationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6D6052262C991B000155D3 /* FolderNavigationItemView.swift */; };
 		1AD60F792622CBB7008D1B47 /* BookFolderHandleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AD60F782622CBB7008D1B47 /* BookFolderHandleView.xib */; };
+		1ADAC4C12636A226006159A1 /* ColorThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADAC4C02636A226006159A1 /* ColorThemeView.swift */; };
+		1ADAC4C42636A231006159A1 /* ColorThemeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1ADAC4C32636A231006159A1 /* ColorThemeView.xib */; };
 		2E345A22252DF00A00DD5FD8 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E345A21252DF00A00DD5FD8 /* UIApplication.swift */; };
 		2EDA9B7C2594AAA400BE5C0B /* credential.json in Resources */ = {isa = PBXBuildFile; fileRef = 2EDA9B7B2594AAA400BE5C0B /* credential.json */; };
 		7CE201AF1FEE885DC6B88B08 /* Pods_EbookReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */; };
@@ -135,6 +137,8 @@
 		1A22926E2622F88D00A2F3A8 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		1A6D6052262C991B000155D3 /* FolderNavigationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderNavigationItemView.swift; sourceTree = "<group>"; };
 		1AD60F782622CBB7008D1B47 /* BookFolderHandleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookFolderHandleView.xib; sourceTree = "<group>"; };
+		1ADAC4C02636A226006159A1 /* ColorThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorThemeView.swift; sourceTree = "<group>"; };
+		1ADAC4C32636A231006159A1 /* ColorThemeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorThemeView.xib; sourceTree = "<group>"; };
 		2E345A21252DF00A00DD5FD8 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		2EDA9B7B2594AAA400BE5C0B /* credential.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = credential.json; sourceTree = SOURCE_ROOT; };
 		35CD8176FBF3E4CD7E7A8266 /* Pods_EbookReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EbookReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -247,6 +251,8 @@
 				0C4ED077245986CB00226AF5 /* ProfileViewController.swift */,
 				0CF67A0C24693E1C006A9AFD /* WebviewViewController.swift */,
 				0CEE12BD2554E9800018F1C6 /* ReadingListViewController.swift */,
+				1ADAC4C02636A226006159A1 /* ColorThemeView.swift */,
+				1ADAC4C32636A231006159A1 /* ColorThemeView.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -413,6 +419,7 @@
 				1AD60F792622CBB7008D1B47 /* BookFolderHandleView.xib in Resources */,
 				2EDA9B7C2594AAA400BE5C0B /* credential.json in Resources */,
 				0CC4DDED243C58A100FB792E /* Main.storyboard in Resources */,
+				1ADAC4C42636A231006159A1 /* ColorThemeView.xib in Resources */,
 				1A2292612622D32400A2F3A8 /* BookFolderHandleTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -511,6 +518,7 @@
 				0CF67A1124698A9D006A9AFD /* PdfSearchTableViewCell.swift in Sources */,
 				0CEECCA7255E1BC400AA9F24 /* Notification+Name.swift in Sources */,
 				0CE636C325539F9B00997057 /* HomeViewController.swift in Sources */,
+				1ADAC4C12636A226006159A1 /* ColorThemeView.swift in Sources */,
 				0C4ED06E2459671E00226AF5 /* BookCollectionViewCell.swift in Sources */,
 				0C4ED0702459736A00226AF5 /* Queue.swift in Sources */,
 				0CCCDBFB24514E33004B2C5A /* NetworkManager.swift in Sources */,
@@ -680,7 +688,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = HU7SCWF2RM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -692,7 +700,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.37;
+				MARKETING_VERSION = 0.0.38;
 				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.qa.reader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -706,7 +714,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = HU7SCWF2RM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -718,7 +726,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.37;
+				MARKETING_VERSION = 0.0.38;
 				PRODUCT_BUNDLE_IDENTIFIER = de.mpg.mpdl.qa.reader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

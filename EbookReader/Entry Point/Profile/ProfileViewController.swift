@@ -15,6 +15,8 @@ class ProfileViewController: UIViewController {
     fileprivate var colorTheme: UIUserInterfaceStyle = .light;
     fileprivate var colorThemeView: UIControl!
     fileprivate var colorThemeViewAllLabel: UILabel!
+    fileprivate var toggleColorThemeView: ColorThemeView!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
@@ -370,6 +372,30 @@ class ProfileViewController: UIViewController {
         }
 
         self.fetchAppConfiguration(fullnameLabel: nameLabel, versionLabel: versionContentLabel)
+        
+        toggleColorThemeView = (Bundle.main.loadNibNamed("ColorThemeView", owner: self, options: nil)!.last as! ColorThemeView)
+        toggleColorThemeView.isHidden = true
+        self.view.addSubview(toggleColorThemeView)
+        toggleColorThemeView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.view)
+            make.centerY.equalTo(self.view)
+            make.width.equalTo(self.view)
+            make.height.equalTo(self.view)
+        }
+        toggleColorThemeView.setLightMode = { [weak self] () in
+            UserDefaults.standard.setValue(false, forKey: READERTHEMEKEY)
+            UIApplication.shared.windows[0].overrideUserInterfaceStyle = .light
+            self?.colorTheme = .light
+            self?.colorThemeViewAllLabel.text = "Light Mode"
+            self?.toggleColorThemeView.hide()
+        }
+        toggleColorThemeView.setDarkMode = { [weak self] () in
+            UserDefaults.standard.setValue(true, forKey: READERTHEMEKEY)
+            UIApplication.shared.windows[0].overrideUserInterfaceStyle = .dark
+            self?.colorTheme = .dark
+            self?.colorThemeViewAllLabel.text = "Drak Mode"
+            self?.toggleColorThemeView.hide()
+        }
     }
 
     @objc func onWifiTapped() {
@@ -406,26 +432,7 @@ class ProfileViewController: UIViewController {
     }
     
     fileprivate func changeTheme() {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let light = UIAlertAction(title: "Light Mode", style: .default) { (_) in
-            UserDefaults.standard.setValue(false, forKey: READERTHEMEKEY)
-            UIApplication.shared.windows[0].overrideUserInterfaceStyle = .light
-            self.colorTheme = .light
-            self.colorThemeViewAllLabel.text = "Light Mode"
-        }
-        let dark = UIAlertAction(title: "Dark Mode", style: .default) { (_) in
-            UserDefaults.standard.setValue(true, forKey: READERTHEMEKEY)
-            UIApplication.shared.windows[0].overrideUserInterfaceStyle = .dark
-            self.colorTheme = .dark
-            self.colorThemeViewAllLabel.text = "Drak Mode"
-        }
-        let popover = alert.popoverPresentationController
-        popover?.sourceView = colorThemeView
-        popover?.sourceRect = colorThemeView.bounds
-        popover?.permittedArrowDirections  = .any
-        alert.addAction(light)
-        alert.addAction(dark)
-        self.present(alert, animated: true, completion: nil)
+        toggleColorThemeView.show()
     }
 
     /*
