@@ -43,7 +43,13 @@ class HomeViewController: UIViewController {
         }
 
         checkVersion()
-        UIApplication.shared.windows[0].overrideUserInterfaceStyle = UserDefaults.standard.bool(forKey: READERTHEMEKEY) ? .dark : .light
+        let styleString = UserDefaults.standard.string(forKey: READERTHEMEKEY)
+        if styleString != nil {
+            UIApplication.shared.windows[0].overrideUserInterfaceStyle = UserDefaults.standard.bool(forKey: READERTHEMEKEY) ? .dark : .light
+        } else {
+            UIApplication.shared.windows[0].overrideUserInterfaceStyle = UIApplication.shared.windows[0].traitCollection.userInterfaceStyle
+            UserDefaults.standard.setValue(UIApplication.shared.windows[0].traitCollection.userInterfaceStyle == .dark ? true : false, forKey: READERTHEMEKEY)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

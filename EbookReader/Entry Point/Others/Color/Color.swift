@@ -28,7 +28,7 @@ let COLOR_recordLabel = UIColor { (tc) -> UIColor in
     return tc.userInterfaceStyle == .light ? UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1) : UIColor(red: 216/255.0, green: 216/255.0, blue: 216/255.0, alpha: 1)
 }
 let COLOR_bookshelfBackground = UIColor { (tc) -> UIColor in
-    return tc.userInterfaceStyle == .light ? UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1) : UIColor(red: 15/255.0, green: 15/255.0, blue: 15/255.0, alpha: 1)
+    return tc.userInterfaceStyle == .light ? UIColor(hex: 0xF9F9F9) : UIColor(red: 15/255.0, green: 15/255.0, blue: 15/255.0, alpha: 1)
 }
 let COLOR_profileCell = UIColor { (tc) -> UIColor in
     return tc.userInterfaceStyle == .light ? UIColor.white : UIColor(red: 27/255.0, green: 27/255.0, blue: 27/255.0, alpha: 1)
@@ -111,10 +111,10 @@ let COLOR_navBar = UIColor { (tc) -> UIColor in
 }
 
 let COLOR_buttonBackground = UIColor { (tc) -> UIColor in
-    return tc.userInterfaceStyle == .light ? UIColor.white : UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
+    return tc.userInterfaceStyle == .light ? UIColor(hex: 0xF9F9F9) : UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1)
 }
 let COLOR_buttonBackground_disable = UIColor { (tc) -> UIColor in
-    return tc.userInterfaceStyle == .light ? UIColor.white : UIColor(red: 15/255.0, green: 15/255.0, blue: 15/255.0, alpha: 1)
+    return tc.userInterfaceStyle == .light ? UIColor(hex: 0xF9F9F9) : UIColor(red: 15/255.0, green: 15/255.0, blue: 15/255.0, alpha: 1)
 }
 let COLOR_buttonText = UIColor { (tc) -> UIColor in
     return tc.userInterfaceStyle == .light ? UIColor(red: 0, green: 0.62, blue: 0.63, alpha: 1) : UIColor.white

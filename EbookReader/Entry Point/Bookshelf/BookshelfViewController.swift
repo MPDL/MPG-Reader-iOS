@@ -129,7 +129,7 @@ class BookshelfViewController: UIViewController {
         self.view.addSubview(deleteView)
         deleteView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalTo(0)
-            make.height.equalTo(160)
+            make.height.equalTo(130)
         }
         deleteButton = UIView()
         deleteButton.backgroundColor = COLOR_buttonBackground
@@ -143,20 +143,22 @@ class BookshelfViewController: UIViewController {
         deleteView.addSubview(deleteButton)
         deleteButton.snp.makeConstraints { (make) in
             make.top.equalTo(30)
-            make.width.equalTo(550)
-            make.height.equalTo(80)
+            make.width.equalTo(350)
+            make.height.equalTo(50)
             make.centerX.equalTo(deleteView)
         }
         deleteImageView = UIImageView()
-        deleteImageView.image = UIImage(named: "icon-trash-green")
+        deleteImageView.image = UIImage(named: "bs-remove")
         deleteButton.addSubview(deleteImageView)
         deleteImageView.snp.makeConstraints { (make) in
             make.centerY.equalTo(deleteButton)
-            make.centerX.equalTo(deleteButton).offset(-36)
+            make.centerX.equalTo(deleteButton).offset(-30)
+            make.width.equalTo(25)
+            make.height.equalTo(25)
         }
         deleteLabel = UILabel()
         deleteLabel.textColor = COLOR_buttonText
-        deleteLabel.font = UIFont.systemFont(ofSize: 24)
+        deleteLabel.font = UIFont.systemFont(ofSize: 20)
         deleteLabel.text = "Remove"
         deleteButton.addSubview(deleteLabel)
         deleteLabel.snp.makeConstraints { (make) in
@@ -170,7 +172,7 @@ class BookshelfViewController: UIViewController {
         self.view.addSubview(bookDeleteView)
         bookDeleteView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalTo(0)
-            make.height.equalTo(160)
+            make.height.equalTo(130)
         }
         bookDeleteButton = UIView()
         bookDeleteButton.backgroundColor = UIColor.white
@@ -186,19 +188,21 @@ class BookshelfViewController: UIViewController {
         bookDeleteButton.snp.makeConstraints { (make) in
             make.top.equalTo(30)
             make.width.equalTo(260)
-            make.height.equalTo(80)
+            make.height.equalTo(50)
             make.centerX.equalTo(bookDeleteView).offset(-145)
         }
         bookDeleteImageView = UIImageView()
-        bookDeleteImageView.image = UIImage(named: "icon-trash-green")
+        bookDeleteImageView.image = UIImage(named: "bs-remove")
         bookDeleteButton.addSubview(bookDeleteImageView)
         bookDeleteImageView.snp.makeConstraints { (make) in
             make.centerY.equalTo(bookDeleteButton)
-            make.centerX.equalTo(bookDeleteButton).offset(-36)
+            make.centerX.equalTo(bookDeleteButton).offset(-30)
+            make.width.equalTo(25)
+            make.height.equalTo(25)
         }
         bookDeleteLabel = UILabel()
         bookDeleteLabel.textColor = COLOR_buttonText
-        bookDeleteLabel.font = UIFont.systemFont(ofSize: 24)
+        bookDeleteLabel.font = UIFont.systemFont(ofSize: 20)
         bookDeleteLabel.text = "Remove"
         bookDeleteButton.addSubview(bookDeleteLabel)
         bookDeleteLabel.snp.makeConstraints { (make) in
@@ -220,19 +224,21 @@ class BookshelfViewController: UIViewController {
         bookMoveButton.snp.makeConstraints { (make) in
             make.top.equalTo(30)
             make.width.equalTo(260)
-            make.height.equalTo(80)
+            make.height.equalTo(50)
             make.centerX.equalTo(bookDeleteView).offset(145)
         }
         bookMoveImageView = UIImageView()
-        bookMoveImageView.image = UIImage(named: "move_in")
+        bookMoveImageView.image = UIImage(named: "bs-move")
         bookMoveButton.addSubview(bookMoveImageView)
         bookMoveImageView.snp.makeConstraints { (make) in
             make.centerY.equalTo(bookMoveButton)
-            make.centerX.equalTo(bookMoveButton).offset(-70)
+            make.centerX.equalTo(bookMoveButton).offset(-64)
+            make.width.equalTo(25)
+            make.height.equalTo(25)
         }
         bookMoveLabel = UILabel()
         bookMoveLabel.textColor = COLOR_buttonText
-        bookMoveLabel.font = UIFont.systemFont(ofSize: 24)
+        bookMoveLabel.font = UIFont.systemFont(ofSize: 20)
         bookMoveLabel.text = "Move to Folder"
         bookMoveButton.addSubview(bookMoveLabel)
         bookMoveLabel.snp.makeConstraints { (make) in
@@ -795,9 +801,9 @@ class BookshelfViewController: UIViewController {
             deleteButton.layer.borderWidth = 0
             bookDeleteButton.layer.borderWidth = 0
             bookMoveButton.layer.borderWidth = 0
-            bookDeleteImageView.image = UIImage(named: "icon-trash-green")
-            deleteImageView.image = UIImage(named: "icon-trash-green")
-            bookMoveImageView.image = UIImage(named: "move_in")
+            bookDeleteImageView.image = UIImage(named: "bs-remove")
+            deleteImageView.image = UIImage(named: "bs-remove")
+            bookMoveImageView.image = UIImage(named: "bs-move")
         }
     }
 

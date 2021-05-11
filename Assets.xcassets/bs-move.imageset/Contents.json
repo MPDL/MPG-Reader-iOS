@@ -29,7 +29,7 @@
       "scale" : "2x"
     },
     {
-      "filename" : "design-v21-bookshelf-edit 2.png",
+      "filename" : "bs-move@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -40,7 +40,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "dark-暗黑模式-bookshelf-edit 2.png",
+      "filename" : "bs-remove.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
