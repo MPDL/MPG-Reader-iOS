@@ -23,6 +23,8 @@ class WebviewViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         super.viewDidLoad()
         self.title = titleLabel
         self.view.backgroundColor = .yellow
+        
+        navigationController?.navigationBar.isHidden = false
 
         UserDefaults.standard.register(defaults: [
             ruleId1 : false,
