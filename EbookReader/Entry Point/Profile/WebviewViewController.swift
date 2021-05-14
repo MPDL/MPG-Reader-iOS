@@ -102,7 +102,11 @@ class WebviewViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
             webview.load(request)
         }
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
 
     @available(iOS 11.0, *)
     private func setupContentBlockFromStringLiteral(_ completion: (() -> Void)?) {

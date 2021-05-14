@@ -463,6 +463,11 @@ class DownloadViewController: UIViewController {
             config.enableTTS = false
             folioReader = FolioReader()
             folioReader.delegate = self
+            folioReader.openWebviewAction = {[weak self] url in
+                let webviewController = WebviewViewController()
+                webviewController.urlString = url.absoluteString
+                self?.folioReader.readerCenter?.navigationController?.pushViewController(webviewController, animated: true)
+            }
             if keepScreenOnWhileReading {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
